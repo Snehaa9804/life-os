@@ -143,6 +143,16 @@
   animation: float 3s ease-in-out infinite;
 }
 
+@keyframes scan {
+  from {
+    top: -10%;
+  }
+
+  to {
+    top: 110%;
+  }
+}
+
 .animate-pulse-soft {
   animation: pulseSoft 2s infinite;
 }

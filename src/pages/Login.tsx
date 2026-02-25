@@ -33,14 +33,20 @@ const Login = () => {
     };
 
     return (
-        <div className="fixed inset-0 bg-[#050505] flex items-center justify-center p-6 overflow-hidden dark">
+        <div className="fixed inset-0 bg-[#020202] flex items-center justify-center p-6 overflow-hidden dark font-display">
             {/* Background Effects */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/20 blur-[120px] rounded-full animate-pulse-slow"></div>
-            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.05]"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(245,119,153,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(245,119,153,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 blur-[150px] rounded-full animate-pulse-slow"></div>
 
-            <Card className="w-full max-w-lg p-10 md:p-16 bg-[#0D0D0E] border border-white/5 shadow-[0_0_100px_rgba(0,0,0,0.8)] rounded-[3rem] relative overflow-hidden group">
-                {/* Decorative Elements */}
-                <div className="absolute -top-10 -right-10 size-40 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-1000"></div>
+            {/* Scanning Line Effect */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
+                <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent absolute top-0 animate-[scan_4s_linear_infinite]"></div>
+            </div>
+
+            <Card className="w-full max-w-lg p-10 md:p-16 bg-[#0A0A0B]/95 border border-white/5 shadow-[0_0_80px_rgba(0,0,0,0.9),inset_0_0_20px_rgba(255,255,255,0.02)] backdrop-blur-xl rounded-[3.5rem] relative overflow-hidden group">
+                {/* Decorative Accents */}
+                <div className="absolute top-0 left-0 w-24 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
+                <div className="absolute top-10 right-0 w-[1px] h-24 bg-gradient-to-b from-transparent via-primary/40 to-transparent"></div>
 
                 <div className="relative z-10 flex flex-col items-center text-center">
                     <div className="size-20 bg-primary/10 rounded-[2rem] flex items-center justify-center text-primary mb-10 shadow-inner group-hover:scale-110 transition-transform duration-500">
@@ -53,10 +59,10 @@ const Login = () => {
 
                     <div className="space-y-4 mb-12">
                         <div className="flex items-center justify-center gap-3">
-                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.5em] italic">Secure Access Protocol</span>
-                            <div className="size-2 rounded-full bg-primary animate-pulse"></div>
+                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.5em] italic drop-shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]">Secure Access Protocol</span>
+                            <div className="size-2 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(var(--primary-rgb),0.8)]"></div>
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-black text-white italic tracking-tighter uppercase leading-none">
+                        <h1 className="text-5xl md:text-6xl font-black text-white italic tracking-tighter uppercase leading-none drop-shadow-2xl">
                             Life <span className="text-primary italic">OS</span>
                         </h1>
                         <p className="text-[11px] font-black text-white/60 uppercase tracking-[0.3em] italic">
@@ -79,10 +85,10 @@ const Login = () => {
                                     setError("Google Auth Provider Rejected Request");
                                 }}
                                 useOneTap
-                                theme="filled_black"
-                                shape="pill"
+                                theme="outline"
+                                shape="circle"
                                 size="large"
-                                width="320"
+                                width="340"
                                 text="continue_with"
                             />
                         </div>
