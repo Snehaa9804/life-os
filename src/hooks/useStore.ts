@@ -27,22 +27,51 @@ const generateId = (): string => {
     return `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 };
 
-// Debounce helper for localStorage writes
-const createDebouncedStorage = (key: string, delay: number = 500) => {
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+// Debounce helper for localStorage writes - now more robust with cleanup
+const useDebounce = () => {
+    const timeoutRef = React.useRef<Record<string, ReturnType<typeof setTimeout>>>({});
 
-    return (value: unknown) => {
-        if (timeoutId) {
-            clearTimeout(timeoutId);
+    const debounceSave = (key: string, value: unknown, delay: number = 500) => {
+        if (timeoutRef.current[key]) {
+            clearTimeout(timeoutRef.current[key]);
         }
-        timeoutId = setTimeout(() => {
+        timeoutRef.current[key] = setTimeout(() => {
             try {
                 localStorage.setItem(key, JSON.stringify(value));
+                delete timeoutRef.current[key];
             } catch (error) {
                 console.error(`Failed to save to localStorage (${key}):`, error);
             }
         }, delay);
     };
+
+    return debounceSave;
+};
+
+const getDefaultSettings = (): UserSettings => ({
+    name: 'User',
+    notificationsEnabled: true,
+    theme: 'dark',
+    monthlyBudget: 0,
+    weightUnit: 'kg',
+    activityLevel: 'moderate',
+    hydrationGoalLiters: 3.0,
+    sleepGoalHours: 8,
+    youtubeChannelId: undefined,
+    youtubeApiKey: undefined,
+    openaiApiKey: undefined,
+});
+
+const backfillSettings = (parsed: UserSettings) => {
+    const isPlaceholder = (key?: string) => !key || key.startsWith('YOUR_') || key === 'PASTE_YOUR_OPENAI_API_KEY_HERE';
+    const envYTKey = import.meta.env.VITE_YOUTUBE_API_KEY;
+    const envYTChannel = import.meta.env.VITE_YOUTUBE_CHANNEL_ID;
+    const envOpenAI = import.meta.env.VITE_OPENAI_API_KEY;
+
+    if (isPlaceholder(parsed.youtubeApiKey) && envYTKey && !isPlaceholder(envYTKey)) parsed.youtubeApiKey = envYTKey;
+    if (isPlaceholder(parsed.youtubeChannelId) && envYTChannel && !isPlaceholder(envYTChannel)) parsed.youtubeChannelId = envYTChannel;
+    if (isPlaceholder(parsed.openaiApiKey) && envOpenAI && !isPlaceholder(envOpenAI)) parsed.openaiApiKey = envOpenAI;
+    return parsed;
 };
 
 // Create context type
@@ -94,193 +123,147 @@ const StoreContext = createContext<StoreType | null>(null);
 
 // Provider component
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
-    // 1. Basic Lists
-    const [habits, setHabits] = useState<Habit[]>(() => {
-        const saved = localStorage.getItem('life-os-habits');
-        return safeParseJSON(saved, []);
-    });
+    const initialUser = (() => {
+        const saved = localStorage.getItem('life-os-user');
+        return safeParseJSON(saved, null) as User | null;
+    })();
 
-    const [tasks, setTasks] = useState<Task[]>(() => {
-        const saved = localStorage.getItem('life-os-tasks');
-        return safeParseJSON(saved, []);
-    });
-
-    const [transactions, setTransactions] = useState<Transaction[]>(() => {
-        const saved = localStorage.getItem('life-os-transactions');
-        return safeParseJSON(saved, []);
-    });
-
-    const [healthLogs, setHealthLogs] = useState<HealthLog[]>(() => {
-        const saved = localStorage.getItem('life-os-health');
-        return safeParseJSON(saved, []);
-    });
-
-    const [reflections, setReflections] = useState<Reflection[]>(() => {
-        const saved = localStorage.getItem('life-os-reflections');
-        return safeParseJSON(saved, []);
-    });
-
-    // 2. Specialized State
-    const [youtube, setYoutube] = useState<YouTubeGrowth>(() => {
-        const saved = localStorage.getItem('life-os-youtube');
-        return safeParseJSON(saved, { subscribers: 0, views: 0, videosCount: 0, lastUpdated: new Date().toISOString() });
-    });
-
-    const [savings, setSavings] = useState<Savings>(() => {
-        const saved = localStorage.getItem('life-os-savings');
-        return safeParseJSON(saved, { currentAmount: 0, goalAmount: 0 });
-    });
-
-    const [roadmap, setRoadmap] = useState<GoalRoadmap>(() => {
-        const saved = localStorage.getItem('life-os-roadmap');
-        return safeParseJSON(saved, {
-            mainGoal: 'Full Stack + AI Mastery // Career Launch 🚀',
-            year: 2026,
-            milestones: [
-                { id: 'm1', title: 'Habit Tracker UI & Core Logic', dueDate: '2026-01-20', status: 'completed' },
-                { id: 'm2', title: 'Trip: Punjab', dueDate: '2026-01-25', status: 'completed' },
-                { id: 'm3', title: 'Python Backend & Auth Mastery', dueDate: '2026-02-15', status: 'completed' },
-                { id: 'm4', title: 'Trip: Banaras (Varanasi)', dueDate: '2026-02-22', status: 'pending' },
-                { id: 'm5', title: 'React Frontend Mastery (JS/Hooks)', dueDate: '2026-03-25', status: 'pending' },
-                { id: 'm6', title: 'PostgreSQL Advanced (Design/Optimization)', dueDate: '2026-04-15', status: 'pending' },
-                { id: 'm7', title: 'Trip: Jagannath Puri', dueDate: '2026-04-20', status: 'pending' },
-                { id: 'm8', title: 'AI Implementation (LLMs & Vector DBs)', dueDate: '2026-05-30', status: 'pending' },
-                { id: 'm9', title: '2-3 Strong AI Portfolio Projects', dueDate: '2026-07-15', status: 'pending' },
-                { id: 'm10', title: 'Job Placement: High-Paying Developer', dueDate: '2026-08-30', status: 'pending' }
-            ],
-            monthlyFocus: {
-                'January': 'Habit Tracker Core + UI Design',
-                'February': 'Python Backend & AI (APIs, Auth)',
-                'March': 'React Frontend & State Management',
-                'April': 'PostgreSQL Depth & DB Optimization',
-                'May': 'AI Engineering (LLM APIs, Embeddings)',
-                'June': 'Portfolio Project 1: Full-stack + AI',
-                'July': 'Portfolio Project 2: High Scalability',
-                'August': 'Job Search & Deployment (Mastery)',
-                'September': 'Career Expansion & Mentorship',
-                'October': 'Advanced System Design',
-                'November': 'FinOps & Analytics',
-                'December': 'Yearly Review & 2027 Planning'
-            }
-        });
-    });
-
-    const [periods, setPeriods] = useState<PeriodData[]>(() => {
-        const saved = localStorage.getItem('life-os-periods');
-        return safeParseJSON(saved, []);
-    });
-
-    const [settings, setSettings] = useState<UserSettings>(() => {
-        const saved = localStorage.getItem('life-os-settings');
-        const defaults: UserSettings = {
-            name: 'Sneha',
-            notificationsEnabled: true,
-            theme: 'dark',
-            monthlyBudget: 0,
-            weightUnit: 'kg',
-            activityLevel: 'moderate',
-            hydrationGoalLiters: 3.0,
-            sleepGoalHours: 8,
-            youtubeChannelId: undefined, // Added default for youtubeChannelId
-            youtubeApiKey: undefined, // Added default for youtubeApiKey
-            openaiApiKey: undefined, // Added default for openaiApiKey
-        };
-        const parsed = safeParseJSON(saved, defaults);
-
-        // Backfill from env if missing or if it's the placeholder
-        const isPlaceholder = (key?: string) => !key || key.startsWith('YOUR_');
-
-        const envYTKey = import.meta.env.VITE_YOUTUBE_API_KEY;
-        const envYTChannel = import.meta.env.VITE_YOUTUBE_CHANNEL_ID;
-        const envOpenAI = import.meta.env.VITE_OPENAI_API_KEY;
-
-        if (isPlaceholder(parsed.youtubeApiKey) && envYTKey && !isPlaceholder(envYTKey)) {
-            parsed.youtubeApiKey = envYTKey;
-        }
-        if (isPlaceholder(parsed.youtubeChannelId) && envYTChannel && !isPlaceholder(envYTChannel)) {
-            parsed.youtubeChannelId = envYTChannel;
-        }
-        if (isPlaceholder(parsed.openaiApiKey) && envOpenAI && !isPlaceholder(envOpenAI)) {
-            parsed.openaiApiKey = envOpenAI;
-        }
-
-        return parsed;
-    });
-
-    const [studyHours, setStudyHours] = useState<Record<string, number>>(() => {
-        const saved = localStorage.getItem('life-os-study');
-        return safeParseJSON(saved, {});
-    });
-
-    const [videoPlans, setVideoPlans] = useState<VideoPlan[]>(() => {
-        const saved = localStorage.getItem('life-os-videoplans');
-        return safeParseJSON(saved, []);
-    });
+    const [user, setUser] = useState<User | null>(initialUser);
 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
         return localStorage.getItem('life-os-auth') === 'true';
     });
 
-    const [user, setUser] = useState<User | null>(() => {
-        const saved = localStorage.getItem('life-os-user');
-        return safeParseJSON(saved, null);
-    });
+    const getUserKey = (baseKey: string, specificUser?: User | null) => {
+        const activeUser = specificUser !== undefined ? specificUser : user;
+        return activeUser?.email ? `life-os-${activeUser.email}-${baseKey}` : `life-os-${baseKey}`;
+    };
+
+    const debounceSave = useDebounce();
+
+    // 1. Basic Lists - Load with initialUser to avoid guest data flash
+    const [habits, setHabits] = useState<Habit[]>(() => safeParseJSON(localStorage.getItem(getUserKey('habits', initialUser)), []));
+    const [tasks, setTasks] = useState<Task[]>(() => safeParseJSON(localStorage.getItem(getUserKey('tasks', initialUser)), []));
+    const [transactions, setTransactions] = useState<Transaction[]>(() => safeParseJSON(localStorage.getItem(getUserKey('transactions', initialUser)), []));
+    const [healthLogs, setHealthLogs] = useState<HealthLog[]>(() => safeParseJSON(localStorage.getItem(getUserKey('health', initialUser)), []));
+    const [reflections, setReflections] = useState<Reflection[]>(() => safeParseJSON(localStorage.getItem(getUserKey('reflections', initialUser)), []));
+
+    // 2. Specialized State
+    const [youtube, setYoutube] = useState<YouTubeGrowth>(() => safeParseJSON(localStorage.getItem(getUserKey('youtube', initialUser)), { subscribers: 0, views: 0, videosCount: 0, lastUpdated: new Date().toISOString() }));
+    const [savings, setSavings] = useState<Savings>(() => safeParseJSON(localStorage.getItem(getUserKey('savings', initialUser)), { currentAmount: 0, goalAmount: 0 }));
+    const [roadmap, setRoadmap] = useState<GoalRoadmap>(() => safeParseJSON(localStorage.getItem(getUserKey('roadmap', initialUser)), {
+        mainGoal: 'Full Stack + AI Mastery // Career Launch 🚀',
+        year: 2026,
+        milestones: [
+            { id: 'm1', title: 'Habit Tracker UI & Core Logic', dueDate: '2026-01-20', status: 'completed' },
+            { id: 'm2', title: 'Trip: Punjab', dueDate: '2026-01-25', status: 'completed' },
+            { id: 'm3', title: 'Python Backend & Auth Mastery', dueDate: '2026-02-15', status: 'completed' },
+            { id: 'm4', title: 'Trip: Banaras (Varanasi)', dueDate: '2026-02-22', status: 'pending' },
+            { id: 'm5', title: 'React Frontend Mastery (JS/Hooks)', dueDate: '2026-03-25', status: 'pending' },
+            { id: 'm6', title: 'PostgreSQL Advanced (Design/Optimization)', dueDate: '2026-04-15', status: 'pending' },
+            { id: 'm7', title: 'Trip: Jagannath Puri', dueDate: '2026-04-20', status: 'pending' },
+            { id: 'm8', title: 'AI Implementation (LLMs & Vector DBs)', dueDate: '2026-05-30', status: 'pending' },
+            { id: 'm9', title: '2-3 Strong AI Portfolio Projects', dueDate: '2026-07-15', status: 'pending' },
+            { id: 'm10', title: 'Job Placement: High-Paying Developer', dueDate: '2026-08-30', status: 'pending' }
+        ],
+        monthlyFocus: {
+            'January': 'Habit Tracker Core + UI Design',
+            'February': 'Python Backend & AI (APIs, Auth)',
+            'March': 'React Frontend & State Management',
+            'April': 'PostgreSQL Depth & DB Optimization',
+            'May': 'AI Engineering (LLM APIs, Embeddings)',
+            'June': 'Portfolio Project 1: Full-stack + AI',
+            'July': 'Portfolio Project 2: High Scalability',
+            'August': 'Job Search & Deployment (Mastery)',
+            'September': 'Career Expansion & Mentorship',
+            'October': 'Advanced System Design',
+            'November': 'FinOps & Analytics',
+            'December': 'Yearly Review & 2027 Planning'
+        }
+    }));
+    const [periods, setPeriods] = useState<PeriodData[]>(() => safeParseJSON(localStorage.getItem(getUserKey('periods', initialUser)), []));
+    const [settings, setSettings] = useState<UserSettings>(() => backfillSettings(safeParseJSON(localStorage.getItem(getUserKey('settings', initialUser)), getDefaultSettings())));
+    const [studyHours, setStudyHours] = useState<Record<string, number>>(() => safeParseJSON(localStorage.getItem(getUserKey('study', initialUser)), {}));
+    const [videoPlans, setVideoPlans] = useState<VideoPlan[]>(() => safeParseJSON(localStorage.getItem(getUserKey('videoplans', initialUser)), []));
+
+    // Data reloading logic when user switches
+    const isFirstRun = React.useRef(true);
+    useEffect(() => {
+        if (isFirstRun.current) {
+            isFirstRun.current = false;
+            // On initial boot, load data for the stored user
+            // Actually, the initial state is already set by the useState initializers.
+            // But if we want to be 100% sure we can reload here.
+            return;
+        }
+
+        // When user changes, reload everything from the new user's keys
+        const email = user?.email;
+        const prefix = email ? `life-os-${email}-` : `life-os-`;
+
+        setHabits(safeParseJSON(localStorage.getItem(prefix + 'habits'), []));
+        setTasks(safeParseJSON(localStorage.getItem(prefix + 'tasks'), []));
+        setTransactions(safeParseJSON(localStorage.getItem(prefix + 'transactions'), []));
+        setHealthLogs(safeParseJSON(localStorage.getItem(prefix + 'health'), []));
+        setReflections(safeParseJSON(localStorage.getItem(prefix + 'reflections'), []));
+        setYoutube(safeParseJSON(localStorage.getItem(prefix + 'youtube'), { subscribers: 0, views: 0, videosCount: 0, lastUpdated: new Date().toISOString() }));
+        setSavings(safeParseJSON(localStorage.getItem(prefix + 'savings'), { currentAmount: 0, goalAmount: 0 }));
+        setStudyHours(safeParseJSON(localStorage.getItem(prefix + 'study'), {}));
+        setVideoPlans(safeParseJSON(localStorage.getItem(prefix + 'videoplans'), []));
+        setPeriods(safeParseJSON(localStorage.getItem(prefix + 'periods'), []));
+
+        const loadedSettings = safeParseJSON(localStorage.getItem(prefix + 'settings'), getDefaultSettings());
+        setSettings(backfillSettings(loadedSettings));
+
+        // Roadmap usually has a lot of static initial data, so we merge carefully
+        setRoadmap(safeParseJSON(localStorage.getItem(prefix + 'roadmap'), roadmap));
+
+    }, [user?.email]);
 
     // Persistence with debouncing
     useEffect(() => {
-        const debouncedSave = createDebouncedStorage('life-os-habits');
-        debouncedSave(habits);
-    }, [habits]);
+        debounceSave(getUserKey('habits'), habits);
+    }, [habits, user?.email]);
 
     useEffect(() => {
-        const debouncedSave = createDebouncedStorage('life-os-tasks');
-        debouncedSave(tasks);
-    }, [tasks]);
+        debounceSave(getUserKey('tasks'), tasks);
+    }, [tasks, user?.email]);
 
     useEffect(() => {
-        const debouncedSave = createDebouncedStorage('life-os-transactions');
-        debouncedSave(transactions);
-    }, [transactions]);
+        debounceSave(getUserKey('transactions'), transactions);
+    }, [transactions, user?.email]);
 
     useEffect(() => {
-        const debouncedSave = createDebouncedStorage('life-os-health');
-        debouncedSave(healthLogs);
-    }, [healthLogs]);
+        debounceSave(getUserKey('health'), healthLogs);
+    }, [healthLogs, user?.email]);
 
     useEffect(() => {
-        const debouncedSave = createDebouncedStorage('life-os-reflections');
-        debouncedSave(reflections);
-    }, [reflections]);
+        debounceSave(getUserKey('reflections'), reflections);
+    }, [reflections, user?.email]);
 
     useEffect(() => {
-        const debouncedSave = createDebouncedStorage('life-os-youtube');
-        debouncedSave(youtube);
-    }, [youtube]);
+        debounceSave(getUserKey('youtube'), youtube);
+    }, [youtube, user?.email]);
 
     useEffect(() => {
-        const debouncedSave = createDebouncedStorage('life-os-savings');
-        debouncedSave(savings);
-    }, [savings]);
+        debounceSave(getUserKey('savings'), savings);
+    }, [savings, user?.email]);
 
     useEffect(() => {
-        const debouncedSave = createDebouncedStorage('life-os-roadmap');
-        debouncedSave(roadmap);
-    }, [roadmap]);
+        debounceSave(getUserKey('roadmap'), roadmap);
+    }, [roadmap, user?.email]);
 
     useEffect(() => {
-        const debouncedSave = createDebouncedStorage('life-os-periods');
-        debouncedSave(periods);
-    }, [periods]);
+        debounceSave(getUserKey('periods'), periods);
+    }, [periods, user?.email]);
 
     useEffect(() => {
-        const debouncedSave = createDebouncedStorage('life-os-settings');
-        debouncedSave(settings);
-    }, [settings]);
+        debounceSave(getUserKey('settings'), settings);
+    }, [settings, user?.email]);
 
     useEffect(() => {
-        const debouncedSave = createDebouncedStorage('life-os-study');
-        debouncedSave(studyHours);
-    }, [studyHours]);
+        debounceSave(getUserKey('study'), studyHours);
+    }, [studyHours, user?.email]);
 
     useEffect(() => {
         if (settings.theme === 'dark') {
@@ -291,9 +274,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     }, [settings.theme]);
 
     useEffect(() => {
-        const debouncedSave = createDebouncedStorage('life-os-videoplans');
-        debouncedSave(videoPlans);
-    }, [videoPlans]);
+        debounceSave(getUserKey('videoplans'), videoPlans);
+    }, [videoPlans, user?.email]);
 
     useEffect(() => {
         localStorage.setItem('life-os-auth', isAuthenticated.toString());
