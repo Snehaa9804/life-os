@@ -33,12 +33,12 @@ const Login = () => {
     };
 
     return (
-        <div className="fixed inset-0 bg-[#0A0A0B] flex items-center justify-center p-6 overflow-hidden text-foreground">
+        <div className="fixed inset-0 bg-[#050505] flex items-center justify-center p-6 overflow-hidden dark">
             {/* Background Effects */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 blur-[120px] rounded-full animate-pulse-slow"></div>
-            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03]"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/20 blur-[120px] rounded-full animate-pulse-slow"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.05]"></div>
 
-            <Card className="w-full max-w-lg p-10 md:p-16 bg-[#121214] border-none shadow-[20px_20px_60px_rgba(0,0,0,0.5),-20px_-20px_60px_rgba(255,107,107,0.02)] rounded-[3rem] relative overflow-hidden group">
+            <Card className="w-full max-w-lg p-10 md:p-16 bg-[#0D0D0E] border border-white/5 shadow-[0_0_100px_rgba(0,0,0,0.8)] rounded-[3rem] relative overflow-hidden group">
                 {/* Decorative Elements */}
                 <div className="absolute -top-10 -right-10 size-40 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-1000"></div>
 
@@ -59,7 +59,7 @@ const Login = () => {
                         <h1 className="text-4xl md:text-5xl font-black text-white italic tracking-tighter uppercase leading-none">
                             Life <span className="text-primary italic">OS</span>
                         </h1>
-                        <p className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em] italic">
+                        <p className="text-[11px] font-black text-white/60 uppercase tracking-[0.3em] italic">
                             Authorization Required // Terminal Session
                         </p>
                     </div>
@@ -87,16 +87,16 @@ const Login = () => {
                             />
                         </div>
 
-                        <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em] italic pt-8 text-center shrink-0">
+                        <p className="text-[9px] font-black text-white/40 uppercase tracking-[0.2em] italic pt-8 text-center shrink-0">
                             Biometric & Hardware Keys Supported
                         </p>
 
                         <div className="flex items-center justify-center gap-8 pt-8">
-                            <div className="flex flex-col items-center gap-2 opacity-30 hover:opacity-100 transition-opacity cursor-not-allowed">
+                            <div className="flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-not-allowed">
                                 <Fingerprint className="size-6 text-white" />
                                 <span className="text-[8px] font-black text-white uppercase tracking-widest">Biometric</span>
                             </div>
-                            <div className="flex flex-col items-center gap-2 opacity-30 hover:opacity-100 transition-opacity cursor-not-allowed">
+                            <div className="flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-not-allowed">
                                 <Lock className="size-6 text-white" />
                                 <span className="text-[8px] font-black text-white uppercase tracking-widest">Encrypted</span>
                             </div>
