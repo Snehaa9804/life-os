@@ -6,7 +6,6 @@ import {
     Map,
     Flag,
     Calendar,
-    CheckCircle2,
     ChevronRight,
     Compass,
     ArrowUpRight,
