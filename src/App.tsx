@@ -40,12 +40,16 @@ const AppContent = () => {
 };
 
 function App() {
-    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "PASTE_YOUR_GOOGLE_CLIENT_ID_HERE";
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+    // If no client ID is found, we don't want to break the whole app, 
+    // but the login service requires a string.
+    const googleClientId = clientId || "loading";
 
     return (
         <ErrorBoundary>
             <StoreProvider>
-                <GoogleOAuthProvider clientId={clientId}>
+                <GoogleOAuthProvider clientId={googleClientId}>
                     <BrowserRouter>
                         <AppContent />
                     </BrowserRouter>
