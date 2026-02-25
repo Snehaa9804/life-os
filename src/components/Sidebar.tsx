@@ -16,7 +16,7 @@ const Sidebar = () => {
     ];
 
     return (
-        <aside className="w-64 flex-shrink-0 bg-card-bg border-r border-border-color flex flex-col justify-between p-6 h-screen sticky top-0 overflow-hidden">
+        <aside className="hidden lg:flex w-64 flex-shrink-0 bg-card-bg border-r border-border-color flex flex-col justify-between p-6 h-screen sticky top-0 overflow-hidden">
             <div className="flex flex-col gap-8">
                 <div className="flex items-center gap-3">
                     <div className="bg-primary size-10 rounded-xl flex items-center justify-center text-white">

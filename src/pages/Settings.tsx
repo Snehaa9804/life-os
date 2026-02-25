@@ -55,27 +55,27 @@ const Settings = () => {
     return (
         <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground transition-colors duration-400">
             {/* Header */}
-            <header className="h-20 px-12 flex items-center justify-between shrink-0 bg-card-bg border-b border-border-color">
+            <header className="px-6 md:px-12 py-6 md:h-20 flex items-center justify-between shrink-0 bg-card-bg border-b border-border-color">
                 <div className="flex items-center gap-4">
                     <SettingsIcon className="text-primary" size={24} />
-                    <h1 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">Configuration</h1>
+                    <h1 className="text-xl md:text-2xl font-black italic uppercase tracking-tighter text-foreground">Configuration</h1>
                 </div>
             </header>
 
-            <main className="flex-1 overflow-y-auto px-12 py-10">
+            <main className="flex-1 overflow-y-auto px-6 md:px-12 py-8 md:py-10 pb-32">
                 <div className="max-w-[1000px] mx-auto space-y-12">
 
                     {/* Profile Section */}
                     <section>
                         <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] px-4 mb-6 italic opacity-60">Identity & Profile</h3>
-                        <Card className="p-10 border-none shadow-sm hover-lift bg-card-bg">
-                            <div className="flex flex-col md:flex-row items-center gap-12">
+                        <Card className="p-6 md:p-10 border-none shadow-sm hover-lift bg-card-bg">
+                            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
                                 <div className="relative group">
-                                    <div className="size-32 rounded-3xl bg-primary/10 border-4 border-primary/20 flex items-center justify-center text-primary text-4xl font-black shadow-inner">
+                                    <div className="size-24 md:size-32 rounded-3xl bg-primary/10 border-4 border-primary/20 flex items-center justify-center text-primary text-3xl md:text-4xl font-black shadow-inner">
                                         {name[0]}
                                     </div>
-                                    <button className="absolute -bottom-2 -right-2 size-10 bg-background rounded-2xl border-2 border-border-color flex items-center justify-center shadow-lg hover:bg-primary hover:text-white hover:border-primary transition-all text-primary hover:scale-110">
-                                        <Camera size={16} />
+                                    <button className="absolute -bottom-2 -right-2 size-8 md:size-10 bg-background rounded-2xl border-2 border-border-color flex items-center justify-center shadow-lg hover:bg-primary hover:text-white hover:border-primary transition-all text-primary hover:scale-110">
+                                        <Camera size={14} className="md:size-[16px]" />
                                     </button>
                                 </div>
 
@@ -86,15 +86,15 @@ const Settings = () => {
                                             <input
                                                 value={name}
                                                 onChange={e => setName(e.target.value)}
-                                                className="w-full bg-background p-5 pl-14 rounded-2xl text-sm font-black outline-none border-2 border-border-color focus:border-primary/50 transition-all italic tracking-tight"
+                                                className="w-full bg-background p-4 md:p-5 pl-12 md:pl-14 rounded-2xl text-sm font-black outline-none border-2 border-border-color focus:border-primary/50 transition-all italic tracking-tight"
                                             />
-                                            <Edit3 className="absolute left-5 top-1/2 -translate-y-1/2 text-primary/40" size={20} />
+                                            <Edit3 className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 text-primary/40 size-4 md:size-5" />
                                         </div>
                                     </div>
 
                                     <button
                                         onClick={handleSave}
-                                        className="bg-primary text-white px-10 py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-3 border-none"
+                                        className="w-full md:w-auto bg-primary text-white px-8 md:px-10 py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 border-none"
                                     >
                                         {isSaving ? <Check size={18} /> : <>Commence <span className="opacity-60 italic">Save</span></>}
                                     </button>
@@ -109,23 +109,23 @@ const Settings = () => {
                         <Card className="p-10 border-none shadow-sm hover-lift bg-card-bg">
                             <div className="space-y-10">
                                 {/* YouTube */}
-                                <div className="flex items-start gap-8">
-                                    <div className="size-16 rounded-[1.5rem] bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center text-white shrink-0 shadow-xl shadow-red-500/20">
-                                        <Play size={28} fill="currentColor" />
+                                <div className="flex flex-col md:flex-row items-start gap-6 md:gap-8">
+                                    <div className="size-14 md:size-16 rounded-[1.2rem] md:rounded-[1.5rem] bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center text-white shrink-0 shadow-xl shadow-red-500/20">
+                                        <Play size={24} className="md:size-[28px]" fill="currentColor" />
                                     </div>
-                                    <div className="flex-1 space-y-8">
+                                    <div className="flex-1 w-full space-y-6 md:space-y-8">
                                         <div>
-                                            <h3 className="text-xl font-black mb-1 italic uppercase tracking-tighter text-foreground">Video <span className="text-red-500 italic">Analytics</span></h3>
-                                            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest leading-relaxed">Connect your channel to track growth, subscribers, and engagement metrics.</p>
+                                            <h3 className="text-lg md:text-xl font-black mb-1 italic uppercase tracking-tighter text-foreground leading-none">Video <span className="text-red-500 italic">Analytics</span></h3>
+                                            <p className="text-[10px] md:text-[11px] font-black text-gray-400 uppercase tracking-widest leading-relaxed">Connect your channel to track growth and metrics.</p>
                                         </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                             <div className="space-y-3">
-                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Channel Identity</label>
-                                                <input value={youtubeChannelId} onChange={e => setYoutubeChannelId(e.target.value)} placeholder="UC_x5..." className="w-full bg-background p-5 rounded-2xl text-xs font-black outline-none border-2 border-border-color focus:border-red-500/40 transition-all tracking-widest italic" />
+                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Channel ID</label>
+                                                <input value={youtubeChannelId} onChange={e => setYoutubeChannelId(e.target.value)} placeholder="UC_x5..." className="w-full bg-background p-4 md:p-5 rounded-2xl text-xs font-black outline-none border-2 border-border-color focus:border-red-500/40 transition-all tracking-widest italic" />
                                             </div>
                                             <div className="space-y-3">
-                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Private Access Key</label>
-                                                <input value={youtubeApiKey} onChange={e => setYoutubeApiKey(e.target.value)} type="password" placeholder="AIzaSy..." className="w-full bg-background p-5 rounded-2xl text-xs font-black outline-none border-2 border-border-color focus:border-red-500/40 transition-all tracking-[0.5em] italic" />
+                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">API Key</label>
+                                                <input value={youtubeApiKey} onChange={e => setYoutubeApiKey(e.target.value)} type="password" placeholder="AIzaSy..." className="w-full bg-background p-4 md:p-5 rounded-2xl text-xs font-black outline-none border-2 border-border-color focus:border-red-500/40 transition-all tracking-[0.5em] italic" />
                                             </div>
                                         </div>
                                     </div>
@@ -134,18 +134,18 @@ const Settings = () => {
                                 <div className="h-px bg-border-color/50 ml-24"></div>
 
                                 {/* OpenAI */}
-                                <div className="flex items-start gap-8">
-                                    <div className="size-16 rounded-[1.5rem] bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shrink-0 shadow-xl shadow-emerald-500/20">
-                                        <Sparkles size={28} />
+                                <div className="flex flex-col md:flex-row items-start gap-6 md:gap-8">
+                                    <div className="size-14 md:size-16 rounded-[1.2rem] md:rounded-[1.5rem] bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shrink-0 shadow-xl shadow-emerald-500/20">
+                                        <Sparkles size={24} className="md:size-[28px]" />
                                     </div>
-                                    <div className="flex-1 space-y-8">
+                                    <div className="flex-1 w-full space-y-6 md:space-y-8">
                                         <div>
-                                            <h3 className="text-xl font-black mb-1 italic uppercase tracking-tighter text-foreground">AI Intelligence <span className="text-emerald-500 italic">Sync</span></h3>
-                                            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest leading-relaxed">Connect OpenAI to enable automatic calorie and nutrition estimation.</p>
+                                            <h3 className="text-lg md:text-xl font-black mb-1 italic uppercase tracking-tighter text-foreground leading-none">AI Intelligence <span className="text-emerald-500 italic">Sync</span></h3>
+                                            <p className="text-[10px] md:text-[11px] font-black text-gray-400 uppercase tracking-widest leading-relaxed">Connect OpenAI for nutrition estimation.</p>
                                         </div>
                                         <div className="space-y-3">
                                             <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Network API Token</label>
-                                            <input value={openaiApiKey} onChange={e => setOpenaiApiKey(e.target.value)} type="password" placeholder="sk-..." className="w-full bg-background p-5 rounded-2xl text-xs font-black outline-none border-2 border-border-color focus:border-emerald-500/40 transition-all tracking-[0.5em] italic" />
+                                            <input value={openaiApiKey} onChange={e => setOpenaiApiKey(e.target.value)} type="password" placeholder="sk-..." className="w-full bg-background p-4 md:p-5 rounded-2xl text-xs font-black outline-none border-2 border-border-color focus:border-emerald-500/40 transition-all tracking-[0.5em] italic" />
                                         </div>
                                     </div>
                                 </div>

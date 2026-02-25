@@ -254,45 +254,45 @@ const HealthHub = () => {
     return (
         <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground">
             {/* Header */}
-            <header className="h-20 px-12 flex items-center justify-between shrink-0 bg-card-bg border-b border-border-color">
-                <div className="flex items-center gap-10">
-                    <div className="flex items-center gap-3">
+            <header className="px-6 md:px-12 py-6 md:h-20 flex flex-col lg:flex-row items-center justify-between shrink-0 bg-card-bg border-b border-border-color gap-6 md:gap-0">
+                <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
+                    <div className="flex items-center gap-4">
                         <Heart className="text-primary" size={24} />
                         <h1 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">Health <span className="text-primary italic">Hub</span></h1>
                     </div>
 
-                    <nav className="flex gap-1 bg-background p-1.5 rounded-2xl border-2 border-border-color">
+                    <nav className="flex gap-1 bg-background p-1.5 rounded-2xl border-2 border-border-color w-full md:w-auto">
                         <button
                             onClick={() => setActiveTab('track')}
-                            className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${activeTab === 'track' ? 'bg-primary text-white shadow-xl shadow-primary/20 scale-[1.05]' : 'text-foreground/40 hover:text-foreground'}`}
+                            className={`flex-1 md:flex-none px-4 md:px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${activeTab === 'track' ? 'bg-primary text-white shadow-xl shadow-primary/20 scale-[1.05]' : 'text-foreground/40 hover:text-foreground'}`}
                         >
                             Daily Tracker
                         </button>
                         <button
                             onClick={() => setActiveTab('gain')}
-                            className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${activeTab === 'gain' ? 'bg-primary text-white shadow-xl shadow-primary/20 scale-[1.05]' : 'text-foreground/40 hover:text-foreground'}`}
+                            className={`flex-1 md:flex-none px-4 md:px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${activeTab === 'gain' ? 'bg-primary text-white shadow-xl shadow-primary/20 scale-[1.05]' : 'text-foreground/40 hover:text-foreground'}`}
                         >
                             Gain Support
                         </button>
                     </nav>
                 </div>
-                <div className="flex items-center gap-4">
-                    <button onClick={() => setIsEditingProfile(true)} className="size-11 flex items-center justify-center bg-primary/5 text-primary rounded-[1.2rem] hover:bg-primary hover:text-white transition-all shadow-sm border-none">
+                <div className="flex items-center gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 custom-scrollbar">
+                    <button onClick={() => setIsEditingProfile(true)} className="size-11 flex-shrink-0 flex items-center justify-center bg-primary/5 text-primary rounded-[1.2rem] hover:bg-primary hover:text-white transition-all shadow-sm border-none">
                         <User size={20} />
                     </button>
-                    <button onClick={() => setIsLoggingSleep(true)} className="size-11 flex items-center justify-center bg-primary/5 text-primary rounded-[1.2rem] hover:bg-primary hover:text-white transition-all shadow-sm border-none">
+                    <button onClick={() => setIsLoggingSleep(true)} className="size-11 flex-shrink-0 flex items-center justify-center bg-primary/5 text-primary rounded-[1.2rem] hover:bg-primary hover:text-white transition-all shadow-sm border-none">
                         <Moon size={20} />
                     </button>
-                    <button onClick={() => setIsLoggingWeight(true)} className="bg-background border-2 border-border-color text-foreground px-6 py-3 rounded-[1.2rem] text-[10px] font-black flex items-center gap-3 hover:border-primary hover:text-primary transition-all uppercase tracking-[0.2em] shadow-sm">
+                    <button onClick={() => setIsLoggingWeight(true)} className="bg-background border-2 border-border-color text-foreground px-4 md:px-6 py-3 rounded-[1.2rem] text-[10px] font-black flex items-center gap-3 hover:border-primary hover:text-primary transition-all uppercase tracking-[0.2em] shadow-sm flex-shrink-0">
                         <Scale size={18} className="text-primary" /> Log Weight
                     </button>
-                    <button onClick={() => setIsLoggingFood(true)} className="bg-primary text-white px-8 py-3.5 rounded-[1.2rem] text-[10px] font-black flex items-center gap-3 shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-[0.2em] border-none">
+                    <button onClick={() => setIsLoggingFood(true)} className="bg-primary text-white px-6 md:px-8 py-3.5 rounded-[1.2rem] text-[10px] font-black flex items-center gap-3 shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-[0.2em] border-none flex-shrink-0">
                         <Utensils size={18} /> Log Meals
                     </button>
                 </div>
             </header>
 
-            <main className="flex-1 overflow-y-auto px-12 py-8">
+            <main className="flex-1 overflow-y-auto px-6 md:px-12 py-8 pb-32">
                 {activeTab === 'track' ? (
                     <div className="max-w-[1400px] mx-auto grid grid-cols-12 gap-8">
                         {/* Left: General Tracking */}

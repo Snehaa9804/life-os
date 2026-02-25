@@ -101,7 +101,7 @@ const HabitIntelligence = () => {
     return (
         <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground transition-all">
             {/* Top Status Bar */}
-            <div className="h-10 bg-card-bg border-b border-border-color flex items-center justify-between px-12 text-sm font-bold text-gray-500 uppercase tracking-widest shrink-0">
+            <div className="hidden md:flex h-10 bg-card-bg border-b border-border-color items-center justify-between px-12 text-[10px] font-bold text-gray-500 uppercase tracking-widest shrink-0">
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                         <div className="size-2 rounded-full bg-sage"></div>
@@ -112,35 +112,35 @@ const HabitIntelligence = () => {
             </div>
 
             {/* Integrated Header */}
-            <div className="px-12 py-8 flex items-center justify-between">
-                <div>
-                    <h1 className="text-sm font-black uppercase tracking-[0.4em] text-gray-400 mb-1">Life OS v.2 // Habit Intelligence</h1>
-                    <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-4">
+            <div className="px-6 md:px-12 py-6 md:py-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="w-full md:w-auto text-center md:text-left">
+                    <h1 className="text-[10px] md:text-sm font-black uppercase tracking-[0.3em] md:tracking-[0.4em] text-gray-400 mb-2">Life OS v.2 // Habit Intelligence</h1>
+                    <div className="flex flex-col md:flex-row items-center gap-6">
+                        <div className="flex items-center gap-4 justify-center">
                             <button onClick={prevMonth} className="size-8 rounded-full bg-card-bg border border-border-color flex items-center justify-center hover:bg-primary/5 transition-all text-foreground">
                                 <ChevronLeft size={16} />
                             </button>
-                            <h2 className="text-3xl font-black">{monthName}</h2>
+                            <h2 className="text-xl md:text-3xl font-black italic">{monthName}</h2>
                             <button onClick={nextMonth} className="size-8 rounded-full bg-card-bg border border-border-color flex items-center justify-center hover:bg-primary/5 transition-all text-foreground">
                                 <ChevronRight size={16} />
                             </button>
                         </div>
-                        <div className="h-8 w-px bg-border-color"></div>
-                        <div className="flex gap-6">
-                            <div className="flex flex-col">
-                                <span className="text-sm font-black text-gray-400 uppercase tracking-widest">Efficiency</span>
-                                <span className="text-lg font-black text-sage">{efficiency}%</span>
+                        <div className="hidden md:block h-8 w-px bg-border-color"></div>
+                        <div className="flex gap-10 md:gap-6 justify-center">
+                            <div className="flex flex-col items-center md:items-start">
+                                <span className="text-[9px] md:text-sm font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Efficiency</span>
+                                <span className="text-base md:text-lg font-black text-sage leading-none">{efficiency}%</span>
                             </div>
-                            <div className="flex flex-col">
-                                <span className="text-sm font-black text-gray-400 uppercase tracking-widest">Habits Active</span>
-                                <span className="text-lg font-black">{habits.length}</span>
+                            <div className="flex flex-col items-center md:items-start">
+                                <span className="text-[9px] md:text-sm font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Active</span>
+                                <span className="text-base md:text-lg font-black leading-none">{habits.length}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <main className="flex-1 overflow-y-auto px-12 pb-12">
+            <main className="flex-1 overflow-y-auto px-6 md:px-12 py-10 pb-32">
                 <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
 
 
@@ -157,9 +157,9 @@ const HabitIntelligence = () => {
                         </div>
 
                         {/* Inline Quick Add */}
-                        <Card className="p-6 bg-card-bg border-dashed border-2 border-border-color hover:border-sage/50 transition-all group">
+                        <Card className="p-4 md:p-6 bg-card-bg border-dashed border-2 border-border-color hover:border-sage/50 transition-all group">
                             <div className="flex items-center gap-4">
-                                <div className="size-10 rounded-xl bg-sage/10 flex items-center justify-center">
+                                <div className="size-10 rounded-xl bg-sage/10 flex items-center justify-center shrink-0">
                                     <Plus size={20} className="text-sage" />
                                 </div>
                                 <input
@@ -167,10 +167,10 @@ const HabitIntelligence = () => {
                                     value={newHabitName}
                                     onChange={e => setNewHabitName(e.target.value)}
                                     onKeyDown={e => e.key === 'Enter' && handleAddHabit()}
-                                    placeholder="Enter habit name to initiate..."
-                                    className="bg-transparent border-none outline-none text-lg font-bold w-full placeholder:text-gray-300 dark:placeholder:text-gray-700"
+                                    placeholder="Add habit..."
+                                    className="bg-transparent border-none outline-none text-base md:text-lg font-bold w-full placeholder:text-gray-300 dark:placeholder:text-gray-700 italic tracking-tight"
                                 />
-                                <div className="text-sm font-black text-gray-300 uppercase tracking-widest opacity-0 group-focus-within:opacity-100 transition-opacity">Press Enter to Commit</div>
+                                <div className="hidden md:block text-[10px] font-black text-gray-300 uppercase tracking-widest opacity-0 group-focus-within:opacity-100 transition-opacity italic">Enter to Commit</div>
                             </div>
                         </Card>
 

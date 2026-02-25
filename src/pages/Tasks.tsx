@@ -74,52 +74,52 @@ const Tasks = () => {
     return (
         <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground transition-all">
             {/* Header / Breadcrumb */}
-            <header className="h-20 px-12 flex items-center justify-between shrink-0 border-b border-border-color bg-card-bg backdrop-blur-md">
-                <div className="flex items-center gap-4">
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Life OS v.2</span>
-                    <span className="text-gray-300">/</span>
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Task Engine</span>
+            <header className="px-6 md:px-12 py-6 md:h-20 flex flex-col md:flex-row items-center justify-between shrink-0 border-b border-border-color bg-card-bg/30 backdrop-blur-md gap-4 md:gap-0">
+                <div className="flex items-center gap-3 md:gap-4 overflow-hidden">
+                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-gray-400 shrink-0">Life OS v.2</span>
+                    <span className="text-gray-300 shrink-0">/</span>
+                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-primary shrink-0">Task Engine</span>
                 </div>
-                <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-2">
-                        <div className="size-2 rounded-full bg-sage animate-pulse"></div>
-                        <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">Task Engine: Active // {settings.name.toLowerCase()}@life.os</span>
+                <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto justify-between md:justify-end">
+                    <div className="flex items-center gap-2 overflow-hidden">
+                        <div className="size-1.5 md:size-2 rounded-full bg-sage animate-pulse shrink-0"></div>
+                        <span className="text-[8px] md:text-[9px] font-black uppercase tracking-widest text-gray-500 truncate">Active // {settings.name.toLowerCase()}@life.os</span>
                     </div>
-                    <button className="px-4 py-1.5 rounded-lg border border-border-color text-[10px] font-black uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-slate-800 transition-all">Logout</button>
+                    <button className="px-3 md:px-4 py-1.5 rounded-lg border border-border-color text-[8px] md:text-[10px] font-black uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-slate-800 transition-all shrink-0">Logout</button>
                 </div>
             </header>
 
-            <main className="flex-1 overflow-y-auto px-12 py-10">
-                <div className="max-w-[1400px] mx-auto space-y-8">
+            <main className="flex-1 overflow-y-auto px-6 md:px-12 py-10 pb-32">
+                <div className="max-w-[1400px] mx-auto space-y-12">
 
                     {/* Stats Header Section */}
-                    <Card className="p-10 border-none shadow-xl bg-card-bg animate-fade-in-up">
-                        <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-                            <div className="flex flex-col items-center md:items-start">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">DATE</span>
-                                <span className="text-xl font-black">{new Date().toLocaleDateString('en-GB')}</span>
+                    <Card className="p-6 md:p-10 border-none shadow-xl bg-card-bg animate-fade-in-up">
+                        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
+                            <div className="flex flex-col items-center lg:items-start">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 italic">DATE</span>
+                                <span className="text-xl font-black italic">{new Date().toLocaleDateString('en-GB')}</span>
                             </div>
 
                             <div className="flex flex-col items-center">
-                                <h1 className="text-5xl font-black tracking-tighter uppercase italic text-foreground text-center">Task List</h1>
+                                <h1 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic text-foreground text-center">Task List</h1>
                             </div>
 
-                            <div className="flex items-center gap-10">
+                            <div className="grid grid-cols-2 md:flex items-center gap-6 md:gap-10 w-full lg:w-auto">
                                 <div className="flex flex-col items-center">
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">TODAY</span>
-                                    <span className="text-4xl font-black text-primary">{stats.todayTasks}</span>
+                                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 italic">TODAY</span>
+                                    <span className="text-3xl md:text-4xl font-black text-primary italic leading-none">{stats.todayTasks}</span>
                                 </div>
                                 <div className="flex flex-col items-center">
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">TOTAL TASKS</span>
-                                    <span className="text-4xl font-black">{stats.total}</span>
+                                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 italic">TOTAL</span>
+                                    <span className="text-3xl md:text-4xl font-black italic leading-none">{stats.total}</span>
                                 </div>
                                 <div className="flex flex-col items-center">
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 text-red-500">OVERDUE</span>
-                                    <span className="text-4xl font-black text-red-500">{stats.overdue}</span>
+                                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 text-red-500 italic">OVERDUE</span>
+                                    <span className="text-3xl md:text-4xl font-black text-red-500 italic leading-none">{stats.overdue}</span>
                                 </div>
                                 <div className="flex flex-col items-center">
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 text-amber-500">NOT COMPLETED</span>
-                                    <span className="text-4xl font-black text-amber-500">{stats.notCompleted}</span>
+                                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 text-amber-500 italic">PENDING</span>
+                                    <span className="text-3xl md:text-4xl font-black text-amber-500 italic leading-none">{stats.notCompleted}</span>
                                 </div>
                             </div>
                         </div>
@@ -139,73 +139,53 @@ const Tasks = () => {
                     {/* Main Content Area */}
                     <Card className="p-0 border-none shadow-2xl overflow-hidden bg-card-bg/80 backdrop-blur-md animate-fade-in-up delay-400">
                         {/* Action Bar */}
-                        <div className="p-8 border-b border-gray-50 dark:border-slate-800 flex flex-wrap items-center justify-between gap-6">
+                        <div className="p-6 md:p-8 border-b border-gray-50 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
                             <button
                                 onClick={() => setIsModalOpen(true)}
-                                className="bg-primary text-white px-8 py-4 rounded-xl flex items-center gap-3 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-primary/20"
+                                className="w-full md:w-auto bg-primary text-white px-8 py-4 rounded-xl flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-primary/20 shrink-0"
                             >
                                 <Plus size={18} strokeWidth={3} />
                                 <span className="text-xs font-black uppercase tracking-widest">Add Task</span>
                             </button>
 
-                            <div className="flex items-center gap-4 flex-wrap">
-                                <div className="relative group">
-                                    <Filter className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                                    <select
-                                        value={filters.status}
-                                        onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-                                        className="appearance-none bg-primary/5 dark:bg-white/5 pl-10 pr-10 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border border-transparent focus:border-primary/20 outline-none transition-all cursor-pointer"
-                                    >
-                                        <option value="all">All Status</option>
-                                        <option value="completed">Completed</option>
-                                        <option value="pending">Pending</option>
-                                    </select>
-                                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-primary transition-colors" size={12} />
+                            <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+                                <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 custom-scrollbar">
+                                    <div className="relative group shrink-0">
+                                        <Filter className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                                        <select
+                                            value={filters.status}
+                                            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+                                            className="appearance-none bg-primary/5 dark:bg-white/5 pl-10 pr-10 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border border-transparent focus:border-primary/20 outline-none transition-all cursor-pointer"
+                                        >
+                                            <option value="all">Status</option>
+                                            <option value="completed">Done</option>
+                                            <option value="pending">Pending</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="relative group shrink-0">
+                                        <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                                        <select
+                                            value={filters.priority}
+                                            onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
+                                            className="appearance-none bg-primary/5 dark:bg-white/5 pl-10 pr-10 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border border-transparent focus:border-primary/20 outline-none transition-all cursor-pointer"
+                                        >
+                                            <option value="all">Priority</option>
+                                            <option value="high">High</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="low">Low</option>
+                                        </select>
+                                    </div>
                                 </div>
 
-                                <div className="relative group">
-                                    <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                                    <select
-                                        value={filters.priority}
-                                        onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
-                                        className="appearance-none bg-primary/5 dark:bg-white/5 pl-10 pr-10 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border border-transparent focus:border-primary/20 outline-none transition-all cursor-pointer"
-                                    >
-                                        <option value="all">All Priority</option>
-                                        <option value="high">High Priority</option>
-                                        <option value="medium">Medium Priority</option>
-                                        <option value="low">Low Priority</option>
-                                        <option value="optional">Optional</option>
-                                    </select>
-                                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-primary transition-colors" size={12} />
-                                </div>
-
-                                <div className="relative group">
-                                    <Tag className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                                    <select
-                                        value={filters.category}
-                                        onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-                                        className="appearance-none bg-primary/5 dark:bg-white/5 pl-10 pr-10 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border border-transparent focus:border-primary/20 outline-none transition-all cursor-pointer"
-                                    >
-                                        <option value="all">All Categories</option>
-                                        <option value="Work">Work</option>
-                                        <option value="Money">Money</option>
-                                        <option value="Ideas">Ideas</option>
-                                        <option value="Chores">Chores</option>
-                                        <option value="Health">Health</option>
-                                        <option value="Spirituality">Spirituality</option>
-                                        <option value="Personal">Personal</option>
-                                    </select>
-                                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-primary transition-colors" size={12} />
-                                </div>
-
-                                <div className="relative min-w-[240px]">
+                                <div className="relative w-full md:min-w-[240px]">
                                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
                                     <input
                                         type="text"
-                                        placeholder="Search tasks..."
+                                        placeholder="Search..."
                                         value={filters.search}
                                         onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                                        className="w-full bg-primary/5 dark:bg-white/5 pl-10 pr-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border border-transparent focus:border-primary/20 outline-none transition-all"
+                                        className="w-full bg-primary/5 dark:bg-white/5 pl-10 pr-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border border-transparent focus:border-primary/20 outline-none transition-all placeholder:opacity-50"
                                     />
                                 </div>
                             </div>

@@ -161,27 +161,27 @@ const YouTube = () => {
     );
 
     const StatCard = ({ title, value, icon: Icon, trend, color }: any) => (
-        <div className="bg-card-bg p-6 rounded-2xl border border-border-color shadow-sm hover:shadow-md transition-all group border-b-4 border-b-primary/20">
+        <div className="bg-card-bg p-5 md:p-6 rounded-2xl border border-border-color shadow-sm hover:shadow-md transition-all group border-b-4 border-b-primary/20 h-full">
             <div className="flex justify-between items-start mb-4">
-                <div className={`p-3 rounded-xl ${color} bg-opacity-10 text-foreground`}>
-                    <Icon size={24} />
+                <div className={`p-2 md:p-3 rounded-xl ${color} bg-opacity-10 text-foreground`}>
+                    <Icon size={20} className="md:size-[24px]" />
                 </div>
                 {trend && (
-                    <span className={`text-[10px] font-black px-2 py-1 rounded-full flex items-center gap-1 bg-sage/10 text-sage uppercase tracking-widest`}>
+                    <span className={`text-[8px] md:text-[10px] font-black px-2 py-1 rounded-full flex items-center gap-1 bg-sage/10 text-sage uppercase tracking-widest`}>
                         {trend > 0 ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />}
                         {Math.abs(trend)}%
                     </span>
                 )}
             </div>
-            <h3 className="text-3xl font-black text-foreground mb-1">{value}</h3>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">{title}</p>
+            <h3 className="text-2xl md:text-3xl font-black text-foreground mb-1 italic truncate">{value}</h3>
+            <p className="text-[9px] md:text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">{title}</p>
         </div>
     );
 
     return (
-        <div className="flex h-full w-full bg-background text-foreground overflow-hidden transition-all">
-            {/* --- SIDEBAR NAVIGATION --- */}
-            <aside className="w-64 bg-card-bg border-r border-gray-200 dark:border-slate-800 flex flex-col shrink-0 z-20">
+        <div className="flex flex-col lg:flex-row h-full w-full bg-background text-foreground overflow-hidden transition-all">
+            {/* --- SIDEBAR NAVIGATION (Desktop) --- */}
+            <aside className="hidden lg:flex w-64 bg-card-bg border-r border-gray-200 dark:border-slate-800 flex-col shrink-0 z-20">
                 <div className="h-20 flex items-center px-6 border-b border-border-color shrink-0">
                     <div className="flex items-center gap-3 text-foreground">
                         <div className="bg-primary text-white p-2 rounded-lg shadow-lg shadow-primary/20">
@@ -219,11 +219,39 @@ const YouTube = () => {
             {/* --- MAIN CONTENT --- */}
             <main className="flex-1 flex flex-col h-full overflow-hidden relative">
                 {/* Header */}
-                <header className="h-20 bg-card-bg border-b border-border-color flex justify-between items-center px-8 shrink-0">
-                    <h1 className="text-2xl font-black text-foreground uppercase tracking-tight italic">
-                        {activeTab === 'dashboard' ? 'Channel Dashboard' : activeTab}
-                    </h1>
-                    <div className="flex items-center gap-4">
+                <header className="px-6 md:px-8 py-4 md:h-20 bg-card-bg border-b border-border-color flex flex-col md:flex-row justify-between items-center gap-4 shrink-0">
+                    <div className="flex items-center justify-between w-full md:w-auto">
+                        <div className="flex items-center gap-3 lg:hidden">
+                            <div className="bg-primary text-white p-1.5 rounded-lg">
+                                <Youtube size={16} fill="currentColor" />
+                            </div>
+                        </div>
+                        <h1 className="text-xl md:text-2xl font-black text-foreground uppercase tracking-tight italic">
+                            {activeTab === 'dashboard' ? 'Studio Dashboard' : activeTab}
+                        </h1>
+                        <button
+                            onClick={() => fetchYouTubeStats()}
+                            className="md:hidden size-10 flex items-center justify-center bg-primary text-white rounded-xl shadow-lg shadow-primary/20"
+                        >
+                            <TrendingUp size={16} />
+                        </button>
+                    </div>
+
+                    {/* Mobile Nav Scroller */}
+                    <nav className="flex lg:hidden w-full overflow-x-auto gap-4 py-2 custom-scrollbar -mx-2 px-2 shrink-0">
+                        {['dashboard', 'videos', 'analytics', 'planner', 'settings'].map((tab) => (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveTab(tab as any)}
+                                className={`text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-lg whitespace-nowrap transition-all
+                                ${activeTab === tab ? 'bg-primary text-white active:scale-95' : 'text-gray-400 hover:text-foreground'}`}
+                            >
+                                {tab}
+                            </button>
+                        ))}
+                    </nav>
+
+                    <div className="hidden md:flex items-center gap-4">
                         <button
                             onClick={() => fetchYouTubeStats()}
                             className="bg-primary text-white px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all"
@@ -233,7 +261,7 @@ const YouTube = () => {
                     </div>
                 </header>
 
-                <div className="flex-1 overflow-y-auto p-8">
+                <div className="flex-1 overflow-y-auto p-6 md:p-8 pb-32">
                     <div className="max-w-7xl mx-auto space-y-8">
 
                         {/* Demo Mode Banner */}

@@ -44,22 +44,22 @@ const GrowthHub = () => {
 
     return (
         <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground transition-all">
-            <header className="h-20 border-b border-border-color bg-card-bg/80 backdrop-blur-md flex items-center justify-between px-12 z-10 shrink-0 sticky top-0">
-                <div className="welcome-text">
+            <header className="px-6 md:px-12 py-6 md:h-20 border-b border-border-color bg-card-bg/80 backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-6 z-10 shrink-0 sticky top-0">
+                <div className="welcome-text text-center md:text-left">
                     <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em] block mb-1">PERSONAL EVOLUTION</span>
-                    <h1 className="text-2xl font-black text-foreground uppercase tracking-tight italic">Growth & Reflection</h1>
+                    <h1 className="text-xl md:text-2xl font-black text-foreground uppercase tracking-tight italic">Growth & Reflection</h1>
                 </div>
-                <div className="header-actions flex items-center gap-4">
-                    <button className="bg-primary/5 text-primary h-12 px-6 rounded-2xl flex items-center gap-2 text-sm font-black border border-primary/10 transition-all hover:bg-primary/10">
+                <div className="header-actions flex items-center gap-3 w-full md:w-auto">
+                    <button className="flex-1 md:flex-none bg-primary/5 text-primary h-12 px-4 md:px-6 rounded-2xl flex items-center justify-center gap-2 text-[10px] md:text-sm font-black border border-primary/10 transition-all hover:bg-primary/10">
                         <Award size={18} /> {reflections.length * 100 + 1240} PTS
                     </button>
-                    <button className="bg-primary text-white h-12 px-8 rounded-2xl text-xs font-black shadow-xl shadow-primary/20 flex items-center gap-3 border-none hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-widest">
+                    <button className="flex-1 md:flex-none bg-primary text-white h-12 px-4 md:px-8 rounded-2xl text-[10px] font-black shadow-xl shadow-primary/20 flex items-center justify-center gap-3 border-none hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-widest whitespace-nowrap">
                         <Zap size={18} /> Daily Roadmap
                     </button>
                 </div>
             </header>
 
-            <div className="flex-1 overflow-y-auto p-8">
+            <div className="flex-1 overflow-y-auto px-6 md:px-8 py-10 pb-32">
                 <div className="grid grid-cols-12 gap-8 max-w-[1400px] mx-auto">
                     {/* Column 1: Progress & Mission */}
                     <div className="col-span-12 lg:col-span-4 flex flex-col gap-6">

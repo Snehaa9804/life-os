@@ -164,17 +164,19 @@ const Dashboard = () => {
     }) => (
         <Card
             onClick={onClick}
-            className={`p-10 hover-lift transition-all cursor-pointer group relative overflow-hidden bg-card-bg border-none shadow-sm hover:shadow-2xl animate-fade-in-up`}
+            className={`p-8 md:p-10 hover-lift transition-all cursor-pointer group relative overflow-hidden bg-card-bg border-none shadow-sm hover:shadow-2xl animate-fade-in-up flex flex-col justify-between`}
         >
-            <div className={`size-14 rounded-[1.5rem] bg-primary/10 flex items-center justify-center mb-8 text-primary shadow-inner group-hover:scale-110 transition-transform`}>
-                <Icon size={28} />
+            <div className={`size-12 md:size-14 rounded-2xl md:rounded-[1.5rem] bg-primary/10 flex items-center justify-center mb-6 md:mb-8 text-primary shadow-inner group-hover:scale-110 transition-transform`}>
+                <Icon size={24} className="md:size-[28px]" />
             </div>
-            <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] block mb-3 italic opacity-60">{title}</span>
-            <div className="flex items-baseline gap-2 mb-2">
-                <h3 className="text-4xl font-black italic tracking-tighter text-foreground">{value}</h3>
+            <div>
+                <span className="text-[9px] md:text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] block mb-2 md:mb-3 italic opacity-60">{title}</span>
+                <div className="flex items-baseline gap-2 mb-1 md:mb-2">
+                    <h3 className="text-3xl md:text-4xl font-black italic tracking-tighter text-foreground leading-none">{value}</h3>
+                </div>
+                <p className="text-[10px] md:text-[11px] font-black text-gray-400 uppercase tracking-widest italic leading-none">{subtitle}</p>
             </div>
-            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest italic">{subtitle}</p>
-            <ArrowUpRight className="absolute top-8 right-8 text-primary/20 group-hover:text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" size={24} />
+            <ArrowUpRight className="absolute top-6 md:top-8 right-6 md:right-8 text-primary/20 group-hover:text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-all size-5 md:size-6" />
         </Card>
     );
 
@@ -198,47 +200,47 @@ const Dashboard = () => {
 
     return (
         <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground">
-            <header className="h-28 px-12 flex items-center justify-between shrink-0 animate-fade-in bg-card-bg/30 backdrop-blur-sm border-b border-border-color/50">
-                <div className="flex flex-col gap-1">
-                    <h1 className="text-3xl font-black tracking-tighter text-foreground uppercase italic">Welcome back, <span className="text-primary">{settings.name}</span></h1>
-                    <p className="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] italic opacity-60">
-                        Operational Status: Nominal // Today is {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase()}
+            <header className="px-6 md:px-12 py-6 md:h-28 flex flex-col md:flex-row items-center justify-between gap-6 shrink-0 animate-fade-in bg-card-bg/30 backdrop-blur-sm border-b border-border-color/50">
+                <div className="flex flex-col gap-1 text-center md:text-left">
+                    <h1 className="text-xl md:text-3xl font-black tracking-tighter text-foreground uppercase italic leading-none">Welcome, <span className="text-primary">{settings.name}</span></h1>
+                    <p className="text-[9px] md:text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] italic opacity-60">
+                        Operational Status: Nominal // {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase()}
                     </p>
                 </div>
-                <div className="size-14 rounded-3xl bg-primary/10 border-4 border-primary/20 flex items-center justify-center text-primary text-xl font-black shadow-inner">
+                <div className="size-12 md:size-14 rounded-2xl md:rounded-3xl bg-primary/10 border-4 border-primary/20 flex items-center justify-center text-primary text-xl font-black shadow-inner">
                     {settings.name[0]}
                 </div>
             </header>
 
-            <main className="flex-1 overflow-y-auto px-12 pb-12">
-                <div className="max-w-[1400px] mx-auto space-y-8">
+            <main className="flex-1 overflow-y-auto px-6 md:px-12 pb-24 lg:pb-12">
+                <div className="max-w-[1400px] mx-auto space-y-12">
 
                     {/* Today's Systems Checklist - TOP Priority */}
-                    <div className="space-y-10 mt-8">
-                        <div className="flex items-center justify-between px-6">
-                            <div className="flex items-center gap-6">
-                                <div className="size-14 rounded-3xl bg-primary/10 flex items-center justify-center text-primary shadow-inner">
-                                    <Activity size={28} />
+                    <div className="space-y-6 md:space-y-10 mt-8">
+                        <div className="flex flex-col md:flex-row items-center justify-between px-2 md:px-6 gap-6">
+                            <div className="flex items-center gap-4 md:gap-6">
+                                <div className="size-10 md:size-14 rounded-2xl md:rounded-3xl bg-primary/10 flex items-center justify-center text-primary shadow-inner">
+                                    <Activity className="size-6 md:size-7" />
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-black uppercase tracking-[0.3em] text-foreground italic">Daily Execution Hub</h3>
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1 opacity-60 italic">Real-time performance monitoring</p>
+                                    <h3 className="text-[10px] md:text-sm font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-foreground italic">Execution Hub</h3>
+                                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-1 opacity-60 italic hidden md:block">Real-time performance monitoring</p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-10">
+                            <div className="flex items-center justify-between w-full md:w-auto gap-10">
                                 {completedHabitsCount > 0 && (
                                     <button
                                         onClick={() => setShowCompleted(!showCompleted)}
-                                        className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 hover:text-primary transition-colors bg-transparent border-none cursor-pointer italic"
+                                        className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 hover:text-primary transition-colors bg-transparent border-none cursor-pointer italic"
                                     >
                                         {showCompleted ? '// Hide' : `// Show ${completedHabitsCount}`} Completed
                                     </button>
                                 )}
                                 <div className="text-right">
                                     <div className="flex items-baseline gap-2 justify-end">
-                                        <span className="text-4xl font-black text-primary italic tracking-tighter">{efficiency}%</span>
+                                        <span className="text-3xl md:text-4xl font-black text-primary italic tracking-tighter">{efficiency}%</span>
                                     </div>
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] italic opacity-60">Precision Score</p>
+                                    <p className="text-[9px] md:text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] italic opacity-60">Precision</p>
                                 </div>
                             </div>
                         </div>
@@ -252,28 +254,28 @@ const Dashboard = () => {
                                     <Card
                                         key={habit.id}
                                         onClick={() => handleHabitAction(habit.id, isDone)}
-                                        className={`p-6 flex items-center justify-between transition-all duration-500 group relative border-none rounded-[1.8rem] shadow-sm ${isSwiping ? 'opacity-0 translate-x-32 scale-95 pointer-events-none' : 'animate-fade-in-up'
+                                        className={`p-4 md:p-6 flex items-center justify-between transition-all duration-500 group relative border-none rounded-[1.5rem] md:rounded-[1.8rem] shadow-sm ${isSwiping ? 'opacity-0 translate-x-32 scale-95 pointer-events-none' : 'animate-fade-in-up'
                                             } ${isDone
                                                 ? 'bg-primary/5 opacity-60 scale-[0.98]'
                                                 : 'bg-card-bg hover:scale-[1.02] active:scale-[0.98] hover:shadow-xl'
                                             }`}
                                         style={{ transitionDelay: `${isSwiping ? 0 : (idx % 10) * 100}ms` }}
                                     >
-                                        <div className="flex items-center gap-6">
-                                            <div className={`size-12 rounded-2xl flex items-center justify-center transition-all duration-500 shadow-inner ${isDone ? 'bg-primary text-white rotate-[360deg]' : 'bg-background border-2 border-border-color text-foreground/10 group-hover:border-primary/50 group-hover:text-primary/50'
+                                        <div className="flex items-center gap-4 md:gap-6">
+                                            <div className={`size-10 md:size-12 rounded-xl md:rounded-2xl flex items-center justify-center transition-all duration-500 shadow-inner ${isDone ? 'bg-primary text-white rotate-[360deg]' : 'bg-background border-2 border-border-color text-foreground/10 group-hover:border-primary/50 group-hover:text-primary/50'
                                                 }`}>
-                                                {isDone ? <CheckCircle2 size={24} /> : <div className="size-3 rounded-full bg-border-color group-hover:bg-primary/30 transition-colors" />}
+                                                {isDone ? <CheckCircle2 className="size-5 md:size-6" /> : <div className="size-2 md:size-3 rounded-full bg-border-color group-hover:bg-primary/30 transition-colors" />}
                                             </div>
                                             <div>
-                                                <h4 className={`text-base font-black italic tracking-tight transition-all uppercase ${isDone ? 'text-primary/60 line-through' : 'text-foreground'}`}>
+                                                <h4 className={`text-sm md:text-base font-black italic tracking-tight transition-all uppercase ${isDone ? 'text-primary/60 line-through' : 'text-foreground'}`}>
                                                     {habit.name}
                                                 </h4>
-                                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] italic opacity-60">{habit.category}</p>
+                                                <p className="text-[9px] md:text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] italic opacity-60 leading-none mt-1">{habit.category}</p>
                                             </div>
                                         </div>
-                                        <div className={`px-5 py-2 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all italic ${isDone ? 'bg-primary/10 text-primary' : 'bg-background text-foreground/20 border-2 border-border-color'
+                                        <div className={`px-4 md:px-5 py-2 rounded-xl md:rounded-2xl text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] transition-all italic ${isDone ? 'bg-primary/10 text-primary' : 'bg-background text-foreground/20 border-2 border-border-color'
                                             }`}>
-                                            {isDone ? 'COMPLETED' : 'PENDING'}
+                                            {isDone ? 'DONE' : 'PENDING'}
                                         </div>
                                     </Card>
                                 );
@@ -495,14 +497,14 @@ const Dashboard = () => {
 
                         <Card
                             onClick={() => navigate('/goals')}
-                            className="col-span-full p-14 bg-gradient-to-br from-primary to-rose-400 text-white rounded-[3rem] border-none shadow-2xl relative overflow-hidden group cursor-pointer animate-fade-in-up delay-500 hover:scale-[1.01] transition-all"
+                            className="col-span-full p-8 md:p-14 bg-gradient-to-br from-primary to-rose-400 text-white rounded-[2.5rem] md:rounded-[3rem] border-none shadow-2xl relative overflow-hidden group cursor-pointer animate-fade-in-up delay-500 hover:scale-[1.01] transition-all"
                         >
                             <div className="relative z-10 max-w-2xl">
                                 <div className="flex items-center gap-3 mb-6">
                                     <div className="size-2 rounded-full bg-white animate-pulse"></div>
                                     <span className="text-[10px] font-black text-white/60 uppercase tracking-[0.5em] block italic">Strategic Roadmap // Active Protocol</span>
                                 </div>
-                                <h2 className="text-5xl font-black mb-10 italic uppercase tracking-tighter leading-none">{roadmap.mainGoal || 'NO ACTIVE MISSION'}</h2>
+                                <h2 className="text-3xl md:text-5xl font-black mb-10 italic uppercase tracking-tighter leading-none">{roadmap.mainGoal || 'NO ACTIVE MISSION'}</h2>
                                 <div className="flex flex-wrap gap-6">
                                     <div className="flex items-center gap-4 px-6 py-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 text-xs font-black uppercase tracking-widest shadow-xl">
                                         <div className="size-3 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,1)]"></div>

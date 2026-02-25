@@ -126,56 +126,56 @@ const GoalsRoadmap = () => {
     const currentMonth = new Date().toLocaleString('en-US', { month: 'long' });
 
     return (
-        <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground transition-all">
+        <div className="flex-1 flex flex-col overflow-hidden fade-in bg-[#FFFDF0] text-foreground transition-all">
             {/* Header */}
-            <header className="h-24 px-12 flex items-center justify-between shrink-0 bg-card-bg border-b border-border-color">
-                <div className="flex items-center gap-10">
+            <header className="px-6 md:px-12 py-6 md:h-24 flex flex-col md:flex-row items-center justify-between shrink-0 bg-white/50 backdrop-blur-md border-b border-[#FFEBC2] gap-4 md:gap-0">
+                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-10">
                     <div className="flex items-center gap-4">
-                        <Compass className="text-primary" size={28} />
+                        <Compass className="text-[#FF6B6B]" size={28} />
                         <div>
-                            <h1 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">Strategic <span className="text-primary italic">Direction</span></h1>
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-0.5 opacity-60 italic">Yearly Roadmap // {roadmap.year}</p>
+                            <h1 className="text-2xl font-black italic uppercase tracking-tighter text-[#4A4A4A] leading-none">Strategic <span className="text-[#FF6B6B] italic">Direction</span></h1>
+                            <p className="text-[10px] font-black text-[#FF6B6B]/40 uppercase tracking-[0.2em] mt-1 italic leading-none">Yearly Roadmap // {roadmap.year}</p>
                         </div>
                     </div>
-                    <button
-                        onClick={resetRoadmap}
-                        className="flex items-center gap-3 px-6 py-3 bg-primary/5 rounded-[1.2rem] text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:bg-primary hover:text-white transition-all group shadow-sm"
-                        title="Apply Predefined Plan"
-                    >
-                        <RotateCcw size={14} className="group-hover:rotate-[-180deg] transition-transform duration-500" />
-                        Apply Matrix Plan
-                    </button>
                 </div>
+                <button
+                    onClick={resetRoadmap}
+                    className="w-full md:w-auto flex items-center justify-center gap-3 px-6 py-3 bg-[#FF6B6B]/5 rounded-[1.2rem] text-[10px] font-black uppercase tracking-[0.2em] text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-all group shadow-sm border-none cursor-pointer"
+                    title="Apply Predefined Plan"
+                >
+                    <RotateCcw size={14} className="group-hover:rotate-[-180deg] transition-transform duration-500" />
+                    Apply Matrix Plan
+                </button>
             </header>
 
-            <main className="flex-1 overflow-y-auto px-12 py-10">
-                <div className="max-w-[1200px] mx-auto space-y-12">
+            <main className="flex-1 overflow-y-auto px-6 md:px-12 py-10 pb-32">
+                <div className="max-w-[1200px] mx-auto space-y-12 md:space-y-16">
 
                     {/* 1-Year Main Goal */}
                     <div className="relative">
                         <div className="absolute inset-x-0 -bottom-10 h-20 bg-primary/20 blur-3xl rounded-full opacity-30"></div>
-                        <Card className="relative z-10 p-16 bg-gradient-to-br from-primary to-rose-400 text-white border-none shadow-2xl rounded-[3.5rem] overflow-hidden group">
-                            <div className="flex flex-col md:flex-row justify-between gap-16 items-center">
-                                <div className="flex-1 space-y-8">
+                        <Card className="relative z-10 p-8 md:p-16 bg-gradient-to-br from-primary to-rose-400 text-white border-none shadow-2xl rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden group">
+                            <div className="flex flex-col lg:flex-row justify-between gap-12 lg:gap-16 items-center">
+                                <div className="flex-1 space-y-8 w-full">
                                     <div className="flex items-center gap-3">
                                         <div className="size-2 rounded-full bg-white animate-pulse"></div>
                                         <span className="text-[10px] font-black text-white/60 uppercase tracking-[0.5em] italic">One Year Operational Mission</span>
                                     </div>
                                     {isEditingGoal ? (
-                                        <div className="space-y-6 w-full max-w-2xl bg-white/5 p-8 rounded-[2rem] border border-white/10 backdrop-blur-md">
+                                        <div className="space-y-6 w-full lg:max-w-2xl bg-white/5 p-6 md:p-8 rounded-[2rem] border border-white/10 backdrop-blur-md">
                                             <input
                                                 value={goalText}
                                                 onChange={e => setGoalText(e.target.value)}
-                                                className="bg-transparent border-b-2 border-white/20 pb-4 rounded-none text-4xl font-black w-full outline-none focus:border-white transition-all placeholder:text-white/20 italic tracking-tighter"
+                                                className="bg-transparent border-b-2 border-white/20 pb-4 rounded-none text-2xl md:text-4xl font-black w-full outline-none focus:border-white transition-all placeholder:text-white/20 italic tracking-tighter"
                                                 placeholder="Define mission objective..."
                                                 autoFocus
                                             />
-                                            <div className="flex gap-4 p-1">
+                                            <div className="flex flex-col sm:flex-row gap-4 p-1">
                                                 <button
                                                     onClick={handleSaveGoal}
                                                     className="bg-white text-primary px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:scale-[1.05] active:scale-[0.98] transition-all"
                                                 >
-                                                    Confirm Objective
+                                                    Confirm
                                                 </button>
                                                 <button
                                                     onClick={() => setIsEditingGoal(false)}
@@ -186,37 +186,37 @@ const GoalsRoadmap = () => {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="group/goal flex items-start gap-6">
-                                            <h2 className="text-6xl font-black tracking-tighter leading-none italic uppercase">
+                                        <div className="group/goal flex items-start gap-4 md:gap-6">
+                                            <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-none italic uppercase">
                                                 {roadmap.mainGoal || 'ESTABLISH PRIMARY DIRECTIVE'}
                                             </h2>
                                             <button
                                                 onClick={() => setIsEditingGoal(true)}
-                                                className="size-12 bg-white/10 rounded-2xl opacity-0 group-hover/goal:opacity-100 border-none flex items-center justify-center hover:bg-white hover:text-primary transition-all cursor-pointer"
+                                                className="size-10 md:size-12 bg-white/10 rounded-2xl md:opacity-0 group-hover/goal:opacity-100 border-none flex items-center justify-center hover:bg-white hover:text-primary transition-all cursor-pointer shrink-0"
                                             >
-                                                <Edit2 size={20} />
+                                                <Edit2 size={18} />
                                             </button>
                                         </div>
                                     )}
                                     <div className="flex flex-wrap gap-4 pt-2">
-                                        <div className="px-6 py-3 bg-white/10 rounded-2xl border border-white/10 text-[10px] font-black uppercase tracking-widest flex items-center gap-3 shadow-sm">
-                                            <Target size={16} className="text-white" /> Operational Status: Active
+                                        <div className="px-5 py-2.5 bg-white/10 rounded-2xl border border-white/10 text-[9px] md:text-[10px] font-black uppercase tracking-widest flex items-center gap-3 shadow-sm">
+                                            <Target size={14} className="text-white" /> Status: Active
                                         </div>
-                                        <div className="px-6 py-3 bg-black/10 rounded-2xl border border-white/5 text-[10px] font-black uppercase tracking-widest shadow-sm">
+                                        <div className="px-5 py-2.5 bg-black/10 rounded-2xl border border-white/5 text-[9px] md:text-[10px] font-black uppercase tracking-widest shadow-sm">
                                             Deadline // Dec {roadmap.year}
                                         </div>
                                     </div>
                                 </div>
                                 <div
-                                    className="size-56 rounded-full border-8 border-white/10 flex items-center justify-center relative shadow-2xl"
+                                    className="size-48 md:size-56 rounded-full border-8 border-white/10 flex items-center justify-center relative shadow-2xl shrink-0"
                                     style={{
                                         background: `conic-gradient(#fff ${progress}%, transparent 0)`
                                     }}
                                 >
-                                    <div className="absolute inset-4 bg-primary/20 backdrop-blur-3xl rounded-full flex items-center justify-center border-4 border-white/10">
+                                    <div className="absolute inset-3 md:inset-4 bg-primary/20 backdrop-blur-3xl rounded-full flex items-center justify-center border-4 border-white/10">
                                         <div className="text-center">
-                                            <span className="text-5xl font-black text-white italic tracking-tighter">{progress}%</span>
-                                            <p className="text-[11px] font-black uppercase text-white/60 tracking-[0.2em] mt-1 italic leading-none">Complete</p>
+                                            <span className="text-4xl md:text-5xl font-black text-white italic tracking-tighter">{progress}%</span>
+                                            <p className="text-[10px] md:text-[11px] font-black uppercase text-white/60 tracking-[0.2em] mt-1 italic leading-none">Complete</p>
                                         </div>
                                     </div>
                                 </div>
@@ -230,22 +230,22 @@ const GoalsRoadmap = () => {
                         <div className="col-span-12 lg:col-span-8 space-y-10">
                             <div className="flex items-center justify-between px-6">
                                 <div className="flex items-center gap-6">
-                                    <div className="size-12 rounded-[1.2rem] bg-primary/10 flex items-center justify-center text-primary shadow-inner">
+                                    <div className="size-12 rounded-[1.2rem] bg-[#FF6B6B]/10 flex items-center justify-center text-[#FF6B6B] shadow-inner">
                                         <Flag size={24} />
                                     </div>
-                                    <h3 className="text-sm font-black uppercase tracking-[0.3em] italic text-foreground">Checkpoint Matrix</h3>
+                                    <h3 className="text-xl md:text-2xl font-black uppercase tracking-widest italic text-[#4A4A4A]">Checkpoint Matrix</h3>
                                 </div>
                                 <button
                                     onClick={() => setIsAddingMilestone(true)}
-                                    className="size-12 bg-primary text-white rounded-[1.2rem] hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20 flex items-center justify-center border-none cursor-pointer"
+                                    className="size-12 bg-[#FF6B6B] text-white rounded-[1.2rem] hover:scale-105 active:scale-95 transition-all shadow-xl shadow-[#FF6B6B]/20 flex items-center justify-center border-none cursor-pointer"
                                 >
                                     <Plus size={24} />
                                 </button>
                             </div>
 
-                            <div className="space-y-10 relative ml-12">
-                                {/* Vertical Line */}
-                                <div className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-primary/30 to-rose-400/5 ml-[-40px] rounded-full"></div>
+                            <div className="space-y-10 relative md:ml-12">
+                                {/* Vertical Line - Hidden on small mobile */}
+                                <div className="hidden md:block absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-primary/30 to-rose-400/5 ml-[-40px] rounded-full"></div>
 
                                 {isAddingMilestone && (
                                     <Card className="p-10 bg-card-bg border-none shadow-2xl rounded-[2.5rem] animate-fade-in-up duration-500 relative overflow-hidden">
@@ -287,48 +287,45 @@ const GoalsRoadmap = () => {
 
                                 {roadmap.milestones.map((m, i) => (
                                     <div key={m.id} className="relative group">
-                                        {/* Point */}
-                                        <div className={`absolute left-0 top-1/2 -translate-y-1/2 size-6 rounded-2xl border-4 ml-[-50px] transition-all duration-500 z-10 shadow-sm ${m.status === 'completed'
-                                            ? 'bg-primary border-primary rotate-[225deg] shadow-[0_0_15px_rgba(255,107,107,0.4)]'
-                                            : 'bg-background border-border-color group-hover:border-primary/50 group-hover:rotate-45'
-                                            }`}></div>
-
                                         <Card
                                             onClick={() => toggleMilestone(m.id)}
-                                            className={`p-10 border-none shadow-sm transition-all duration-500 hover:translate-x-4 cursor-pointer group/item rounded-[2.5rem] relative overflow-hidden ${m.status === 'completed' ? 'bg-primary/5 opacity-60 scale-[0.98]' : 'bg-card-bg hover:shadow-2xl'}`}
+                                            className={`p-6 md:p-8 border-none shadow-md transition-all duration-500 hover:translate-x-2 cursor-pointer group/item rounded-[3rem] relative overflow-hidden bg-white ${m.status === 'completed' ? 'opacity-80 scale-[0.98]' : 'hover:shadow-xl'}`}
                                         >
-                                            <div className="flex justify-between items-center text-foreground relative z-10">
-                                                <div className="flex items-center gap-8">
-                                                    <div className="flex flex-col items-center gap-2">
-                                                        <span className="text-[10px] font-black text-primary/40 italic">POINT-0{i + 1}</span>
-                                                        <div className={`size-12 rounded-2xl flex items-center justify-center transition-all ${m.status === 'completed' ? 'bg-primary text-white' : 'bg-background border-2 border-border-color text-primary/40 shadow-inner'}`}>
-                                                            {m.title.toLowerCase().includes('trip') ? (
-                                                                <Plane size={24} className="rotate-45" />
-                                                            ) : (
-                                                                <Layers size={24} />
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <p className={`text-xl font-black italic tracking-tighter uppercase transition-all ${m.status === 'completed' ? 'line-through opacity-40' : 'text-foreground'}`}>{m.title}</p>
-                                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mt-2 italic flex items-center gap-3">
-                                                            <Calendar size={14} className="text-primary/40" /> {new Date(m.dueDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }).toUpperCase()}
-                                                        </p>
+                                            {/* Pink Left Accent */}
+                                            <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-[50%] rounded-r-full transition-all duration-500 ${m.status === 'completed' ? 'bg-[#FF6B6B]/30' : 'bg-[#FF6B6B]'}`}></div>
+
+                                            <div className="flex items-center gap-6 md:gap-10 relative z-10 px-2">
+                                                {/* Left Side: Point Label + Icon */}
+                                                <div className="flex flex-col items-center gap-2 shrink-0">
+                                                    <span className={`text-[9px] font-black italic uppercase tracking-widest transition-colors ${m.status === 'completed' ? 'text-[#FF6B6B]/40' : 'text-[#FF6B6B]'}`}>POINT-0{i + 1}</span>
+                                                    <div className={`size-14 md:size-16 rounded-[1.8rem] flex items-center justify-center transition-all ${m.status === 'completed' ? 'bg-[#FF6B6B]/80 text-white' : 'bg-[#FFF0F0] text-[#FF6B6B] border-2 border-[#FFE0E0]'}`}>
+                                                        {m.title.toLowerCase().includes('trip') ? (
+                                                            <Plane size={24} className="rotate-45" />
+                                                        ) : (
+                                                            <Layers size={24} />
+                                                        )}
                                                     </div>
                                                 </div>
-                                                <div className="flex items-center gap-6">
-                                                    <button
-                                                        onClick={(e) => deleteMilestone(m.id, e)}
-                                                        className="size-10 rounded-xl bg-background border-2 border-border-color text-foreground/20 hover:text-red-500 hover:border-red-500 opacity-0 group-hover/item:opacity-100 transition-all flex items-center justify-center cursor-pointer"
-                                                    >
-                                                        <Trash2 size={18} />
-                                                    </button>
-                                                    <div className={`size-10 rounded-2xl flex items-center justify-center transition-all duration-700 ${m.status === 'completed' ? 'bg-primary text-white scale-110 shadow-lg shadow-primary/30 rotate-[360deg]' : 'bg-background border-2 border-border-color'}`}>
-                                                        {m.status === 'completed' ? <CheckCircle2 size={24} /> : <div className="size-2 rounded-full bg-border-color" />}
+
+                                                {/* Right Side: Content */}
+                                                <div className="flex-1 space-y-3">
+                                                    <h4 className={`text-2xl md:text-3xl font-black italic tracking-tighter uppercase transition-all leading-tight ${m.status === 'completed' ? 'line-through text-gray-300 decoration-gray-300 decoration-[6px]' : 'text-[#4A4A4A]'}`}>
+                                                        {m.title}
+                                                    </h4>
+                                                    <div className="flex items-center gap-2 text-[10px] font-black text-[#FF6B6B]/40 uppercase tracking-[0.2em] italic">
+                                                        <Calendar size={14} />
+                                                        {new Date(m.dueDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }).toUpperCase()}
                                                     </div>
                                                 </div>
+
+                                                {/* Action Button (Delete) */}
+                                                <button
+                                                    onClick={(e) => deleteMilestone(m.id, e)}
+                                                    className="size-10 rounded-xl bg-background border-2 border-border-color text-foreground/20 hover:text-red-500 hover:border-red-500 opacity-0 group-hover/item:opacity-100 transition-all flex items-center justify-center cursor-pointer shrink-0"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
                                             </div>
-                                            {m.status === 'completed' && <div className="absolute inset-y-0 left-0 w-2 bg-primary"></div>}
                                         </Card>
                                     </div>
                                 ))}

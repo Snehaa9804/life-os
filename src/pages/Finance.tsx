@@ -120,29 +120,29 @@ const FinanceAudit = () => {
     return (
         <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground transition-all">
             {/* Header */}
-            <header className="h-20 px-12 flex items-center justify-between shrink-0 bg-card-bg border-b border-border-color">
-                <div>
-                    <h1 className="text-xl font-black">Finance Awareness</h1>
-                    <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Resource Management</p>
+            <header className="px-6 md:px-12 py-6 md:h-20 flex flex-col md:flex-row items-center justify-between shrink-0 bg-card-bg border-b border-border-color gap-4 md:gap-0">
+                <div className="text-center md:text-left">
+                    <h1 className="text-xl font-black uppercase tracking-tighter italic leading-none">Finance Awareness</h1>
+                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mt-1 opacity-60">Resource Management</p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 w-full md:w-auto">
                     <button
                         onClick={() => setIsEditingGoals(true)}
-                        className="bg-primary/5 text-gray-400 px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 hover:bg-primary/10 transition-all uppercase tracking-widest"
+                        className="flex-1 md:flex-none justify-center bg-primary/5 text-gray-400 px-4 py-2.5 rounded-xl text-[10px] font-black flex items-center gap-2 hover:bg-primary/10 transition-all uppercase tracking-widest border border-border-color/50"
                     >
-                        <SettingsIcon size={16} /> Edit Goals
+                        <SettingsIcon size={16} /> <span className="hidden sm:inline">Edit Goals</span>
                     </button>
                     <button
                         onClick={() => setIsAdding(true)}
-                        className="bg-primary text-white px-6 py-2.5 rounded-xl text-sm font-black flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all"
+                        className="flex-1 md:flex-none justify-center bg-primary text-white px-6 py-2.5 rounded-xl text-[10px] font-black flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all uppercase tracking-widest"
                     >
                         <Plus size={18} /> NEW TRANSACTION
                     </button>
                 </div>
             </header>
 
-            <main className="flex-1 overflow-y-auto px-12 py-8">
-                <div className="max-w-[1400px] mx-auto grid grid-cols-12 gap-8">
+            <main className="flex-1 overflow-y-auto px-6 md:px-12 py-8 pb-32">
+                <div className="max-w-[1400px] mx-auto grid grid-cols-12 gap-6 md:gap-8">
 
                     {/* Summary Row */}
                     <div className="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -180,7 +180,7 @@ const FinanceAudit = () => {
                     </div>
 
                     {/* Left: Transaction History */}
-                    <Card className="col-span-12 lg:col-span-8 p-10">
+                    <Card className="col-span-12 lg:col-span-8 p-6 md:p-10">
                         <div className="flex justify-between items-center mb-10">
                             <h3 className="text-sm font-black uppercase tracking-widest">Recent Activity</h3>
                             <div className="flex items-center gap-4">
