@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 
 const Tasks = () => {
-    const { tasks, addTask, toggleTask, deleteTask, settings, logout } = useStore();
+    const { tasks, addTask, toggleTask, deleteTask, settings, logout, user } = useStore();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newTask, setNewTask] = useState({
         name: '',
@@ -83,7 +83,7 @@ const Tasks = () => {
                 <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto justify-between md:justify-end">
                     <div className="flex items-center gap-2 overflow-hidden">
                         <div className="size-1.5 md:size-2 rounded-full bg-sage animate-pulse shrink-0"></div>
-                        <span className="text-[8px] md:text-[9px] font-black uppercase tracking-widest text-gray-500 truncate">Active // {settings.name.toLowerCase()}@life.os</span>
+                        <span className="text-[8px] md:text-[9px] font-black uppercase tracking-widest text-gray-500 truncate">Active // {user?.email || settings.name.toLowerCase() + '@life.os'}</span>
                     </div>
                     <button
                         onClick={() => { if (confirm('Terminate secure session?')) logout(); }}

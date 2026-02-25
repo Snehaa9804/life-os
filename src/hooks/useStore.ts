@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import type {
     Habit, Task, Transaction, HealthLog, Reflection,
-    YouTubeGrowth, Savings, GoalRoadmap, PeriodData, UserSettings, VideoPlan
+    YouTubeGrowth, Savings, GoalRoadmap, PeriodData, UserSettings, VideoPlan, User
 } from '../types';
 
 // Helper function for safe JSON parsing
@@ -59,8 +59,9 @@ type StoreType = {
     settings: UserSettings;
     studyHours: Record<string, number>;
     videoPlans: VideoPlan[];
+    user: User | null;
     isAuthenticated: boolean;
-    login: () => boolean;
+    login: (userData: User) => boolean;
     logout: () => void;
     addHabit: (h: Omit<Habit, 'id' | 'completedAt' | 'streak' | 'createdAt'>) => void;
     updateHabit: (id: string, h: Partial<Habit>) => void;
@@ -220,6 +221,11 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         return localStorage.getItem('life-os-auth') === 'true';
     });
 
+    const [user, setUser] = useState<User | null>(() => {
+        const saved = localStorage.getItem('life-os-user');
+        return safeParseJSON(saved, null);
+    });
+
     // Persistence with debouncing
     useEffect(() => {
         const debouncedSave = createDebouncedStorage('life-os-habits');
@@ -292,6 +298,10 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         localStorage.setItem('life-os-auth', isAuthenticated.toString());
     }, [isAuthenticated]);
+
+    useEffect(() => {
+        localStorage.setItem('life-os-user', JSON.stringify(user));
+    }, [user]);
 
     const addHabit = (h: Omit<Habit, 'id' | 'completedAt' | 'streak' | 'createdAt'>) => {
         setHabits(prev => [...prev, {
@@ -389,15 +399,17 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         setVideoPlans(prev => prev.filter(p => p.id !== id));
     };
 
-    const login = () => {
-        // Simple mock authentication - just requires hitting "Authorize"
-        // In a real app, you'd check a password/PIN here
+    const login = (userData: User) => {
+        setUser(userData);
         setIsAuthenticated(true);
+        // Sync name to settings if it's the first login
+        setSettings(s => ({ ...s, name: userData.name || s.name }));
         return true;
     };
 
     const logout = () => {
         setIsAuthenticated(false);
+        setUser(null);
     };
 
     const fetchYouTubeStats = async () => {
@@ -485,7 +497,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         addPeriod, deletePeriod, updateRoadmap,
         setHabits, setTasks, fetchYouTubeStats,
         videoPlans, addVideoPlan, updateVideoPlan, deleteVideoPlan,
-        isAuthenticated, login, logout
+        isAuthenticated, user, login, logout
     };
 
     return React.createElement(

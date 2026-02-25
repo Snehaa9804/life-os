@@ -4,7 +4,7 @@ import { X, Menu, Rocket, ChevronRight, LogOut } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 
 const MobileNav = () => {
-    const { settings, logout } = useStore();
+    const { settings, logout, user } = useStore();
     const [isOpen, setIsOpen] = useState(false);
 
     const mainItems = [
@@ -104,8 +104,12 @@ const MobileNav = () => {
                             onClick={() => setIsOpen(false)}
                             className="flex items-center gap-3 p-3 bg-primary/5 rounded-2xl"
                         >
-                            <div className="bg-primary/20 size-8 rounded-full flex items-center justify-center text-primary font-bold text-[10px]">
-                                {settings.name[0]}
+                            <div className="bg-primary/20 size-8 rounded-full flex items-center justify-center text-primary font-bold text-[10px] overflow-hidden">
+                                {user?.picture ? (
+                                    <img src={user.picture} alt="" className="size-full object-cover" />
+                                ) : (
+                                    settings.name[0]
+                                )}
                             </div>
                             <div className="flex-1 min-w-0">
                                 <p className="text-[10px] font-black truncate">{settings.name}</p>

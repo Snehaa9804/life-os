@@ -28,7 +28,8 @@ const Dashboard = () => {
         tasks,
         toggleHabit,
         deleteHabit,
-        updateHabit
+        updateHabit,
+        user
     } = useStore();
 
     const [currentDate, setCurrentDate] = useState(() => {
@@ -207,8 +208,12 @@ const Dashboard = () => {
                         Operational Status: Nominal // {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase()}
                     </p>
                 </div>
-                <div className="size-12 md:size-14 rounded-2xl md:rounded-3xl bg-primary/10 border-4 border-primary/20 flex items-center justify-center text-primary text-xl font-black shadow-inner">
-                    {settings.name[0]}
+                <div className="size-12 md:size-14 rounded-2xl md:rounded-3xl bg-primary/10 border-4 border-primary/20 flex items-center justify-center text-primary text-xl font-black shadow-inner overflow-hidden">
+                    {user?.picture ? (
+                        <img src={user.picture} alt="" className="size-full object-cover" />
+                    ) : (
+                        settings.name[0]
+                    )}
                 </div>
             </header>
 

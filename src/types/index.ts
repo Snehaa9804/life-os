@@ -138,3 +138,9 @@ export interface StoreState {
     studyHours: Record<string, number>;
     videoPlans: VideoPlan[];
 }
+
+export interface User {
+    email: string;
+    name: string;
+    picture?: string;
+}

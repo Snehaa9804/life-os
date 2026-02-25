@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useStore } from '../hooks/useStore';
 
 const Sidebar = () => {
-    const { settings, logout } = useStore();
+    const { settings, logout, user } = useStore();
     const menuItems = [
         { icon: 'grid_view', label: 'Dashboard', path: '/', delay: 'delay-100' },
         { icon: 'task_alt', label: 'Task List', path: '/tasks', delay: 'delay-200' },
@@ -52,9 +52,13 @@ const Sidebar = () => {
             <div className="mt-4 flex flex-col gap-2">
                 <NavLink to="/settings" className="flex items-center gap-3 p-3 bg-primary/5 rounded-2xl group transition-all hover:bg-primary/10 border border-transparent hover:border-primary/10">
                     <div
-                        className="bg-primary/20 aspect-square rounded-full size-10 flex items-center justify-center text-primary font-bold border border-primary/20"
+                        className="bg-primary/20 aspect-square rounded-full size-10 flex items-center justify-center text-primary font-bold border border-primary/20 overflow-hidden"
                     >
-                        {settings.name[0]}
+                        {user?.picture ? (
+                            <img src={user.picture} alt="" className="size-full object-cover" />
+                        ) : (
+                            settings.name[0]
+                        )}
                     </div>
                     <div className="flex-1 min-w-0">
                         <p className="text-xs font-black truncate">{settings.name}</p>

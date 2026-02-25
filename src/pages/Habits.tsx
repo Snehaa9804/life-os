@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 const HabitIntelligence = () => {
-    const { habits, addHabit, deleteHabit, updateHabit, logout } = useStore();
+    const { habits, addHabit, deleteHabit, updateHabit, logout, user } = useStore();
     const [currentDate, setCurrentDate] = useState(() => {
         const d = new Date();
         return new Date(d.getFullYear(), d.getMonth(), 1);
@@ -105,7 +105,7 @@ const HabitIntelligence = () => {
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                         <div className="size-2 rounded-full bg-sage"></div>
-                        Consistency System: Active // snehapal1090@gmail.com
+                        Consistency System: Active // {user?.email || 'snehapal1090@gmail.com'}
                     </div>
                 </div>
                 <button

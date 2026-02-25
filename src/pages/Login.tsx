@@ -1,22 +1,39 @@
 import { useState } from 'react';
 import { useStore } from '../hooks/useStore';
 import Card from '../components/Card';
-import { Shield, Lock, ArrowRight, Fingerprint, Activity } from 'lucide-react';
+import { Shield, Lock, Fingerprint, Activity } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
 
 const Login = () => {
-    const { login, settings } = useStore();
+    const { login } = useStore();
     const [isAuthenticating, setIsAuthenticating] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleLogin = () => {
+    const handleGoogleSuccess = (credentialResponse: any) => {
         setIsAuthenticating(true);
-        // Simulate a security check
-        setTimeout(() => {
-            login();
-        }, 1500);
+        try {
+            const decoded: any = jwtDecode(credentialResponse.credential);
+            const userData = {
+                email: decoded.email,
+                name: decoded.name,
+                picture: decoded.picture
+            };
+
+            // Artificial delay for that "premium" system check feel
+            setTimeout(() => {
+                login(userData);
+                setIsAuthenticating(false);
+            }, 1000);
+        } catch (err) {
+            console.error("Auth Error:", err);
+            setError("Authentication Protocol Failed // Check Credentials");
+            setIsAuthenticating(false);
+        }
     };
 
     return (
-        <div className="fixed inset-0 bg-[#0A0A0B] flex items-center justify-center p-6 overflow-hidden">
+        <div className="fixed inset-0 bg-[#0A0A0B] flex items-center justify-center p-6 overflow-hidden text-foreground">
             {/* Background Effects */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 blur-[120px] rounded-full animate-pulse-slow"></div>
             <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03]"></div>
@@ -43,30 +60,38 @@ const Login = () => {
                             Life <span className="text-primary italic">OS</span>
                         </h1>
                         <p className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em] italic">
-                            Authorization Required // User: {settings.name.toUpperCase()}
+                            Authorization Required // Terminal Session
                         </p>
                     </div>
 
-                    <div className="w-full space-y-6">
-                        <button
-                            onClick={handleLogin}
-                            disabled={isAuthenticating}
-                            className={`w-full py-6 rounded-[2rem] flex items-center justify-center gap-4 text-[11px] font-black uppercase tracking-[0.4em] transition-all duration-500 border-none cursor-pointer relative overflow-hidden shadow-2xl ${isAuthenticating
-                                    ? 'bg-white/5 text-white/20'
-                                    : 'bg-primary text-white hover:scale-[1.02] active:scale-[0.98] shadow-primary/30'
-                                }`}
-                        >
-                            {isAuthenticating ? (
-                                <>System Initialization...</>
-                            ) : (
-                                <>
-                                    Establish Terminal Session
-                                    <ArrowRight className="size-4" />
-                                </>
-                            )}
-                        </button>
+                    <div className="w-full flex flex-col items-center">
+                        {error && (
+                            <div className="w-full p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-[10px] font-black text-red-500 uppercase tracking-widest mb-6">
+                                {error}
+                            </div>
+                        )}
 
-                        <div className="flex items-center justify-center gap-8 pt-6">
+                        <div className="w-full relative group/btn min-h-[50px] flex justify-center">
+                            <div className="absolute inset-0 bg-primary blur-xl opacity-0 group-hover/btn:opacity-20 transition-opacity"></div>
+                            <GoogleLogin
+                                onSuccess={handleGoogleSuccess}
+                                onError={() => {
+                                    setError("Google Auth Provider Rejected Request");
+                                }}
+                                useOneTap
+                                theme="filled_black"
+                                shape="pill"
+                                size="large"
+                                width="320"
+                                text="continue_with"
+                            />
+                        </div>
+
+                        <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em] italic pt-8 text-center shrink-0">
+                            Biometric & Hardware Keys Supported
+                        </p>
+
+                        <div className="flex items-center justify-center gap-8 pt-8">
                             <div className="flex flex-col items-center gap-2 opacity-30 hover:opacity-100 transition-opacity cursor-not-allowed">
                                 <Fingerprint className="size-6 text-white" />
                                 <span className="text-[8px] font-black text-white uppercase tracking-widest">Biometric</span>

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { StoreProvider } from './hooks/useStore';
 import ErrorBoundary from './components/ErrorBoundary';
 import MainLayout from './layouts/MainLayout';
@@ -39,12 +40,16 @@ const AppContent = () => {
 };
 
 function App() {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "PASTE_YOUR_GOOGLE_CLIENT_ID_HERE";
+
     return (
         <ErrorBoundary>
             <StoreProvider>
-                <BrowserRouter>
-                    <AppContent />
-                </BrowserRouter>
+                <GoogleOAuthProvider clientId={clientId}>
+                    <BrowserRouter>
+                        <AppContent />
+                    </BrowserRouter>
+                </GoogleOAuthProvider>
             </StoreProvider>
         </ErrorBoundary>
     );
