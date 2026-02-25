@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 const HabitIntelligence = () => {
-    const { habits, addHabit, deleteHabit, updateHabit } = useStore();
+    const { habits, addHabit, deleteHabit, updateHabit, logout } = useStore();
     const [currentDate, setCurrentDate] = useState(() => {
         const d = new Date();
         return new Date(d.getFullYear(), d.getMonth(), 1);
@@ -108,7 +108,12 @@ const HabitIntelligence = () => {
                         Consistency System: Active // snehapal1090@gmail.com
                     </div>
                 </div>
-                <button className="px-3 py-1 border border-border-color rounded hover:bg-primary/5 transition-colors">Logout</button>
+                <button
+                    onClick={() => { if (confirm('Terminate secure session?')) logout(); }}
+                    className="px-3 py-1 border border-border-color rounded hover:bg-primary/5 transition-colors cursor-pointer"
+                >
+                    Logout
+                </button>
             </div>
 
             {/* Integrated Header */}

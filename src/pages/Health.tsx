@@ -390,7 +390,9 @@ const HealthHub = () => {
                                 </div>
                                 <div className="relative z-10 flex-1">
                                     <h3 className={`text-xl font-black mb-2 italic uppercase tracking-tighter ${calculateCycleStats?.isPms ? 'text-primary' : 'text-foreground'}`}>
-                                        {calculateCycleStats?.isPms ? 'PMS Protocol Active' : 'Intelligent <span className="text-primary">Stamina</span> Alignment'}
+                                        {calculateCycleStats?.isPms ? 'PMS Protocol Active' : (
+                                            <>Intelligent <span className="text-primary">Stamina</span> Alignment</>
+                                        )}
                                     </h3>
                                     <p className="text-sm text-foreground/60 leading-relaxed font-black uppercase tracking-widest italic max-w-2xl">
                                         {calculateCycleStats?.isPms

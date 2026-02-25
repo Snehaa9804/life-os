@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useStore } from '../hooks/useStore';
 
 const Sidebar = () => {
-    const { settings } = useStore();
+    const { settings, logout } = useStore();
     const menuItems = [
         { icon: 'grid_view', label: 'Dashboard', path: '/', delay: 'delay-100' },
         { icon: 'task_alt', label: 'Task List', path: '/tasks', delay: 'delay-200' },
@@ -49,18 +49,30 @@ const Sidebar = () => {
                 </nav>
             </div>
 
-            <NavLink to="/settings" className="flex items-center gap-3 p-3 bg-primary/5 rounded-2xl group transition-all hover:bg-primary/10 border border-transparent hover:border-primary/10 mt-auto">
-                <div
-                    className="bg-primary/20 aspect-square rounded-full size-10 flex items-center justify-center text-primary font-bold border border-primary/20"
+            <div className="mt-4 flex flex-col gap-2">
+                <NavLink to="/settings" className="flex items-center gap-3 p-3 bg-primary/5 rounded-2xl group transition-all hover:bg-primary/10 border border-transparent hover:border-primary/10">
+                    <div
+                        className="bg-primary/20 aspect-square rounded-full size-10 flex items-center justify-center text-primary font-bold border border-primary/20"
+                    >
+                        {settings.name[0]}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <p className="text-xs font-black truncate">{settings.name}</p>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Self-Custody</p>
+                    </div>
+                    <span className="material-symbols-outlined text-gray-300 group-hover:text-primary transition-colors text-lg">settings</span>
+                </NavLink>
+
+                <button
+                    onClick={() => { if (confirm('Terminate secure session?')) logout(); }}
+                    className="flex items-center gap-3 p-3 text-gray-400 hover:text-red-500 hover:bg-red-500/5 rounded-2xl transition-all cursor-pointer border-none bg-transparent group"
                 >
-                    {settings.name[0]}
-                </div>
-                <div className="flex-1 min-w-0">
-                    <p className="text-xs font-black truncate">{settings.name}</p>
-                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Self-Custody</p>
-                </div>
-                <span className="material-symbols-outlined text-gray-300 group-hover:text-primary transition-colors text-lg">settings</span>
-            </NavLink>
+                    <div className="size-10 flex items-center justify-center bg-gray-500/10 rounded-xl group-hover:bg-red-500/10 transition-colors">
+                        <span className="material-symbols-outlined text-lg">logout</span>
+                    </div>
+                    <p className="text-xs font-black uppercase tracking-widest">Logout</p>
+                </button>
+            </div>
         </aside>
     );
 };

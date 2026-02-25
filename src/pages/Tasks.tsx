@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 
 const Tasks = () => {
-    const { tasks, addTask, toggleTask, deleteTask, settings } = useStore();
+    const { tasks, addTask, toggleTask, deleteTask, settings, logout } = useStore();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newTask, setNewTask] = useState({
         name: '',
@@ -85,7 +85,12 @@ const Tasks = () => {
                         <div className="size-1.5 md:size-2 rounded-full bg-sage animate-pulse shrink-0"></div>
                         <span className="text-[8px] md:text-[9px] font-black uppercase tracking-widest text-gray-500 truncate">Active // {settings.name.toLowerCase()}@life.os</span>
                     </div>
-                    <button className="px-3 md:px-4 py-1.5 rounded-lg border border-border-color text-[8px] md:text-[10px] font-black uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-slate-800 transition-all shrink-0">Logout</button>
+                    <button
+                        onClick={() => { if (confirm('Terminate secure session?')) logout(); }}
+                        className="px-3 md:px-4 py-1.5 rounded-lg border border-border-color text-[8px] md:text-[10px] font-black uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-slate-800 transition-all shrink-0 cursor-pointer"
+                    >
+                        Logout
+                    </button>
                 </div>
             </header>
 

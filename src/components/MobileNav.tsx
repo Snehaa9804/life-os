@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { X, Menu, Rocket, ChevronRight } from 'lucide-react';
+import { X, Menu, Rocket, ChevronRight, LogOut } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 
 const MobileNav = () => {
-    const { settings } = useStore();
+    const { settings, logout } = useStore();
     const [isOpen, setIsOpen] = useState(false);
 
     const mainItems = [
@@ -98,7 +98,7 @@ const MobileNav = () => {
                         ))}
                     </div>
 
-                    <div className="p-6 border-t border-border-color">
+                    <div className="p-6 border-t border-border-color space-y-4">
                         <NavLink
                             to="/settings"
                             onClick={() => setIsOpen(false)}
@@ -112,6 +112,16 @@ const MobileNav = () => {
                                 <p className="text-[8px] text-gray-500 font-bold uppercase tracking-widest">Operator</p>
                             </div>
                         </NavLink>
+
+                        <button
+                            onClick={() => { if (confirm('Terminate secure session?')) { setIsOpen(false); logout(); } }}
+                            className="w-full flex items-center gap-3 p-3 text-red-500 bg-red-500/5 rounded-2xl border-none cursor-pointer active:scale-95 transition-all"
+                        >
+                            <div className="bg-red-500/10 size-8 rounded-lg flex items-center justify-center">
+                                <LogOut size={16} />
+                            </div>
+                            <span className="text-[10px] font-black uppercase tracking-widest">Terminate Session</span>
+                        </button>
                     </div>
                 </div>
             </div>

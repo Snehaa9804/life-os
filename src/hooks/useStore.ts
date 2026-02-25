@@ -59,6 +59,9 @@ type StoreType = {
     settings: UserSettings;
     studyHours: Record<string, number>;
     videoPlans: VideoPlan[];
+    isAuthenticated: boolean;
+    login: () => boolean;
+    logout: () => void;
     addHabit: (h: Omit<Habit, 'id' | 'completedAt' | 'streak' | 'createdAt'>) => void;
     updateHabit: (id: string, h: Partial<Habit>) => void;
     deleteHabit: (id: string) => void;
@@ -213,6 +216,10 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         return safeParseJSON(saved, []);
     });
 
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+        return localStorage.getItem('life-os-auth') === 'true';
+    });
+
     // Persistence with debouncing
     useEffect(() => {
         const debouncedSave = createDebouncedStorage('life-os-habits');
@@ -281,6 +288,10 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         const debouncedSave = createDebouncedStorage('life-os-videoplans');
         debouncedSave(videoPlans);
     }, [videoPlans]);
+
+    useEffect(() => {
+        localStorage.setItem('life-os-auth', isAuthenticated.toString());
+    }, [isAuthenticated]);
 
     const addHabit = (h: Omit<Habit, 'id' | 'completedAt' | 'streak' | 'createdAt'>) => {
         setHabits(prev => [...prev, {
@@ -378,6 +389,17 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         setVideoPlans(prev => prev.filter(p => p.id !== id));
     };
 
+    const login = () => {
+        // Simple mock authentication - just requires hitting "Authorize"
+        // In a real app, you'd check a password/PIN here
+        setIsAuthenticated(true);
+        return true;
+    };
+
+    const logout = () => {
+        setIsAuthenticated(false);
+    };
+
     const fetchYouTubeStats = async () => {
         const apiKey = settings.youtubeApiKey || import.meta.env.VITE_YOUTUBE_API_KEY;
         const channelId = settings.youtubeChannelId || import.meta.env.VITE_YOUTUBE_CHANNEL_ID;
@@ -462,7 +484,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         addReflection, updateYoutube, updateSavings, updateSettings, logStudyHours,
         addPeriod, deletePeriod, updateRoadmap,
         setHabits, setTasks, fetchYouTubeStats,
-        videoPlans, addVideoPlan, updateVideoPlan, deleteVideoPlan
+        videoPlans, addVideoPlan, updateVideoPlan, deleteVideoPlan,
+        isAuthenticated, login, logout
     };
 
     return React.createElement(
