@@ -112,8 +112,8 @@ const MobileNav = () => {
                                 )}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-[10px] font-black truncate">{settings.name}</p>
-                                <p className="text-[8px] text-gray-500 font-bold uppercase tracking-widest">Operator</p>
+                                <p className="text-[10px] font-black truncate">{user?.name || settings.name}</p>
+                                <p className="text-[8px] text-gray-400 font-bold uppercase tracking-widest">Operator</p>
                             </div>
                         </NavLink>
 

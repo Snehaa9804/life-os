@@ -203,7 +203,7 @@ const Dashboard = () => {
         <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground">
             <header className="px-6 md:px-12 py-6 md:h-28 flex flex-col md:flex-row items-center justify-between gap-6 shrink-0 animate-fade-in bg-card-bg/30 backdrop-blur-sm border-b border-border-color/50">
                 <div className="flex flex-col gap-1 text-center md:text-left">
-                    <h1 className="text-xl md:text-3xl font-black tracking-tighter text-foreground uppercase italic leading-none">Welcome, <span className="text-primary">{settings.name}</span></h1>
+                    <h1 className="text-xl md:text-3xl font-black tracking-tighter text-foreground uppercase italic leading-none">Welcome, <span className="text-primary">{user?.name || settings.name}</span></h1>
                     <p className="text-[9px] md:text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] italic opacity-60">
                         Operational Status: Nominal // {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase()}
                     </p>

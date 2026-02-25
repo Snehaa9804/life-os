@@ -61,7 +61,7 @@ const Sidebar = () => {
                         )}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-xs font-black truncate">{settings.name}</p>
+                        <p className="text-xs font-black truncate">{user?.name || settings.name}</p>
                         <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Self-Custody</p>
                     </div>
                     <span className="material-symbols-outlined text-gray-300 group-hover:text-primary transition-colors text-lg">settings</span>
