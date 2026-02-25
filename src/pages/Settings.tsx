@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 const Settings = () => {
-    const { settings, updateSettings, fetchYouTubeStats } = useStore();
+    const { settings, updateSettings, fetchYouTubeStats, user } = useStore();
     const [name, setName] = useState(settings.name);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -71,8 +71,12 @@ const Settings = () => {
                         <Card className="p-6 md:p-10 border-none shadow-sm hover-lift bg-card-bg">
                             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
                                 <div className="relative group">
-                                    <div className="size-24 md:size-32 rounded-3xl bg-primary/10 border-4 border-primary/20 flex items-center justify-center text-primary text-3xl md:text-4xl font-black shadow-inner">
-                                        {name[0]}
+                                    <div className="size-24 md:size-32 rounded-3xl bg-primary/10 border-4 border-primary/20 flex items-center justify-center text-primary text-3xl md:text-4xl font-black shadow-inner overflow-hidden">
+                                        {user?.picture ? (
+                                            <img src={user.picture} alt="" className="size-full object-cover" />
+                                        ) : (
+                                            name[0]
+                                        )}
                                     </div>
                                     <button className="absolute -bottom-2 -right-2 size-8 md:size-10 bg-background rounded-2xl border-2 border-border-color flex items-center justify-center shadow-lg hover:bg-primary hover:text-white hover:border-primary transition-all text-primary hover:scale-110">
                                         <Camera size={14} className="md:size-[16px]" />
@@ -80,15 +84,26 @@ const Settings = () => {
                                 </div>
 
                                 <div className="flex-1 w-full space-y-6">
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Display Alias</label>
-                                        <div className="relative">
-                                            <input
-                                                value={name}
-                                                onChange={e => setName(e.target.value)}
-                                                className="w-full bg-background p-4 md:p-5 pl-12 md:pl-14 rounded-2xl text-sm font-black outline-none border-2 border-border-color focus:border-primary/50 transition-all italic tracking-tight"
-                                            />
-                                            <Edit3 className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 text-primary/40 size-4 md:size-5" />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Display Alias</label>
+                                            <div className="relative">
+                                                <input
+                                                    value={name}
+                                                    onChange={e => setName(e.target.value)}
+                                                    className="w-full bg-background p-4 md:p-5 pl-12 md:pl-14 rounded-2xl text-sm font-black outline-none border-2 border-border-color focus:border-primary/50 transition-all italic tracking-tight"
+                                                />
+                                                <Edit3 className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 text-primary/40 size-4 md:size-5" />
+                                            </div>
+                                        </div>
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Verified Email</label>
+                                            <div className="relative overflow-hidden">
+                                                <div className="w-full bg-background/50 p-4 md:p-5 rounded-2xl text-sm font-black border-2 border-border-color/30 text-gray-400 italic tracking-tight truncate">
+                                                    {user?.email || 'unlinked@local.system'}
+                                                </div>
+                                                <Shield className="absolute right-4 md:right-5 top-1/2 -translate-y-1/2 text-sage/40 size-4 md:size-5" />
+                                            </div>
                                         </div>
                                     </div>
 
