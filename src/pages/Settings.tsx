@@ -57,8 +57,8 @@ const Settings = () => {
             {/* Header */}
             <header className="h-20 px-12 flex items-center justify-between shrink-0 bg-card-bg border-b border-border-color">
                 <div className="flex items-center gap-4">
-                    <SettingsIcon className="text-primary" size={20} />
-                    <h1 className="text-xl font-black italic">Configuration</h1>
+                    <SettingsIcon className="text-primary" size={24} />
+                    <h1 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">Configuration</h1>
                 </div>
             </header>
 
@@ -67,36 +67,36 @@ const Settings = () => {
 
                     {/* Profile Section */}
                     <section>
-                        <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest px-4 mb-6">Identity & Profile</h3>
-                        <Card className="p-10">
+                        <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] px-4 mb-6 italic opacity-60">Identity & Profile</h3>
+                        <Card className="p-10 border-none shadow-sm hover-lift bg-card-bg">
                             <div className="flex flex-col md:flex-row items-center gap-12">
                                 <div className="relative group">
-                                    <div className="size-32 rounded-full bg-primary/10 border-4 border-primary/20 flex items-center justify-center text-primary text-4xl font-black">
+                                    <div className="size-32 rounded-3xl bg-primary/10 border-4 border-primary/20 flex items-center justify-center text-primary text-4xl font-black shadow-inner">
                                         {name[0]}
                                     </div>
-                                    <button className="absolute bottom-0 right-0 size-10 bg-background rounded-full border border-border-color flex items-center justify-center shadow-lg hover:bg-primary hover:text-white transition-all">
+                                    <button className="absolute -bottom-2 -right-2 size-10 bg-background rounded-2xl border-2 border-border-color flex items-center justify-center shadow-lg hover:bg-primary hover:text-white hover:border-primary transition-all text-primary hover:scale-110">
                                         <Camera size={16} />
                                     </button>
                                 </div>
 
                                 <div className="flex-1 w-full space-y-6">
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Display Name</label>
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Display Alias</label>
                                         <div className="relative">
                                             <input
                                                 value={name}
                                                 onChange={e => setName(e.target.value)}
-                                                className="w-full bg-background p-4 pl-12 rounded-2xl text-sm font-bold outline-none border border-border-color focus:border-primary/20 transition-all font-black"
+                                                className="w-full bg-background p-5 pl-14 rounded-2xl text-sm font-black outline-none border-2 border-border-color focus:border-primary/50 transition-all italic tracking-tight"
                                             />
-                                            <Edit3 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                            <Edit3 className="absolute left-5 top-1/2 -translate-y-1/2 text-primary/40" size={20} />
                                         </div>
                                     </div>
 
                                     <button
                                         onClick={handleSave}
-                                        className="bg-primary text-white px-8 py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all flex items-center gap-2"
+                                        className="bg-primary text-white px-10 py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-3 border-none"
                                     >
-                                        {isSaving ? <Check size={18} /> : 'Save Profile'}
+                                        {isSaving ? <Check size={18} /> : <>Commence <span className="opacity-60 italic">Save</span></>}
                                     </button>
                                 </div>
                             </div>
@@ -105,59 +105,59 @@ const Settings = () => {
 
                     {/* Integrations Section */}
                     <section>
-                        <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest px-4 mb-6">Integrations</h3>
-                        <Card className="p-10">
+                        <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] px-4 mb-6 italic opacity-60">Integrations</h3>
+                        <Card className="p-10 border-none shadow-sm hover-lift bg-card-bg">
                             <div className="space-y-10">
                                 {/* YouTube */}
-                                <div className="flex items-start gap-6">
-                                    <div className="size-16 rounded-2xl bg-red-600 flex items-center justify-center text-white shrink-0 shadow-lg shadow-red-500/20">
+                                <div className="flex items-start gap-8">
+                                    <div className="size-16 rounded-[1.5rem] bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center text-white shrink-0 shadow-xl shadow-red-500/20">
                                         <Play size={28} fill="currentColor" />
                                     </div>
-                                    <div className="flex-1 space-y-6">
+                                    <div className="flex-1 space-y-8">
                                         <div>
-                                            <h3 className="text-lg font-black mb-1">YouTube Analytics</h3>
-                                            <p className="text-xs font-medium text-gray-500 max-w-md italic">Connect your channel to track growth, subscribers, and engagement metrics.</p>
+                                            <h3 className="text-xl font-black mb-1 italic uppercase tracking-tighter text-foreground">Video <span className="text-red-500 italic">Analytics</span></h3>
+                                            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest leading-relaxed">Connect your channel to track growth, subscribers, and engagement metrics.</p>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Channel ID</label>
-                                                <input value={youtubeChannelId} onChange={e => setYoutubeChannelId(e.target.value)} placeholder="UC_x5..." className="w-full bg-background p-4 rounded-xl text-sm font-bold outline-none border border-border-color focus:border-red-500/20" />
+                                            <div className="space-y-3">
+                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Channel Identity</label>
+                                                <input value={youtubeChannelId} onChange={e => setYoutubeChannelId(e.target.value)} placeholder="UC_x5..." className="w-full bg-background p-5 rounded-2xl text-xs font-black outline-none border-2 border-border-color focus:border-red-500/40 transition-all tracking-widest italic" />
                                             </div>
-                                            <div className="space-y-2">
-                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">YouTube API Key</label>
-                                                <input value={youtubeApiKey} onChange={e => setYoutubeApiKey(e.target.value)} type="password" placeholder="AIzaSy..." className="w-full bg-background p-4 rounded-xl text-sm font-bold outline-none border border-border-color focus:border-red-500/20" />
+                                            <div className="space-y-3">
+                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Private Access Key</label>
+                                                <input value={youtubeApiKey} onChange={e => setYoutubeApiKey(e.target.value)} type="password" placeholder="AIzaSy..." className="w-full bg-background p-5 rounded-2xl text-xs font-black outline-none border-2 border-border-color focus:border-red-500/40 transition-all tracking-[0.5em] italic" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="h-px bg-border-color ml-22"></div>
+                                <div className="h-px bg-border-color/50 ml-24"></div>
 
                                 {/* OpenAI */}
-                                <div className="flex items-start gap-6">
-                                    <div className="size-16 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shrink-0 shadow-lg shadow-emerald-500/20">
+                                <div className="flex items-start gap-8">
+                                    <div className="size-16 rounded-[1.5rem] bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shrink-0 shadow-xl shadow-emerald-500/20">
                                         <Sparkles size={28} />
                                     </div>
-                                    <div className="flex-1 space-y-6">
+                                    <div className="flex-1 space-y-8">
                                         <div>
-                                            <h3 className="text-lg font-black mb-1">AI Food Analysis</h3>
-                                            <p className="text-xs font-medium text-gray-500 max-w-md italic">Connect OpenAI to enable automatic calorie and nutrition estimation.</p>
+                                            <h3 className="text-xl font-black mb-1 italic uppercase tracking-tighter text-foreground">AI Intelligence <span className="text-emerald-500 italic">Sync</span></h3>
+                                            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest leading-relaxed">Connect OpenAI to enable automatic calorie and nutrition estimation.</p>
                                         </div>
-                                        <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">OpenAI API Key</label>
-                                            <input value={openaiApiKey} onChange={e => setOpenaiApiKey(e.target.value)} type="password" placeholder="sk-..." className="w-full bg-background p-4 rounded-xl text-sm font-bold outline-none border border-border-color focus:border-emerald-500/20" />
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Network API Token</label>
+                                            <input value={openaiApiKey} onChange={e => setOpenaiApiKey(e.target.value)} type="password" placeholder="sk-..." className="w-full bg-background p-5 rounded-2xl text-xs font-black outline-none border-2 border-border-color focus:border-emerald-500/40 transition-all tracking-[0.5em] italic" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="flex justify-end pt-10 border-t border-border-color mt-10">
+                            <div className="flex justify-end pt-12 border-t border-border-color/50 mt-12">
                                 <button
                                     onClick={handleSaveIntegrations}
                                     disabled={isVerifying}
-                                    className="bg-foreground text-background px-8 py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:scale-[1.05] transition-all flex items-center gap-2 shadow-xl"
+                                    className="bg-primary text-white px-12 py-5 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 border-none disabled:opacity-50"
                                 >
-                                    {isVerifying ? 'Saving Configuration...' : <>Save Integrations <Check size={16} /></>}
+                                    {isVerifying ? <span className="italic">Encrypting Config...</span> : <>Confirm Protocol <Check size={18} /></>}
                                 </button>
                             </div>
                         </Card>
@@ -165,40 +165,40 @@ const Settings = () => {
 
                     {/* Preferences */}
                     <section>
-                        <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest px-4 mb-6">Preferences</h3>
+                        <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] px-4 mb-6 italic opacity-60">Preferences</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <Card className="p-8 hover:border-primary transition-all group">
+                            <Card className="p-8 border-none shadow-sm group hover-lift bg-card-bg">
                                 <div className="flex items-center gap-4 mb-6">
-                                    <div className="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                                        <Bell size={20} />
+                                    <div className="size-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shadow-inner">
+                                        <Bell size={22} />
                                     </div>
-                                    <h4 className="font-black text-sm">Smart Notifications</h4>
+                                    <h4 className="font-black text-sm uppercase tracking-widest text-foreground">Smart Notifications</h4>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <p className="text-xs font-medium text-gray-500">Alerts for habits & milestones</p>
+                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Alerts for habits & milestones</p>
                                     <div
                                         onClick={() => updateSettings({ notificationsEnabled: !settings.notificationsEnabled })}
-                                        className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-all ${settings.notificationsEnabled ? 'bg-primary' : 'bg-gray-200'}`}
+                                        className={`w-14 h-7 rounded-full p-1.5 cursor-pointer transition-all ${settings.notificationsEnabled ? 'bg-primary' : 'bg-background border-2 border-border-color'}`}
                                     >
-                                        <div className={`size-4 bg-white rounded-full shadow-sm transition-transform ${settings.notificationsEnabled ? 'translate-x-6' : 'translate-x-0'}`}></div>
+                                        <div className={`size-4 rounded-full shadow-lg transition-transform ${settings.notificationsEnabled ? 'translate-x-7 bg-white' : 'translate-x-0 bg-border-color'}`}></div>
                                     </div>
                                 </div>
                             </Card>
 
-                            <Card className="p-8 hover:border-primary transition-all group">
+                            <Card className="p-8 border-none shadow-sm group hover-lift bg-card-bg">
                                 <div className="flex items-center gap-4 mb-6">
-                                    <div className="size-10 rounded-xl bg-foreground text-background flex items-center justify-center border border-border-color">
-                                        <Moon size={20} />
+                                    <div className="size-12 rounded-2xl bg-background border-2 border-border-color text-foreground flex items-center justify-center shadow-inner">
+                                        <Moon size={22} />
                                     </div>
-                                    <h4 className="font-black text-sm">Deep Obsidian Theme</h4>
+                                    <h4 className="font-black text-sm uppercase tracking-widest text-foreground">Deep Obsidian Theme</h4>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <p className="text-xs font-medium text-gray-500">Switch between light/dark</p>
+                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Switch between light/dark</p>
                                     <div
                                         onClick={() => updateSettings({ theme: settings.theme === 'dark' ? 'light' : 'dark' })}
-                                        className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-all ${settings.theme === 'dark' ? 'bg-primary' : 'bg-gray-200'}`}
+                                        className={`w-14 h-7 rounded-full p-1.5 cursor-pointer transition-all ${settings.theme === 'dark' ? 'bg-primary' : 'bg-background border-2 border-border-color'}`}
                                     >
-                                        <div className={`size-4 bg-white rounded-full shadow-sm transition-transform ${settings.theme === 'dark' ? 'translate-x-6' : 'translate-x-0'}`}></div>
+                                        <div className={`size-4 rounded-full shadow-lg transition-transform ${settings.theme === 'dark' ? 'translate-x-7 bg-white' : 'translate-x-0 bg-border-color'}`}></div>
                                     </div>
                                 </div>
                             </Card>
@@ -206,31 +206,31 @@ const Settings = () => {
                     </section>
 
                     {/* System Info */}
-                    <Card className="p-10 bg-[#1a1c1b] dark:bg-slate-900 border-none text-white overflow-hidden relative group">
-                        <div className="relative z-10 flex flex-col md:flex-row justify-between gap-10">
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-2 text-primary font-black uppercase text-[10px] tracking-widest">
-                                    <Shield size={14} /> Life OS Core
+                    <Card className="p-12 bg-gradient-to-br from-[#1a1c1b] to-slate-800 border-none text-white overflow-hidden relative group rounded-[2.5rem] shadow-2xl">
+                        <div className="relative z-10 flex flex-col md:flex-row justify-between items-end gap-10">
+                            <div className="space-y-6">
+                                <div className="flex items-center gap-3 text-primary font-black uppercase text-[10px] tracking-[0.4em]">
+                                    <Shield size={16} className="animate-pulse" /> Life OS Core
                                 </div>
-                                <h3 className="text-2xl font-black italic">Sync & Security</h3>
-                                <p className="text-sm opacity-60 font-medium max-w-sm italic tracking-tight">
+                                <h3 className="text-4xl font-black italic uppercase tracking-tighter">Sync & <span className="text-primary italic">Security</span></h3>
+                                <p className="text-sm opacity-60 font-black uppercase tracking-widest max-w-sm leading-relaxed italic">
                                     Your data is stored locally in your browser's mirror. We never upload your life to any cloud without your explicit intent.
                                 </p>
                             </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-white/5 px-6 py-4 rounded-2xl border border-white/5 shadow-inner backdrop-blur-md">
-                                    <Smartphone className="text-primary mb-2" size={18} />
-                                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Version</p>
-                                    <p className="font-black text-sm leading-none">v2.4.0</p>
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="bg-white/5 p-8 rounded-[2rem] border border-white/10 shadow-inner backdrop-blur-xl group-hover:bg-white/10 transition-all">
+                                    <Smartphone className="text-primary mb-3" size={24} />
+                                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-1">Architecture</p>
+                                    <p className="font-black text-xl italic tracking-tighter">v2.4.0</p>
                                 </div>
-                                <div className="bg-white/5 px-6 py-4 rounded-2xl border border-white/5 shadow-inner backdrop-blur-md">
-                                    <Check className="text-sage mb-2" size={18} />
-                                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Status</p>
-                                    <p className="font-black text-sm leading-none">Encrypted</p>
+                                <div className="bg-white/5 p-8 rounded-[2rem] border border-white/10 shadow-inner backdrop-blur-xl group-hover:bg-white/10 transition-all">
+                                    <Check className="text-sage mb-3" size={24} />
+                                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-1">Encryption</p>
+                                    <p className="font-black text-xl italic tracking-tighter">Verified</p>
                                 </div>
                             </div>
                         </div>
-                        <SettingsIcon className="absolute -right-8 -bottom-8 opacity-5 group-hover:rotate-12 transition-transform duration-1000" size={180} />
+                        <SettingsIcon className="absolute -right-12 -bottom-12 opacity-[0.03] group-hover:opacity-[0.08] group-hover:rotate-45 transition-all duration-1000 group-hover:scale-110" size={300} />
                     </Card>
                 </div>
             </main>

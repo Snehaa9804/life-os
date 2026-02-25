@@ -99,16 +99,16 @@ const HabitIntelligence = () => {
     }, [habits]);
 
     return (
-        <div className="flex-1 flex flex-col overflow-hidden fade-in bg-[#f4f7f6] dark:bg-[#0f1211] text-[#1a1c1b] dark:text-gray-100">
+        <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground transition-all">
             {/* Top Status Bar */}
-            <div className="h-10 bg-white dark:bg-[#1a1d1c] border-b border-gray-100 dark:border-gray-800 flex items-center justify-between px-12 text-sm font-bold text-gray-500 uppercase tracking-widest">
+            <div className="h-10 bg-card-bg border-b border-border-color flex items-center justify-between px-12 text-sm font-bold text-gray-500 uppercase tracking-widest shrink-0">
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                         <div className="size-2 rounded-full bg-sage"></div>
                         Consistency System: Active // snehapal1090@gmail.com
                     </div>
                 </div>
-                <button className="px-3 py-1 border border-gray-200 dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Logout</button>
+                <button className="px-3 py-1 border border-border-color rounded hover:bg-primary/5 transition-colors">Logout</button>
             </div>
 
             {/* Integrated Header */}
@@ -117,15 +117,15 @@ const HabitIntelligence = () => {
                     <h1 className="text-sm font-black uppercase tracking-[0.4em] text-gray-400 mb-1">Life OS v.2 // Habit Intelligence</h1>
                     <div className="flex items-center gap-6">
                         <div className="flex items-center gap-4">
-                            <button onClick={prevMonth} className="size-8 rounded-full bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 flex items-center justify-center hover:bg-gray-50 transition-all">
+                            <button onClick={prevMonth} className="size-8 rounded-full bg-card-bg border border-border-color flex items-center justify-center hover:bg-primary/5 transition-all text-foreground">
                                 <ChevronLeft size={16} />
                             </button>
                             <h2 className="text-3xl font-black">{monthName}</h2>
-                            <button onClick={nextMonth} className="size-8 rounded-full bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 flex items-center justify-center hover:bg-gray-50 transition-all">
+                            <button onClick={nextMonth} className="size-8 rounded-full bg-card-bg border border-border-color flex items-center justify-center hover:bg-primary/5 transition-all text-foreground">
                                 <ChevronRight size={16} />
                             </button>
                         </div>
-                        <div className="h-8 w-px bg-gray-200 dark:bg-gray-800"></div>
+                        <div className="h-8 w-px bg-border-color"></div>
                         <div className="flex gap-6">
                             <div className="flex flex-col">
                                 <span className="text-sm font-black text-gray-400 uppercase tracking-widest">Efficiency</span>
@@ -157,7 +157,7 @@ const HabitIntelligence = () => {
                         </div>
 
                         {/* Inline Quick Add */}
-                        <Card className="p-6 bg-white dark:bg-[#1a1d1c] border-dashed border-2 border-gray-200 dark:border-gray-800 hover:border-sage/50 transition-all group">
+                        <Card className="p-6 bg-card-bg border-dashed border-2 border-border-color hover:border-sage/50 transition-all group">
                             <div className="flex items-center gap-4">
                                 <div className="size-10 rounded-xl bg-sage/10 flex items-center justify-center">
                                     <Plus size={20} className="text-sage" />
@@ -176,8 +176,8 @@ const HabitIntelligence = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {habits.map((habit) => (
-                                <Card key={habit.id} className="p-6 bg-white dark:bg-[#1a1d1c] hover:shadow-xl hover:shadow-sage/5 transition-all group border-gray-100 dark:border-gray-800 relative overflow-hidden">
-                                    <div className="flex items-start justify-between relative z-10">
+                                <Card key={habit.id} className="p-6 bg-card-bg hover:shadow-xl hover:shadow-sage/5 transition-all group border-border-color relative overflow-hidden">
+                                    <div className="flex items-start justify-between relative z-10 text-foreground">
                                         <div>
                                             <div className="flex items-center gap-2 mb-2">
                                                 <span className="px-2 py-0.5 rounded text-sm font-black uppercase tracking-widest bg-sage/10 text-sage border border-sage/20">
@@ -190,13 +190,13 @@ const HabitIntelligence = () => {
                                         <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <button
                                                 onClick={() => openEditModal(habit)}
-                                                className="p-2 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-400 hover:text-sage transition-colors"
+                                                className="p-2 rounded-lg bg-primary/5 text-gray-400 hover:text-sage transition-colors"
                                             >
                                                 <Edit3 size={16} />
                                             </button>
                                             <button
                                                 onClick={() => { if (confirm('Delete this habit?')) deleteHabit(habit.id); }}
-                                                className="p-2 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-400 hover:text-red-500 transition-colors"
+                                                className="p-2 rounded-lg bg-primary/5 text-gray-400 hover:text-red-500 transition-colors"
                                             >
                                                 <Trash2 size={16} />
                                             </button>
@@ -210,7 +210,7 @@ const HabitIntelligence = () => {
                                         </div>
                                         <span className="text-sm font-black text-gray-400 uppercase">Status // Locked</span>
                                     </div>
-                                    <div className="absolute -right-4 -bottom-4 size-24 bg-sage/5 rounded-full blur-2xl group-hover:bg-sage/10 transition-colors"></div>
+                                    <div className="absolute -right-4 -bottom-4 size-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>
                                 </Card>
                             ))}
                         </div>
@@ -219,7 +219,7 @@ const HabitIntelligence = () => {
                     {/* Analysis & Motivation Through Proof Section */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
                         {/* Analysis Card */}
-                        <Card className="p-10 bg-white dark:bg-[#1a1d1c] flex flex-col">
+                        <Card className="p-10 bg-card-bg flex flex-col">
                             <h2 className="text-base font-black mb-8 text-center uppercase tracking-widest">Analytics Dashboard</h2>
 
                             <div className="flex-1 space-y-6">
@@ -240,7 +240,7 @@ const HabitIntelligence = () => {
                                                 <span className="text-lg font-black">{goal}</span>
                                                 <span className="text-lg font-black">{actual}</span>
                                                 <div className="flex justify-center">
-                                                    <div className="w-16 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                                    <div className="w-16 h-1.5 bg-primary/10 rounded-full overflow-hidden">
                                                         <div className="h-full bg-tangerine" style={{ width: `${Math.min(progress, 100)}%` }}></div>
                                                     </div>
                                                 </div>
@@ -257,8 +257,8 @@ const HabitIntelligence = () => {
                                         <AreaChart data={intensityData}>
                                             <defs>
                                                 <linearGradient id="intensityColor" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="5%" stopColor="#2D5A27" stopOpacity={0.3} />
-                                                    <stop offset="95%" stopColor="#2D5A27" stopOpacity={0} />
+                                                    <stop offset="5%" stopColor="var(--color-sage)" stopOpacity={0.3} />
+                                                    <stop offset="95%" stopColor="var(--color-sage)" stopOpacity={0} />
                                                 </linearGradient>
                                             </defs>
                                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
@@ -286,7 +286,7 @@ const HabitIntelligence = () => {
                                             <Area
                                                 type="monotone"
                                                 dataKey="intensity"
-                                                stroke="#2D5A27"
+                                                stroke="var(--color-sage)"
                                                 strokeWidth={3}
                                                 fillOpacity={1}
                                                 fill="url(#intensityColor)"
@@ -296,37 +296,39 @@ const HabitIntelligence = () => {
                                 </div>
                             </div>
                         </Card>
-                        <Card className="p-10 bg-white dark:bg-[#1a1d1c]">
-                            <h3 className="text-base font-black uppercase tracking-widest mb-8">Completed Habits Graph</h3>
-                            <div className="h-48 flex items-end gap-1">
+                        <Card className="p-10 bg-card-bg border-none shadow-sm group hover-lift overflow-hidden">
+                            <h3 className="text-base font-black uppercase tracking-[0.2em] mb-8 text-foreground/60 italic">Completed Habits Graph</h3>
+                            <div className="h-48 flex items-end gap-1.5 px-2">
                                 {intensityData.map((d, i) => (
                                     <div
                                         key={i}
-                                        className="flex-1 bg-primary/20 hover:bg-primary transition-colors rounded-t-sm"
-                                        style={{ height: `${Math.max(d.intensity, 5)}%` }}
+                                        className="flex-1 bg-primary/20 hover:bg-primary transition-all rounded-t-lg relative"
+                                        style={{ height: `${Math.max(d.intensity, 8)}%` }}
                                         title={d.name || `Day ${i + 1}`}
-                                    ></div>
+                                    >
+                                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-t-lg"></div>
+                                    </div>
                                 ))}
                             </div>
-                            <div className="flex justify-between mt-4 text-sm font-black text-gray-400 uppercase tracking-widest">
+                            <div className="flex justify-between mt-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">
                                 <span>30 Days Ago</span>
                                 <span>Today</span>
                             </div>
                         </Card>
 
-                        <Card className="p-10 bg-white dark:bg-[#1a1d1c]">
-                            <h3 className="text-base font-black uppercase tracking-widest mb-8">Monthly Visual proof</h3>
-                            <div className="grid grid-cols-7 gap-2">
+                        <Card className="p-10 bg-card-bg border-none shadow-sm group hover-lift">
+                            <h3 className="text-base font-black uppercase tracking-[0.2em] mb-8 text-foreground/60 italic">Monthly Visual proof</h3>
+                            <div className="grid grid-cols-7 gap-3">
                                 {monthlyGrid.map((d, i) => (
                                     <div
                                         key={i}
-                                        className={`aspect-square rounded-md flex items-center justify-center text-sm font-bold transition-all ${d.done ? 'bg-sage text-white shadow-lg shadow-sage/20' : 'bg-gray-50 dark:bg-gray-800 text-gray-400'}`}
+                                        className={`aspect-square rounded-xl flex items-center justify-center text-xs font-black transition-all border-2 ${d.done ? 'bg-sage border-sage text-white shadow-xl shadow-sage/30 scale-[1.05]' : 'bg-background border-border-color/50 text-foreground/20 hover:border-primary/30'}`}
                                     >
                                         {d.day}
                                     </div>
                                 ))}
                             </div>
-                            <p className="mt-6 text-sm font-medium text-gray-500 text-center">Consistency is the bridge between goals and achievement.</p>
+                            <p className="mt-8 text-[11px] font-black italic text-foreground/40 text-center uppercase tracking-widest">Consistency is the bridge between goals and achievement.</p>
                         </Card>
                     </div>
                 </div>
@@ -335,24 +337,27 @@ const HabitIntelligence = () => {
             {/* Add/Edit Habit Modal */}
             {(isAdding || editingHabit) && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <Card className="w-full max-w-md p-10 bg-white dark:bg-[#1a1d1c]">
-                        <h2 className="text-xl font-black mb-8">{editingHabit ? 'RECONFIGURE HABIT' : 'INITIATE NEW HABIT'}</h2>
-                        <div className="space-y-6">
-                            <div className="space-y-2">
-                                <label className="text-sm font-black text-gray-400 uppercase tracking-widest">Habit Name</label>
+                    <Card className="w-full max-w-md p-12 bg-card-bg rounded-[2.5rem] border-none shadow-2xl overflow-hidden relative">
+                        <h2 className="text-3xl font-black mb-10 italic uppercase tracking-tighter text-foreground">
+                            {editingHabit ? 'Reconfigure' : 'Initiate'} <span className="text-primary italic">Habit</span>
+                        </h2>
+                        <div className="space-y-8">
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Habit Specification</label>
                                 <input
+                                    autoFocus
                                     value={newHabitName}
                                     onChange={e => setNewHabitName(e.target.value)}
                                     placeholder="e.g. 5am Wake Up"
-                                    className="w-full bg-gray-50 dark:bg-gray-800 p-4 rounded-xl text-base outline-none focus:ring-2 focus:ring-sage/20 border border-transparent focus:border-sage/20"
+                                    className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-base font-black outline-none focus:border-primary/50 transition-all placeholder:text-foreground/20 italic tracking-tighter"
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-black text-gray-400 uppercase tracking-widest">Category</label>
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Category Domain</label>
                                 <select
                                     value={newHabitCategory}
                                     onChange={e => setNewHabitCategory(e.target.value)}
-                                    className="w-full bg-gray-50 dark:bg-gray-800 p-4 rounded-xl text-base outline-none focus:ring-2 focus:ring-sage/20 border border-transparent"
+                                    className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-sm font-black outline-none appearance-none cursor-pointer focus:border-primary/50 transition-all uppercase tracking-widest"
                                 >
                                     <option value="Mind">Mind</option>
                                     <option value="Body">Body</option>
@@ -367,15 +372,15 @@ const HabitIntelligence = () => {
                                         setEditingHabit(null);
                                         setNewHabitName('');
                                     }}
-                                    className="flex-1 py-4 text-sm font-black uppercase tracking-widest text-gray-400 hover:text-gray-600 transition-colors"
+                                    className="flex-1 py-4 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 hover:text-foreground transition-colors"
                                 >
                                     Abort
                                 </button>
                                 <button
                                     onClick={editingHabit ? handleUpdateHabit : handleAddHabit}
-                                    className="flex-1 py-4 bg-sage text-white rounded-xl text-sm font-black uppercase tracking-widest shadow-lg shadow-sage/20 hover:scale-[1.02] transition-all"
+                                    className="flex-1 py-5 bg-sage text-white rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-sage/30 hover:scale-[1.02] active:scale-[0.98] transition-all border-none"
                                 >
-                                    {editingHabit ? 'Update' : 'Establish'}
+                                    {editingHabit ? 'Revise' : 'Establish'}
                                 </button>
                             </div>
                         </div>

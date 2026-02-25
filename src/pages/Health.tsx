@@ -18,14 +18,11 @@ import {
     TrendingUp,
     Droplets,
     Sparkles,
-    AlertCircle,
-    Info
+    AlertCircle
 } from 'lucide-react';
 import {
     LineChart, Line, XAxis, ResponsiveContainer, BarChart, Bar, Cell
 } from 'recharts';
-import { analyzeFoodWithAI } from '../services/ai';
-import { Loader2 } from 'lucide-react';
 
 const HealthHub = () => {
     const { healthLogs, updateHealth, periods, addPeriod, deletePeriod, settings, updateSettings } = useStore();
@@ -45,8 +42,6 @@ const HealthHub = () => {
     const [sleepInput, setSleepInput] = useState('');
     const [manualCalories, setManualCalories] = useState('');
     const [manualProtein, setManualProtein] = useState('');
-    const [isAnalyzing, setIsAnalyzing] = useState(false);
-    const [aiError, setAiError] = useState<string | null>(null);
     const [cycleStartDate, setCycleStartDate] = useState(new Date().toLocaleDateString('en-CA'));
 
     const [profileForm, setProfileForm] = useState({
@@ -196,42 +191,8 @@ const HealthHub = () => {
         setFoodInput('');
         setManualCalories('');
         setManualProtein('');
-        setAiError(null);
     };
 
-    const handleAIAnalysis = async () => {
-        if (!foodInput) return;
-
-        setIsAnalyzing(true);
-        setAiError(null);
-
-        try {
-            // Priority order for API keys: env -> local settings
-            const envKey = import.meta.env.VITE_OPENAI_API_KEY;
-            const settingsKey = settings.openaiApiKey;
-            const apiKey = (envKey && !envKey.startsWith('YOUR_')) ? envKey : settingsKey;
-
-            if (!apiKey || apiKey.startsWith('YOUR_')) {
-                throw new Error("OpenAI API key missing. Please set it in Settings or .env");
-            }
-
-            const result = await analyzeFoodWithAI(foodInput, apiKey);
-
-            setManualCalories(result.calories.toString());
-            setManualProtein(result.protein.toString());
-
-            // Optionally update quality if it's high junk
-            if (result.isJunkFood) {
-                updateHealth({ junkFoodCount: (todayLog.junkFoodCount || 0) + 1 });
-            }
-
-        } catch (error: any) {
-            console.error(error);
-            setAiError(error.message || "Failed to analyze food. Check your API key.");
-        } finally {
-            setIsAnalyzing(false);
-        }
-    };
 
     const handleSaveProfile = () => {
         updateSettings({
@@ -293,40 +254,40 @@ const HealthHub = () => {
     return (
         <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground">
             {/* Header */}
-            <header className="h-16 px-12 flex items-center justify-between shrink-0 bg-card-bg border-b border-border-color">
-                <div className="flex items-center gap-8">
+            <header className="h-20 px-12 flex items-center justify-between shrink-0 bg-card-bg border-b border-border-color">
+                <div className="flex items-center gap-10">
                     <div className="flex items-center gap-3">
-                        <Heart className="text-primary" size={20} />
-                        <h1 className="text-lg font-black tracking-tight italic">Health Hub</h1>
+                        <Heart className="text-primary" size={24} />
+                        <h1 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">Health <span className="text-primary italic">Hub</span></h1>
                     </div>
 
-                    <nav className="flex gap-1 bg-gray-50 dark:bg-border-color p-1 rounded-xl">
+                    <nav className="flex gap-1 bg-background p-1.5 rounded-2xl border-2 border-border-color">
                         <button
                             onClick={() => setActiveTab('track')}
-                            className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'track' ? 'bg-background text-primary shadow-sm' : 'text-gray-400'}`}
+                            className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${activeTab === 'track' ? 'bg-primary text-white shadow-xl shadow-primary/20 scale-[1.05]' : 'text-foreground/40 hover:text-foreground'}`}
                         >
                             Daily Tracker
                         </button>
                         <button
                             onClick={() => setActiveTab('gain')}
-                            className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'gain' ? 'bg-background text-primary shadow-sm' : 'text-gray-400'}`}
+                            className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${activeTab === 'gain' ? 'bg-primary text-white shadow-xl shadow-primary/20 scale-[1.05]' : 'text-foreground/40 hover:text-foreground'}`}
                         >
                             Gain Support
                         </button>
                     </nav>
                 </div>
-                <div className="flex items-center gap-3">
-                    <button onClick={() => setIsEditingProfile(true)} className="p-2.5 bg-gray-50 dark:bg-slate-800 text-gray-500 rounded-xl hover:bg-gray-100 transition-all">
-                        <User size={18} />
+                <div className="flex items-center gap-4">
+                    <button onClick={() => setIsEditingProfile(true)} className="size-11 flex items-center justify-center bg-primary/5 text-primary rounded-[1.2rem] hover:bg-primary hover:text-white transition-all shadow-sm border-none">
+                        <User size={20} />
                     </button>
-                    <button onClick={() => setIsLoggingSleep(true)} className="p-2.5 bg-gray-50 dark:bg-border-color text-gray-500 rounded-xl hover:bg-gray-100 transition-all">
-                        <Moon size={18} />
+                    <button onClick={() => setIsLoggingSleep(true)} className="size-11 flex items-center justify-center bg-primary/5 text-primary rounded-[1.2rem] hover:bg-primary hover:text-white transition-all shadow-sm border-none">
+                        <Moon size={20} />
                     </button>
-                    <button onClick={() => setIsLoggingWeight(true)} className="bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 px-5 py-2 rounded-xl text-xs font-black flex items-center gap-2 hover:bg-primary/10 hover:text-primary transition-all uppercase tracking-widest">
-                        <Scale size={16} /> Log Weight
+                    <button onClick={() => setIsLoggingWeight(true)} className="bg-background border-2 border-border-color text-foreground px-6 py-3 rounded-[1.2rem] text-[10px] font-black flex items-center gap-3 hover:border-primary hover:text-primary transition-all uppercase tracking-[0.2em] shadow-sm">
+                        <Scale size={18} className="text-primary" /> Log Weight
                     </button>
-                    <button onClick={() => setIsLoggingFood(true)} className="bg-primary text-white px-6 py-2 rounded-xl text-xs font-black flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all uppercase tracking-widest">
-                        <Utensils size={16} /> Log Meals
+                    <button onClick={() => setIsLoggingFood(true)} className="bg-primary text-white px-8 py-3.5 rounded-[1.2rem] text-[10px] font-black flex items-center gap-3 shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-[0.2em] border-none">
+                        <Utensils size={18} /> Log Meals
                     </button>
                 </div>
             </header>
@@ -339,16 +300,16 @@ const HealthHub = () => {
 
                             {/* Summary Grid */}
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                <Card className="p-8 border-none shadow-sm dark:bg-slate-900/50">
+                                <Card className="p-8 border-none shadow-sm bg-card-bg hover-lift">
                                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-4">Nutrition</span>
                                     <div className="space-y-4">
                                         <div className="flex justify-between items-baseline">
                                             <div className="flex items-baseline gap-2">
-                                                <h3 className="text-3xl font-black italic">{todayLog.calories || 0}</h3>
+                                                <h3 className="text-3xl font-black italic text-foreground">{todayLog.calories || 0}</h3>
                                                 <span className="text-[10px] font-bold text-gray-400">KCAL</span>
                                             </div>
                                         </div>
-                                        <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                        <div className="h-1.5 w-full bg-primary/5 rounded-full overflow-hidden">
                                             <div className="h-full bg-sage" style={{ width: `${Math.min(((todayLog.calories || 0) / 2500) * 100, 100)}%` }}></div>
                                         </div>
                                         <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest">
@@ -358,13 +319,13 @@ const HealthHub = () => {
                                     </div>
                                 </Card>
 
-                                <Card className="p-8 border-none shadow-sm dark:bg-slate-900/50">
+                                <Card className="p-8 border-none shadow-sm bg-card-bg hover-lift">
                                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-4">Weight progress</span>
                                     <div className="flex items-baseline gap-2 mb-2">
-                                        <h3 className="text-4xl font-black italic">{todayLog.weight || '--'}</h3>
+                                        <h3 className="text-4xl font-black italic text-foreground">{todayLog.weight || '--'}</h3>
                                         <span className="text-xs font-bold text-gray-400">{settings.weightUnit}</span>
                                     </div>
-                                    <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden mb-2">
+                                    <div className="h-1.5 w-full bg-primary/5 rounded-full overflow-hidden mb-2">
                                         {todayLog.weight && settings.targetWeight && (
                                             <div
                                                 className="h-full bg-primary"
@@ -377,13 +338,13 @@ const HealthHub = () => {
                                     </span>
                                 </Card>
 
-                                <Card className="p-8 border-none shadow-sm dark:bg-slate-900/50 relative group">
+                                <Card className="p-8 border-none shadow-sm bg-card-bg relative group hover-lift">
                                     <div className="flex justify-between items-start mb-4">
                                         <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Water intake</span>
                                         {todayLog.hydrationCups > 0 && (
                                             <button
                                                 onClick={() => handleHydration(-1)}
-                                                className="p-1.5 bg-gray-50 dark:bg-slate-800 text-gray-400 rounded-lg hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
+                                                className="p-1.5 bg-primary/5 text-gray-400 rounded-lg hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
                                                 title="Undo last glass"
                                             >
                                                 <RotateCcw size={14} />
@@ -391,47 +352,47 @@ const HealthHub = () => {
                                         )}
                                     </div>
                                     <div className="flex items-baseline gap-2 mb-2">
-                                        <h3 className="text-4xl font-black italic">{(todayLog.hydrationCups || 0) * 0.25}</h3>
+                                        <h3 className="text-4xl font-black italic text-foreground">{(todayLog.hydrationCups || 0) * 0.25}</h3>
                                         <span className="text-xs font-bold text-gray-400">L / {settings.hydrationGoalLiters}L</span>
                                     </div>
-                                    <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden mb-4">
-                                        <div className="h-full bg-blue-500" style={{ width: `${Math.min(((todayLog.hydrationCups || 0) * 0.25 / (settings.hydrationGoalLiters || 3)) * 100, 100)}%` }}></div>
+                                    <div className="h-1.5 w-full bg-primary/5 rounded-full overflow-hidden mb-4">
+                                        <div className="h-full bg-primary" style={{ width: `${Math.min(((todayLog.hydrationCups || 0) * 0.25 / (settings.hydrationGoalLiters || 3)) * 100, 100)}%` }}></div>
                                     </div>
                                     <div className="flex gap-2">
-                                        <button onClick={() => handleHydration(250)} className="flex-1 py-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 rounded-lg text-[8px] font-black uppercase tracking-tighter transition-all">
+                                        <button onClick={() => handleHydration(250)} className="flex-1 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg text-[8px] font-black uppercase tracking-tighter transition-all">
                                             + Glass
                                         </button>
-                                        <button onClick={() => handleHydration(1000)} className="flex-1 py-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 rounded-lg text-[8px] font-black uppercase tracking-tighter transition-all">
+                                        <button onClick={() => handleHydration(1000)} className="flex-1 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg text-[8px] font-black uppercase tracking-tighter transition-all">
                                             + Litre
                                         </button>
                                     </div>
                                 </Card>
 
-                                <Card className="p-8 border-none shadow-sm dark:bg-slate-900/50">
+                                <Card className="p-8 border-none shadow-sm bg-card-bg hover-lift">
                                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-4">Sleep cycle</span>
                                     <div className="flex items-baseline gap-2 mb-2">
-                                        <h3 className="text-4xl font-black italic">{todayLog.sleepHours || 0}</h3>
+                                        <h3 className="text-4xl font-black italic text-foreground">{todayLog.sleepHours || 0}</h3>
                                         <span className="text-xs font-bold text-gray-400">Hrs / {settings.sleepGoalHours}h</span>
                                     </div>
-                                    <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden mb-4">
-                                        <div className="h-full bg-indigo-500" style={{ width: `${Math.min(((todayLog.sleepHours || 0) / (settings.sleepGoalHours || 8)) * 100, 100)}%` }}></div>
+                                    <div className="h-1.5 w-full bg-primary/5 rounded-full overflow-hidden mb-4">
+                                        <div className="h-full bg-sage" style={{ width: `${Math.min(((todayLog.sleepHours || 0) / (settings.sleepGoalHours || 8)) * 100, 100)}%` }}></div>
                                     </div>
-                                    <button onClick={() => setIsLoggingSleep(true)} className="w-full py-2 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-500 rounded-lg text-[8px] font-black uppercase tracking-widest transition-all">
+                                    <button onClick={() => setIsLoggingSleep(true)} className="w-full py-2 bg-sage/10 hover:bg-sage/20 text-sage rounded-lg text-[8px] font-black uppercase tracking-widest transition-all">
                                         Log Sleep
                                     </button>
                                 </Card>
                             </div>
 
                             {/* Motivation/Alert Card */}
-                            <div className="bg-[#1a1c1b] p-8 rounded-[2.5rem] text-white flex items-center gap-8 relative overflow-hidden group">
-                                <div className="size-16 bg-sage/20 rounded-2xl flex items-center justify-center relative z-10">
-                                    {calculateCycleStats?.isPms ? <AlertCircle className="text-primary animate-pulse" size={32} /> : <Flame className="text-sage" size={32} />}
+                            <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-10 rounded-[2.5rem] border-2 border-primary/10 flex items-center gap-10 relative overflow-hidden group shadow-sm">
+                                <div className="size-20 bg-primary/20 rounded-3xl flex items-center justify-center relative z-10 shadow-inner">
+                                    {calculateCycleStats?.isPms ? <AlertCircle className="text-primary animate-pulse" size={40} /> : <Flame className="text-primary" size={40} />}
                                 </div>
                                 <div className="relative z-10 flex-1">
-                                    <h3 className={`font-bold mb-1 italic ${calculateCycleStats?.isPms ? 'text-primary' : 'text-sage'}`}>
-                                        {calculateCycleStats?.isPms ? 'PMS Protocol Active' : 'The Gain Protocol'}
+                                    <h3 className={`text-xl font-black mb-2 italic uppercase tracking-tighter ${calculateCycleStats?.isPms ? 'text-primary' : 'text-foreground'}`}>
+                                        {calculateCycleStats?.isPms ? 'PMS Protocol Active' : 'Intelligent <span className="text-primary">Stamina</span> Alignment'}
                                     </h3>
-                                    <p className="text-sm opacity-80 leading-relaxed font-medium">
+                                    <p className="text-sm text-foreground/60 leading-relaxed font-black uppercase tracking-widest italic max-w-2xl">
                                         {calculateCycleStats?.isPms
                                             ? "Early cycle warnings detected. Increase hydration and prioritize high-magnesium foods to support your body."
                                             : ((todayLog.calories || 0) > 2200
@@ -439,7 +400,7 @@ const HealthHub = () => {
                                                 : `You're currently in a deficit. To reach ${settings.targetWeight || '--'}kg, prioritize healthy fats.`)}
                                     </p>
                                 </div>
-                                <Zap className="absolute -right-8 -bottom-8 text-white/5 group-hover:scale-110 transition-transform duration-1000" size={160} />
+                                <Zap className="absolute -right-8 -bottom-8 text-primary/5 group-hover:scale-110 transition-transform duration-1000" size={200} />
                             </div>
 
                             {/* Weekly Trends */}
@@ -451,7 +412,7 @@ const HealthHub = () => {
                                             <LineChart data={last7Days}>
                                                 <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} />
                                                 <Line type="monotone" dataKey="water" stroke="var(--color-primary)" strokeWidth={3} dot={false} />
-                                                <Line type="monotone" dataKey="food" stroke="#6AA094" strokeWidth={3} dot={false} />
+                                                <Line type="monotone" dataKey="food" stroke="var(--color-sage)" strokeWidth={3} dot={false} />
                                             </LineChart>
                                         </ResponsiveContainer>
                                     </div>
@@ -539,31 +500,36 @@ const HealthHub = () => {
                                 <Calendar className="absolute -right-12 -bottom-12 text-gray-100 dark:text-white/5" size={200} />
                             </Card>
 
-                            <Card className="p-10 relative overflow-hidden bg-slate-900 border-none text-white">
-                                <div className="flex justify-between items-center mb-8 relative z-10">
-                                    <h3 className="text-sm font-black uppercase tracking-widest italic flex items-center gap-2">
-                                        <History size={18} className="text-primary" /> Logged Cycles
+                            <Card className="p-10 relative overflow-hidden bg-card-bg border-none shadow-sm group hover-lift">
+                                <div className="flex justify-between items-center mb-10 relative z-10">
+                                    <h3 className="text-sm font-black uppercase tracking-[0.2em] italic flex items-center gap-3 text-foreground/60">
+                                        <History size={20} className="text-primary" /> Logged Cycles
                                     </h3>
                                 </div>
                                 <div className="space-y-4 relative z-10">
                                     {periods.length > 0 ? periods.slice(0, 4).map((p, i) => (
-                                        <div key={i} className="group flex justify-between items-center p-4 bg-white/5 hover:bg-white/10 rounded-2xl transition-all border border-transparent hover:border-white/10">
-                                            <div className="flex items-center gap-3">
-                                                <div className={`size-2 rounded-full ${p.intensity === 'heavy' ? 'bg-red-500' : p.intensity === 'medium' ? 'bg-primary' : 'bg-sage'}`} />
-                                                <span className="text-xs font-black">{new Date(p.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                                        <div key={i} className="group flex justify-between items-center p-5 bg-background border-2 border-border-color/50 hover:border-primary/30 rounded-2xl transition-all shadow-sm">
+                                            <div className="flex items-center gap-4">
+                                                <div className={`size-3 rounded-full ${p.intensity === 'heavy' ? 'bg-red-500' : p.intensity === 'medium' ? 'bg-primary' : 'bg-sage'} shadow-sm`} />
+                                                <div className="flex flex-col">
+                                                    <span className="text-[10px] font-black uppercase tracking-widest text-foreground">{new Date(p.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                                                    <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest italic">{p.intensity} Flow</span>
+                                                </div>
                                             </div>
                                             <button
                                                 onClick={() => deletePeriod(p.startDate)}
-                                                className="p-2 text-gray-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all scale-75"
+                                                className="p-2 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all hover:scale-110 border-none cursor-pointer"
                                             >
-                                                <Trash2 size={16} />
+                                                <Trash2 size={18} />
                                             </button>
                                         </div>
                                     )) : (
-                                        <p className="text-[10px] font-bold text-gray-500 italic px-2">No history logged yet.</p>
+                                        <div className="p-8 text-center bg-background border-2 border-dashed border-border-color rounded-2xl">
+                                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">No history logged yet.</p>
+                                        </div>
                                     )}
                                 </div>
-                                <History className="absolute -right-8 -bottom-8 text-white/5" size={120} />
+                                <History className="absolute -right-8 -bottom-8 text-primary/5 group-hover:rotate-12 transition-transform duration-700" size={150} />
                             </Card>
                         </div>
                     </div>
@@ -571,86 +537,86 @@ const HealthHub = () => {
                     <div className="max-w-4xl mx-auto space-y-12">
                         {/* Gain Support Content */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <Card className="p-8 text-center bg-primary/5 border-primary/20">
+                            <Card className="p-8 text-center bg-card-bg border-none shadow-sm group hover-lift">
                                 <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-2">TARGET CALORIES</span>
                                 <h3 className="text-4xl font-black text-primary italic">{getGainSupport.targetCalories}</h3>
                                 <p className="text-[10px] font-bold text-gray-400 mt-2 italic">~400 kcal surplus</p>
                             </Card>
-                            <Card className="p-8 text-center bg-sage/5 border-sage/20">
+                            <Card className="p-8 text-center bg-card-bg border-none shadow-sm group hover-lift">
                                 <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-2">PROTEIN GOAL</span>
                                 <h3 className="text-4xl font-black text-sage italic">{getGainSupport.proteinGoal}g</h3>
                                 <p className="text-[10px] font-bold text-gray-400 mt-2 italic">1.8g / kg weight</p>
                             </Card>
-                            <Card className="p-8 text-center bg-blue-500/5 border-blue-500/20">
+                            <Card className="p-8 text-center bg-card-bg border-none shadow-sm group hover-lift">
                                 <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-2">BASAL METABOLIC RATE</span>
-                                <h3 className="text-4xl font-black text-blue-500 italic">{getGainSupport.bmr}</h3>
+                                <h3 className="text-4xl font-black text-tangerine italic">{getGainSupport.bmr}</h3>
                                 <p className="text-[10px] font-bold text-gray-400 mt-2 italic">Resting expenditure</p>
                             </Card>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <Card className="p-10">
+                            <Card className="p-10 border-none bg-card-bg shadow-sm">
                                 <div className="flex items-center gap-3 mb-8">
                                     <TrendingUp className="text-primary" size={24} />
                                     <h3 className="text-lg font-black italic uppercase tracking-tighter">Gain Guide</h3>
                                 </div>
                                 <div className="space-y-6">
-                                    <div className="flex gap-4 p-4 bg-gray-50 dark:bg-slate-800 rounded-2xl">
-                                        <div className="size-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary shrink-0">
+                                    <div className="flex gap-4 p-5 bg-primary/5 rounded-2xl border border-primary/10 hover:border-primary/30 transition-all">
+                                        <div className="size-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary shrink-0 shadow-sm">
                                             <Flame size={18} />
                                         </div>
                                         <div>
-                                            <h4 className="text-sm font-black mb-1">High-Calorie Healthy Foods</h4>
-                                            <p className="text-xs text-gray-500 leading-relaxed">Avocados, nuts/seeds, peanut butter, whole eggs, oats, and full-fat dairy.</p>
+                                            <h4 className="text-sm font-black mb-1 text-foreground">High-Calorie Healthy Foods</h4>
+                                            <p className="text-[11px] text-gray-400 font-medium leading-relaxed">Avocados, nuts/seeds, peanut butter, whole eggs, oats, and full-fat dairy.</p>
                                         </div>
                                     </div>
-                                    <div className="flex gap-4 p-4 bg-gray-50 dark:bg-slate-800 rounded-2xl">
-                                        <div className="size-10 bg-sage/10 rounded-xl flex items-center justify-center text-sage shrink-0">
+                                    <div className="flex gap-4 p-5 bg-card-bg rounded-2xl border border-border-color/50 hover:border-sage/30 transition-all">
+                                        <div className="size-10 bg-sage/10 rounded-xl flex items-center justify-center text-sage shrink-0 shadow-sm">
                                             <Utensils size={18} />
                                         </div>
                                         <div>
-                                            <h4 className="text-sm font-black mb-1">Meal Timing</h4>
-                                            <p className="text-xs text-gray-500 leading-relaxed">Aim for 3 large meals and 2-3 calorie-dense snacks. Don't skip breakfast.</p>
+                                            <h4 className="text-sm font-black mb-1 text-foreground">Meal Timing</h4>
+                                            <p className="text-[11px] text-gray-400 font-medium leading-relaxed">Aim for 3 large meals and 2-3 calorie-dense snacks. Don't skip breakfast.</p>
                                         </div>
                                     </div>
-                                    <div className="flex gap-4 p-4 bg-gray-50 dark:bg-slate-800 rounded-2xl">
-                                        <div className="size-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500 shrink-0">
+                                    <div className="flex gap-4 p-5 bg-card-bg rounded-2xl border border-border-color/50 hover:border-tangerine/30 transition-all">
+                                        <div className="size-10 bg-tangerine/10 rounded-xl flex items-center justify-center text-tangerine shrink-0 shadow-sm">
                                             <Droplets size={18} />
                                         </div>
                                         <div>
-                                            <h4 className="text-sm font-black mb-1">Hydration Timing</h4>
-                                            <p className="text-xs text-gray-500 leading-relaxed">Avoid drinking water 30 min before meals to keep your appetite high.</p>
+                                            <h4 className="text-sm font-black mb-1 text-foreground">Hydration Timing</h4>
+                                            <p className="text-[11px] text-gray-400 font-medium leading-relaxed">Avoid drinking water 30 min before meals to keep your appetite high.</p>
                                         </div>
                                     </div>
                                 </div>
                             </Card>
 
-                            <Card className="p-10 bg-slate-900 text-white border-none">
-                                <div className="flex items-center gap-3 mb-8">
-                                    <Sparkles className="text-primary" size={20} />
-                                    <h3 className="text-sm font-black uppercase tracking-widest italic">Sample Meal Plan</h3>
+                            <Card className="p-12 bg-gradient-to-br from-primary/10 to-primary/5 border-none shadow-sm hover-lift relative overflow-hidden group">
+                                <div className="flex items-center gap-4 mb-10 relative z-10">
+                                    <div className="size-12 rounded-2xl bg-white/50 backdrop-blur-md flex items-center justify-center text-primary shadow-sm">
+                                        <Sparkles size={24} />
+                                    </div>
+                                    <h3 className="text-xl font-black italic uppercase tracking-tighter text-foreground">Nutrient <span className="text-primary italic">Blueprint</span></h3>
                                 </div>
-                                <div className="space-y-4">
-                                    <div className="border-l-2 border-primary/30 pl-4 py-1">
-                                        <h4 className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">Breakfast</h4>
-                                        <p className="text-xs opacity-70">Oatmeal with peanut butter, banana & protein scoop.</p>
+                                <div className="space-y-6 relative z-10">
+                                    <div className="pl-6 py-1 bg-white/40 dark:bg-white/5 rounded-2xl border-l-4 border-primary shadow-sm hover:translate-x-1 transition-transform">
+                                        <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-1 italic">Morning Fuel</h4>
+                                        <p className="text-sm font-black text-foreground italic tracking-tight">Oatmeal with peanut butter, banana & protein scoop.</p>
                                     </div>
-                                    <div className="border-l-2 border-white/10 pl-4 py-1">
-                                        <h4 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Lunch</h4>
-                                        <p className="text-xs opacity-70">200g chicken breast or paneer, 1 cup rice, avocado.</p>
+                                    <div className="pl-6 py-1 bg-white/40 dark:bg-white/5 rounded-2xl border-l-4 border-sage shadow-sm hover:translate-x-1 transition-transform">
+                                        <h4 className="text-[10px] font-black text-sage uppercase tracking-[0.3em] mb-1 italic">Peak Performance</h4>
+                                        <p className="text-sm font-black text-foreground italic tracking-tight">200g chicken breast or paneer, 1 cup rice, avocado.</p>
                                     </div>
-                                    <div className="border-l-2 border-white/10 pl-4 py-1">
-                                        <h4 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Pre-Workout Snack</h4>
-                                        <p className="text-xs opacity-70">Handful of almonds & dates or a fruit smoothie.</p>
+                                    <div className="pl-6 py-1 bg-white/40 dark:bg-white/5 rounded-2xl border-l-4 border-tangerine shadow-sm hover:translate-x-1 transition-transform">
+                                        <h4 className="text-[10px] font-black text-tangerine uppercase tracking-[0.3em] mb-1 italic">Anabolic Snack</h4>
+                                        <p className="text-sm font-black text-foreground italic tracking-tight">Handful of almonds & dates or a fruit smoothie.</p>
                                     </div>
-                                    <div className="border-l-2 border-primary/30 pl-4 py-1">
-                                        <h4 className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">Dinner</h4>
-                                        <p className="text-xs opacity-70">Grilled salmon or tofu, sweet potato, and olive oil dressing.</p>
+                                    <div className="pl-6 py-1 bg-white/40 dark:bg-white/5 rounded-2xl border-l-4 border-primary shadow-sm hover:translate-x-1 transition-transform">
+                                        <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-1 italic">Restorative Entry</h4>
+                                        <p className="text-sm font-black text-foreground italic tracking-tight">Grilled salmon or tofu, sweet potato, and olive oil dressing.</p>
                                     </div>
                                 </div>
-                                <p className="mt-8 text-[9px] font-bold text-gray-500 uppercase flex items-center gap-2">
-                                    <Info size={12} /> Consult with a nutritionist for personalized medical advice.
-                                </p>
+                                <Sparkles className="absolute -right-8 -bottom-8 text-primary opacity-5 group-hover:scale-125 transition-transform duration-1000" size={180} />
                             </Card>
                         </div>
                     </div>
@@ -659,53 +625,43 @@ const HealthHub = () => {
 
             {/* Food Log Modal */}
             {isLoggingFood && (
-                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <Card className="w-full max-w-md p-10 bg-card-bg shadow-2xl">
-                        <h2 className="text-xl font-black mb-8 text-center uppercase tracking-widest italic tracking-tighter">
-                            🥗 Log Your Meals
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <Card className="w-full max-w-md p-10 bg-card-bg shadow-2xl rounded-[2.5rem] border-none overflow-hidden relative">
+                        <h2 className="text-2xl font-black mb-8 italic uppercase tracking-tighter text-foreground">
+                            Log <span className="text-primary italic">Meals</span>
                         </h2>
 
-                        <div className="space-y-6">
-                            <div className="space-y-4">
-                                <div>
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-2">What did you eat?</label>
-                                    <div className="relative">
-                                        <input
-                                            value={foodInput}
-                                            onChange={e => setFoodInput(e.target.value)}
-                                            placeholder="e.g. 200g chicken breast, 1 bowl rice..."
-                                            className="w-full bg-background p-4 rounded-xl text-sm font-bold outline-none border-2 border-transparent focus:border-primary/20"
-                                        />
-                                        <button
-                                            onClick={handleAIAnalysis}
-                                            disabled={isAnalyzing || !foodInput}
-                                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-slate-900 dark:bg-primary text-white p-2 rounded-lg hover:scale-105 transition-all disabled:opacity-50 flex items-center gap-2 text-[10px] font-black uppercase"
-                                        >
-                                            {isAnalyzing ? <Loader2 className="animate-spin" size={14} /> : <Sparkles size={14} />}
-                                            Analyze
-                                        </button>
-                                    </div>
-                                    {aiError && <p className="text-[10px] text-red-500 mt-2 font-bold px-2">{aiError}</p>}
+                        <div className="space-y-8">
+                            <div className="space-y-6">
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Consumption Details</label>
+                                    <input
+                                        autoFocus
+                                        value={foodInput}
+                                        onChange={e => setFoodInput(e.target.value)}
+                                        placeholder="e.g. 200g chicken breast, 1 bowl rice..."
+                                        className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-sm font-black outline-none focus:border-primary/50 transition-all placeholder:text-foreground/20 italic tracking-tighter"
+                                    />
                                 </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-2">Calories</label>
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Calories</label>
                                         <input
                                             type="number"
                                             value={manualCalories}
                                             onChange={e => setManualCalories(e.target.value)}
                                             placeholder="0"
-                                            className="w-full bg-background p-4 rounded-xl text-xl font-black outline-none border-2 border-primary/10"
+                                            className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all"
                                         />
                                     </div>
-                                    <div>
-                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-2">Protein (g)</label>
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Protein (g)</label>
                                         <input
                                             type="number"
                                             value={manualProtein}
                                             onChange={e => setManualProtein(e.target.value)}
                                             placeholder="0"
-                                            className="w-full bg-background p-4 rounded-xl text-xl font-black outline-none border-2 border-sage/10"
+                                            className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all"
                                         />
                                     </div>
                                 </div>
@@ -717,16 +673,16 @@ const HealthHub = () => {
                                         setIsLoggingFood(false);
                                         setFoodInput('');
                                     }}
-                                    className="flex-1 py-4 text-xs font-black text-gray-400 uppercase tracking-widest hover:text-gray-600 transition-colors"
+                                    className="flex-1 py-4 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 hover:text-foreground transition-colors"
                                 >
-                                    Cancel
+                                    Abort
                                 </button>
                                 <button
                                     onClick={handleFoodLog}
                                     disabled={!manualCalories && !manualProtein}
-                                    className="flex-1 py-4 bg-primary text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                                    className="flex-1 py-5 bg-primary text-white rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all border-none disabled:opacity-50 flex items-center justify-center gap-3"
                                 >
-                                    <Check size={16} /> Confirm Log
+                                    <Check size={18} /> Confirm Entry
                                 </button>
                             </div>
                         </div>
@@ -736,37 +692,42 @@ const HealthHub = () => {
 
             {/* Profile Modal */}
             {isEditingProfile && (
-                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <Card className="w-full max-w-md p-10 bg-card-bg overflow-y-auto max-h-[90vh] scrollbar-hide shadow-2xl">
-                        <h2 className="text-xl font-black mb-8 text-center uppercase tracking-widest italic">User Profile</h2>
-                        <div className="space-y-6 text-left">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Age</label>
-                                    <input value={profileForm.age} onChange={e => setProfileForm({ ...profileForm, age: e.target.value })} className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm font-bold outline-none" placeholder="24" />
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <Card className="w-full max-w-md p-12 bg-card-bg overflow-y-auto max-h-[90vh] scrollbar-hide shadow-2xl rounded-[2.5rem] border-none">
+                        <div className="flex items-center gap-4 mb-10">
+                            <div className="size-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shadow-sm shrink-0">
+                                <User size={24} />
+                            </div>
+                            <h2 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">User <span className="text-primary italic">Profile</span></h2>
+                        </div>
+                        <div className="space-y-8 text-left">
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Chronological Age</label>
+                                    <input value={profileForm.age} onChange={e => setProfileForm({ ...profileForm, age: e.target.value })} className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all" placeholder="24" />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Height (cm)</label>
-                                    <input value={profileForm.height} onChange={e => setProfileForm({ ...profileForm, height: e.target.value })} className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm font-bold outline-none" placeholder="170" />
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Stature (cm)</label>
+                                    <input value={profileForm.height} onChange={e => setProfileForm({ ...profileForm, height: e.target.value })} className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all" placeholder="170" />
                                 </div>
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Target Weight ({settings.weightUnit})</label>
-                                <input value={profileForm.targetWeight} onChange={e => setProfileForm({ ...profileForm, targetWeight: e.target.value })} className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm font-bold outline-none border-2 border-sage/20" placeholder="65" />
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Target Mass ({settings.weightUnit})</label>
+                                <input value={profileForm.targetWeight} onChange={e => setProfileForm({ ...profileForm, targetWeight: e.target.value })} className="w-full bg-background border-2 border-primary/20 p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all font-black text-primary" placeholder="65" />
                             </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Hydration Goal (L)</label>
-                                    <input value={profileForm.hydrationGoal} onChange={e => setProfileForm({ ...profileForm, hydrationGoal: e.target.value })} className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm font-bold outline-none" placeholder="3.0" />
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Hydration (L)</label>
+                                    <input value={profileForm.hydrationGoal} onChange={e => setProfileForm({ ...profileForm, hydrationGoal: e.target.value })} className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all" placeholder="3.0" />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Sleep Goal (H)</label>
-                                    <input value={profileForm.sleepGoal} onChange={e => setProfileForm({ ...profileForm, sleepGoal: e.target.value })} className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm font-bold outline-none" placeholder="8" />
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Rest Cycle (H)</label>
+                                    <input value={profileForm.sleepGoal} onChange={e => setProfileForm({ ...profileForm, sleepGoal: e.target.value })} className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all" placeholder="8" />
                                 </div>
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Activity Level</label>
-                                <select value={profileForm.activityLevel} onChange={e => setProfileForm({ ...profileForm, activityLevel: e.target.value as any })} className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm font-bold outline-none appearance-none">
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Movement Intensity</label>
+                                <select value={profileForm.activityLevel} onChange={e => setProfileForm({ ...profileForm, activityLevel: e.target.value as any })} className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] outline-none appearance-none cursor-pointer focus:border-primary/50 transition-all">
                                     <option value="sedentary">Sedentary</option>
                                     <option value="light">Lightly Active</option>
                                     <option value="moderate">Moderate</option>
@@ -774,14 +735,16 @@ const HealthHub = () => {
                                     <option value="very_active">Very Active</option>
                                 </select>
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Dietary Preference</label>
-                                <input value={profileForm.dietaryPreference} onChange={e => setProfileForm({ ...profileForm, dietaryPreference: e.target.value })} className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm font-bold outline-none" placeholder="Veg, Non-Veg, Vegan..." />
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Dietary Preference</label>
+                                <input value={profileForm.dietaryPreference} onChange={e => setProfileForm({ ...profileForm, dietaryPreference: e.target.value })} className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all" placeholder="Veg, Non-Veg, Vegan..." />
                             </div>
-                            <button onClick={handleSaveProfile} className="w-full py-4 bg-primary text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg flex items-center justify-center gap-2 mt-4">
-                                <Check size={18} /> Save Profile
-                            </button>
-                            <button onClick={() => setIsEditingProfile(false)} className="w-full text-xs font-black text-gray-400 uppercase py-2">Cancel</button>
+                            <div className="flex gap-4 pt-4">
+                                <button onClick={() => setIsEditingProfile(false)} className="flex-1 py-4 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 hover:text-foreground transition-colors">Abort</button>
+                                <button onClick={handleSaveProfile} className="flex-1 py-5 bg-primary text-white rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all border-none flex items-center justify-center gap-3">
+                                    <Check size={18} /> Sync Profile
+                                </button>
+                            </div>
                         </div>
                     </Card>
                 </div>
@@ -789,18 +752,20 @@ const HealthHub = () => {
 
             {/* Weight Logging Modal */}
             {isLoggingWeight && (
-                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <Card className="w-full max-w-sm p-10 bg-card-bg shadow-2xl">
-                        <h2 className="text-xl font-black mb-8 text-center uppercase tracking-widest italic">Log Weight</h2>
-                        <div className="space-y-6">
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block text-center">New Entry ({settings.weightUnit})</label>
-                                <input value={weightInput} onChange={e => setWeightInput(e.target.value)} type="number" className="w-full bg-gray-50 dark:bg-slate-800 p-8 rounded-2xl text-4xl font-black text-center outline-none border-2 border-primary/20" placeholder="00.0" autoFocus />
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <Card className="w-full max-w-sm p-12 bg-card-bg shadow-2xl rounded-[2.5rem] border-none overflow-hidden relative">
+                        <h2 className="text-2xl font-black mb-8 text-center uppercase tracking-tighter italic text-foreground leading-tight">Gravitational <span className="text-primary italic">Entry</span></h2>
+                        <div className="space-y-8">
+                            <div className="space-y-4">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] block text-center">Current Mass ({settings.weightUnit})</label>
+                                <input value={weightInput} onChange={e => setWeightInput(e.target.value)} type="number" className="w-full bg-background p-10 rounded-[2rem] text-5xl font-black text-center outline-none border-4 border-primary/20 text-primary shadow-inner" placeholder="00.0" autoFocus />
                             </div>
-                            <button onClick={handleWeightLog} className="w-full py-4 bg-primary text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg">
-                                Confirm & Log
-                            </button>
-                            <button onClick={() => setIsLoggingWeight(false)} className="w-full text-xs font-black text-gray-400 uppercase py-2">Cancel</button>
+                            <div className="space-y-4">
+                                <button onClick={handleWeightLog} className="w-full py-5 bg-primary text-white rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all border-none">
+                                    Log Transition
+                                </button>
+                                <button onClick={() => setIsLoggingWeight(false)} className="w-full text-[10px] font-black text-foreground/40 uppercase tracking-[0.3em] py-2 hover:text-foreground transition-colors border-none bg-transparent">Abort</button>
+                            </div>
                         </div>
                     </Card>
                 </div>
@@ -808,18 +773,20 @@ const HealthHub = () => {
 
             {/* Sleep Logging Modal */}
             {isLoggingSleep && (
-                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <Card className="w-full max-w-sm p-10 bg-card-bg shadow-2xl">
-                        <h2 className="text-xl font-black mb-8 text-center uppercase tracking-widest italic">Log Sleep</h2>
-                        <div className="space-y-6">
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block text-center">Hours Slept</label>
-                                <input value={sleepInput} onChange={e => setSleepInput(e.target.value)} type="number" className="w-full bg-gray-50 dark:bg-slate-800 p-8 rounded-2xl text-4xl font-black text-center outline-none border-2 border-indigo-500/20" placeholder="7.5" autoFocus />
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <Card className="w-full max-w-sm p-12 bg-card-bg shadow-2xl rounded-[2.5rem] border-none overflow-hidden relative">
+                        <h2 className="text-2xl font-black mb-8 text-center uppercase tracking-tighter italic text-foreground leading-tight">Restorative <span className="text-primary italic">Cycle</span></h2>
+                        <div className="space-y-8">
+                            <div className="space-y-4">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] block text-center">Unconscious Duration (H)</label>
+                                <input value={sleepInput} onChange={e => setSleepInput(e.target.value)} type="number" className="w-full bg-background p-10 rounded-[2rem] text-5xl font-black text-center outline-none border-4 border-primary/20 text-primary shadow-inner" placeholder="7.5" autoFocus />
                             </div>
-                            <button onClick={handleSleepLog} className="w-full py-4 bg-indigo-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg">
-                                Confirm & Log
-                            </button>
-                            <button onClick={() => setIsLoggingSleep(false)} className="w-full text-xs font-black text-gray-400 uppercase py-2">Cancel</button>
+                            <div className="space-y-4">
+                                <button onClick={handleSleepLog} className="w-full py-5 bg-primary text-white rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all border-none">
+                                    Synchronize Rest
+                                </button>
+                                <button onClick={() => setIsLoggingSleep(false)} className="w-full text-[10px] font-black text-foreground/40 uppercase tracking-[0.3em] py-2 hover:text-foreground transition-colors border-none bg-transparent">Abort</button>
+                            </div>
                         </div>
                     </Card>
                 </div>
@@ -827,20 +794,22 @@ const HealthHub = () => {
 
             {/* Cycle Log Modal */}
             {isLoggingCycle && (
-                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <Card className="w-full max-w-md p-10 bg-card-bg shadow-2xl">
-                        <h2 className="text-xl font-black mb-8 text-center uppercase tracking-widest italic">Log Cycle Start</h2>
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <Card className="w-full max-w-md p-12 bg-card-bg shadow-2xl rounded-[2.5rem] border-none overflow-hidden relative">
+                        <h2 className="text-2xl font-black mb-10 text-center uppercase tracking-tighter italic text-foreground leading-tight">Protocol <span className="text-primary italic">Initialization</span></h2>
                         <div className="space-y-8">
-                            <div>
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-4 text-center">Start Date</label>
+                            <div className="space-y-4">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] block text-center">Inception Date</label>
                                 <input
                                     type="date"
                                     value={cycleStartDate}
                                     onChange={e => setCycleStartDate(e.target.value)}
-                                    className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm font-bold outline-none border-2 border-primary/10 mb-6"
+                                    className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all text-center"
                                 />
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-4 text-center">Flow Intensity</label>
-                                <div className="grid grid-cols-3 gap-3">
+                            </div>
+                            <div className="space-y-4">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] block text-center">Intensity Spectrum</label>
+                                <div className="grid grid-cols-3 gap-4">
                                     {(['light', 'medium', 'heavy'] as const).map(intensity => (
                                         <button
                                             key={intensity}

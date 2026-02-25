@@ -33,15 +33,15 @@ const FinanceAudit = () => {
     ];
 
     const CATEGORY_COLORS = {
-        'Food': '#FF8C42',
-        'Transport': '#3b82f6',
-        'Rent': '#8b5cf6',
-        'Shopping': '#ef4444',
-        'Entertainment': '#10b981',
-        'Health': '#f43f5e',
-        'Travel': '#0ea5e9',
+        'Food': '#FDC3A1',
+        'Transport': '#F57799',
+        'Rent': '#FB9B8F',
+        'Shopping': '#F57799',
+        'Entertainment': '#FB9B8F',
+        'Health': '#F57799',
+        'Travel': '#FDC3A1',
         'Others': '#94a3b8',
-        'Income': '#22c55e'
+        'Income': '#F57799'
     };
 
     const stats = useMemo(() => {
@@ -118,7 +118,7 @@ const FinanceAudit = () => {
     const savingsProgress = savings.goalAmount > 0 ? (savings.currentAmount / savings.goalAmount) * 100 : 0;
 
     return (
-        <div className="flex-1 flex flex-col overflow-hidden fade-in bg-[#f8fafc] dark:bg-[#0b0f1a]">
+        <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground transition-all">
             {/* Header */}
             <header className="h-20 px-12 flex items-center justify-between shrink-0 bg-card-bg border-b border-border-color">
                 <div>
@@ -128,7 +128,7 @@ const FinanceAudit = () => {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => setIsEditingGoals(true)}
-                        className="bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-slate-700 transition-all uppercase tracking-widest"
+                        className="bg-primary/5 text-gray-400 px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 hover:bg-primary/10 transition-all uppercase tracking-widest"
                     >
                         <SettingsIcon size={16} /> Edit Goals
                     </button>
@@ -146,24 +146,24 @@ const FinanceAudit = () => {
 
                     {/* Summary Row */}
                     <div className="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <Card className="p-8 border-none shadow-sm dark:bg-slate-900/50 animate-fade-in-up delay-100 hover-lift">
+                        <Card className="p-8 border-none shadow-sm bg-card-bg animate-fade-in-up delay-100 hover-lift">
                             <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-4">Total Spent (Month)</span>
                             <div className="flex items-baseline gap-2">
-                                <h3 className="text-4xl font-black text-slate-900 dark:text-white">₹{stats.totalSpent.toLocaleString()}</h3>
+                                <h3 className="text-4xl font-black text-foreground">₹{stats.totalSpent.toLocaleString()}</h3>
                             </div>
                         </Card>
 
-                        <Card className="p-8 border-none shadow-sm dark:bg-slate-900/50 animate-fade-in-up delay-200 hover-lift">
+                        <Card className="p-8 border-none shadow-sm bg-card-bg animate-fade-in-up delay-200 hover-lift">
                             <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-4">Remaining Budget</span>
                             <div className="flex items-baseline gap-2">
-                                <h3 className={`text-4xl font-black ${budget > 0 && remaining < 500 ? 'text-tangerine' : 'text-slate-900 dark:text-white'}`}>
+                                <h3 className={`text-4xl font-black ${budget > 0 && remaining < 500 ? 'text-tangerine' : 'text-foreground'}`}>
                                     ₹{remaining.toLocaleString()}
                                 </h3>
                                 <span className="text-xs font-bold text-gray-400">{budget > 0 ? `of ₹${budget.toLocaleString()}` : 'No budget set'}</span>
                             </div>
                         </Card>
 
-                        <Card className="p-8 bg-slate-900 text-white border-none shadow-xl overflow-hidden relative animate-fade-in-up delay-300 hover-lift">
+                        <Card className="p-8 bg-gradient-to-br from-primary to-sage text-white border-none shadow-xl overflow-hidden relative animate-fade-in-up delay-300 hover-lift">
                             <div className="relative z-10">
                                 <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-4">Savings Progress</span>
                                 <div className="flex justify-between items-baseline mb-4">
@@ -184,7 +184,7 @@ const FinanceAudit = () => {
                         <div className="flex justify-between items-center mb-10">
                             <h3 className="text-sm font-black uppercase tracking-widest">Recent Activity</h3>
                             <div className="flex items-center gap-4">
-                                <div className="bg-gray-50 dark:bg-slate-800 rounded-lg px-3 py-1.5 flex items-center gap-2 border border-border-color">
+                                <div className="bg-primary/5 rounded-lg px-3 py-1.5 flex items-center gap-2 border border-border-color">
                                     <Search size={14} className="text-gray-400" />
                                     <input
                                         placeholder="Filter..."
@@ -198,21 +198,21 @@ const FinanceAudit = () => {
 
                         <div className="space-y-4">
                             {filteredTransactions.map((t, idx) => (
-                                <div key={t.id} className={`group flex items-center justify-between p-5 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-all border border-transparent hover:border-gray-100 dark:hover:border-slate-800 hover-lift animate-fade-in-up delay-${(idx % 5 + 1) * 100}`}>
+                                <div key={t.id} className={`group flex items-center justify-between p-5 rounded-2xl bg-card-bg/30 hover:bg-primary/5 transition-all border border-border-color/50 hover:border-primary/30 hover-lift animate-fade-in-up delay-${(idx % 5 + 1) * 100}`}>
                                     <div className="flex items-center gap-4">
                                         <div
-                                            className="size-12 rounded-xl bg-gray-50 dark:bg-slate-800 flex items-center justify-center text-xl transition-all group-hover:scale-110 shadow-sm"
+                                            className="size-12 rounded-xl bg-card-bg flex items-center justify-center text-xl transition-all group-hover:scale-110 shadow-sm border border-border-color"
                                             style={{ color: (CATEGORY_COLORS as any)[t.category] }}
                                         >
                                             {t.icon}
                                         </div>
                                         <div>
-                                            <p className="text-sm font-black text-slate-900 dark:text-white">{t.name}</p>
+                                            <p className="text-sm font-black text-foreground">{t.name}</p>
                                             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t.category} • {new Date(t.date).toLocaleDateString()}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-6">
-                                        <p className={`text-sm font-black ${t.type === 'expense' ? 'text-slate-900 dark:text-white' : 'text-sage'}`}>
+                                        <p className={`text-sm font-black ${t.type === 'expense' ? 'text-foreground' : 'text-sage'}`}>
                                             {t.type === 'expense' ? '-' : '+'}₹{t.amount.toLocaleString()}
                                         </p>
                                         <button
@@ -299,47 +299,47 @@ const FinanceAudit = () => {
 
             {/* Add Modal */}
             {isAdding && (
-                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <Card className="w-full max-w-md p-10 bg-card-bg">
-                        <h2 className="text-xl font-black mb-8">Log Entry</h2>
-                        <div className="space-y-6">
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Entry Name</label>
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <Card className="w-full max-w-md p-10 bg-card-bg border-none shadow-2xl rounded-[2.5rem] overflow-hidden">
+                        <h2 className="text-2xl font-black mb-8 italic uppercase tracking-tighter text-foreground">Log <span className="text-primary italic">Entry</span></h2>
+                        <div className="space-y-8">
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Transaction Identity</label>
                                 <input
                                     value={newTx.name}
                                     onChange={e => setNewTx({ ...newTx, name: e.target.value })}
                                     placeholder="e.g. Grocery Store"
-                                    className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
+                                    className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-base font-black outline-none focus:border-primary/50 transition-all placeholder:text-foreground/20 italic tracking-tighter"
                                 />
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Amount</label>
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Valuation</label>
                                     <input
                                         type="number"
                                         value={newTx.amount}
                                         onChange={e => setNewTx({ ...newTx, amount: e.target.value })}
                                         placeholder="0.00"
-                                        className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
+                                        className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all"
                                     />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Type</label>
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Flow Type</label>
                                     <select
                                         value={newTx.type}
                                         onChange={e => setNewTx({ ...newTx, type: e.target.value as any })}
-                                        className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
+                                        className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] outline-none appearance-none cursor-pointer focus:border-primary/50 transition-all"
                                     >
                                         <option value="expense">Expense</option>
                                         <option value="income">Income</option>
                                     </select>
                                 </div>
-                                <div className="space-y-2 md:col-span-2">
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Category</label>
+                                <div className="space-y-3 md:col-span-2">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Category Classification</label>
                                     <select
                                         value={newTx.category}
                                         onChange={e => setNewTx({ ...newTx, category: e.target.value })}
-                                        className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
+                                        className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] outline-none appearance-none cursor-pointer focus:border-primary/50 transition-all"
                                     >
                                         {CATEGORIES.map(cat => (
                                             <option key={cat} value={cat}>{cat}</option>
@@ -368,44 +368,44 @@ const FinanceAudit = () => {
 
             {/* Edit Goals Modal */}
             {isEditingGoals && (
-                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <Card className="w-full max-w-md p-10 bg-card-bg border-none shadow-2xl">
-                        <div className="flex items-center gap-3 mb-8">
-                            <div className="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                                <SettingsIcon size={20} />
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <Card className="w-full max-w-md p-12 bg-card-bg border-none shadow-2xl rounded-[2.5rem] overflow-hidden relative">
+                        <div className="flex items-center gap-4 mb-10">
+                            <div className="size-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shadow-sm">
+                                <SettingsIcon size={24} />
                             </div>
-                            <h2 className="text-xl font-black">Financial Targets</h2>
+                            <h2 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">Financial <span className="text-primary italic">Targets</span></h2>
                         </div>
 
-                        <div className="space-y-6">
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Monthly Spending Limit (₹)</label>
+                        <div className="space-y-8">
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Monthly Spending Limit (₹)</label>
                                 <input
                                     type="number"
                                     value={goalForm.monthlyBudget}
                                     onChange={e => setGoalForm({ ...goalForm, monthlyBudget: e.target.value })}
-                                    className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
+                                    className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all"
                                     placeholder="e.g. 2000"
                                 />
                             </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Savings Goal (₹)</label>
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Savings Goal (₹)</label>
                                     <input
                                         type="number"
                                         value={goalForm.goalAmount}
                                         onChange={e => setGoalForm({ ...goalForm, goalAmount: e.target.value })}
-                                        className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
+                                        className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all"
                                         placeholder="e.g. 10000"
                                     />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Current Balance (₹)</label>
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Current Balance (₹)</label>
                                     <input
                                         type="number"
                                         value={goalForm.currentAmount}
                                         onChange={e => setGoalForm({ ...goalForm, currentAmount: e.target.value })}
-                                        className="w-full bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
+                                        className="w-full bg-background border-2 border-border-color p-5 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary/50 transition-all"
                                         placeholder="e.g. 3200"
                                     />
                                 </div>
@@ -414,15 +414,15 @@ const FinanceAudit = () => {
                             <div className="flex gap-4 pt-4">
                                 <button
                                     onClick={() => setIsEditingGoals(false)}
-                                    className="flex-1 py-4 text-xs font-black uppercase tracking-widest text-gray-400 hover:text-gray-600 transition-colors"
+                                    className="flex-1 py-4 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 hover:text-foreground transition-colors"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleSaveGoals}
-                                    className="flex-1 py-4 bg-primary text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+                                    className="flex-1 py-5 bg-primary text-white rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 border-none"
                                 >
-                                    <Check size={16} /> Save Changes
+                                    <Check size={18} /> Save Changes
                                 </button>
                             </div>
                         </div>

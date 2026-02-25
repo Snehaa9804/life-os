@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useStore } from '../hooks/useStore';
 import {
     Youtube, TrendingUp, Users, Video, Eye, BarChart2, Calendar,
-    ListFilter as FilterIcon, Grid, MoreVertical, Settings as SettingsIcon,
+    ListFilter as FilterIcon, Grid, Settings as SettingsIcon,
     CheckSquare, ArrowUpRight, ArrowDownRight, Edit2,
     Trash2, Save, FileText, Target, MoreHorizontal, Download
 } from 'lucide-react';
@@ -150,44 +150,44 @@ const YouTube = () => {
     const SidebarItem = ({ id, icon: Icon, label }: any) => (
         <button
             onClick={() => setActiveTab(id)}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-sm
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm
             ${activeTab === id
-                    ? 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400 font-bold border-r-2 border-red-500 rounded-r-none'
-                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800'}`}
+                    ? 'bg-primary/10 text-primary border-r-2 border-primary rounded-r-none'
+                    : 'text-gray-500 dark:text-gray-400 hover:bg-primary/5'}`}
         >
-            <Icon size={18} strokeWidth={activeTab === id ? 2.5 : 2} />
+            <Icon size={18} strokeWidth={activeTab === id ? 3 : 2} />
             {label}
         </button>
     );
 
     const StatCard = ({ title, value, icon: Icon, trend, color }: any) => (
-        <div className="bg-card-bg p-6 rounded-2xl border border-border-color shadow-sm hover:shadow-md transition-all group">
+        <div className="bg-card-bg p-6 rounded-2xl border border-border-color shadow-sm hover:shadow-md transition-all group border-b-4 border-b-primary/20">
             <div className="flex justify-between items-start mb-4">
-                <div className={`p-3 rounded-xl ${color} bg-opacity-10 text-${color.split('-')[1]}-600 dark:text-${color.split('-')[1]}-400`}>
+                <div className={`p-3 rounded-xl ${color} bg-opacity-10 text-foreground`}>
                     <Icon size={24} />
                 </div>
                 {trend && (
-                    <span className={`text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 ${trend > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                        {trend > 0 ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
+                    <span className={`text-[10px] font-black px-2 py-1 rounded-full flex items-center gap-1 bg-sage/10 text-sage uppercase tracking-widest`}>
+                        {trend > 0 ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />}
                         {Math.abs(trend)}%
                     </span>
                 )}
             </div>
-            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-1">{value}</h3>
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{title}</p>
+            <h3 className="text-3xl font-black text-foreground mb-1">{value}</h3>
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">{title}</p>
         </div>
     );
 
     return (
-        <div className="flex h-full w-full bg-[#f8f9fa] dark:bg-[#0b0f1a] overflow-hidden">
+        <div className="flex h-full w-full bg-background text-foreground overflow-hidden transition-all">
             {/* --- SIDEBAR NAVIGATION --- */}
             <aside className="w-64 bg-card-bg border-r border-gray-200 dark:border-slate-800 flex flex-col shrink-0 z-20">
-                <div className="h-20 flex items-center px-6 border-b border-border-color">
-                    <div className="flex items-center gap-3 text-slate-900 dark:text-white">
-                        <div className="bg-red-600 text-white p-2 rounded-lg shadow-lg shadow-red-500/20">
+                <div className="h-20 flex items-center px-6 border-b border-border-color shrink-0">
+                    <div className="flex items-center gap-3 text-foreground">
+                        <div className="bg-primary text-white p-2 rounded-lg shadow-lg shadow-primary/20">
                             <Youtube size={20} fill="currentColor" />
                         </div>
-                        <span className="font-black text-lg tracking-tight">Studio</span>
+                        <span className="font-black text-2xl tracking-tighter uppercase italic">Studio</span>
                     </div>
                 </div>
 
@@ -204,13 +204,13 @@ const YouTube = () => {
                 </div>
 
                 <div className="p-4 border-t border-border-color">
-                    <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800">
+                    <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-primary/5">
                         <div className="size-8 rounded-full bg-primary text-white flex items-center justify-center font-black text-xs">
                             {settings.name[0]}
                         </div>
                         <div className="overflow-hidden">
-                            <p className="text-xs font-bold truncate">{settings.name}</p>
-                            <p className="text-[10px] text-gray-500 truncate">{youtube.subscribers.toLocaleString()} subs</p>
+                            <p className="text-xs font-black truncate">{settings.name}</p>
+                            <p className="text-[9px] font-bold text-gray-400 uppercase truncate tracking-tighter">{youtube.subscribers.toLocaleString()} subs</p>
                         </div>
                     </div>
                 </div>
@@ -219,14 +219,14 @@ const YouTube = () => {
             {/* --- MAIN CONTENT --- */}
             <main className="flex-1 flex flex-col h-full overflow-hidden relative">
                 {/* Header */}
-                <header className="h-20 bg-card-bg border-b border-gray-200 dark:border-slate-800 flex justify-between items-center px-8 shrink-0">
-                    <h1 className="text-xl font-bold text-slate-800 dark:text-white capitalize">
+                <header className="h-20 bg-card-bg border-b border-border-color flex justify-between items-center px-8 shrink-0">
+                    <h1 className="text-2xl font-black text-foreground uppercase tracking-tight italic">
                         {activeTab === 'dashboard' ? 'Channel Dashboard' : activeTab}
                     </h1>
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => fetchYouTubeStats()}
-                            className="bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow-lg shadow-red-500/20 hover:scale-[1.02] transition-transform"
+                            className="bg-primary text-white px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all"
                         >
                             <TrendingUp size={16} /> Sync Stats
                         </button>
@@ -296,21 +296,21 @@ const YouTube = () => {
                                         <div className="h-64">
                                             <ResponsiveContainer width="100%" height="100%">
                                                 <BarChart data={[...(youtube.recentVideos || [])].reverse()}>
-                                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" opacity={0.3} />
                                                     <XAxis
                                                         dataKey="title"
                                                         axisLine={false}
                                                         tickLine={false}
-                                                        tick={{ fontSize: 10, fill: '#94a3b8' }}
+                                                        tick={{ fontSize: 9, fill: 'var(--color-foreground)', fontWeight: 800 }}
                                                         dy={10}
                                                         tickFormatter={(val) => val.length > 10 ? val.substring(0, 10) + '...' : val}
                                                     />
-                                                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#94a3b8' }} />
+                                                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--color-foreground)', fontWeight: 800 }} />
                                                     <Tooltip
-                                                        cursor={{ fill: 'transparent' }}
-                                                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                                                        cursor={{ fill: 'var(--color-primary)', fillOpacity: 0.05 }}
+                                                        contentStyle={{ borderRadius: '16px', border: 'none', background: 'var(--color-card-bg)', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', color: 'var(--color-foreground)', fontWeight: 'black' }}
                                                     />
-                                                    <Bar dataKey="viewCount" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={50} />
+                                                    <Bar dataKey="viewCount" fill="var(--color-primary)" radius={[6, 6, 0, 0]} maxBarSize={40} />
                                                 </BarChart>
                                             </ResponsiveContainer>
                                         </div>
@@ -336,9 +336,9 @@ const YouTube = () => {
                                                 <div key={item.name} className="flex justify-between items-center text-sm">
                                                     <div className="flex items-center gap-2">
                                                         <div className="size-3 rounded-full" style={{ backgroundColor: item.color }}></div>
-                                                        <span className="text-gray-500 font-medium">{item.name}</span>
+                                                        <span className="text-gray-400 font-black text-[10px] uppercase tracking-widest">{item.name}</span>
                                                     </div>
-                                                    <span className="font-bold">{item.value}%</span>
+                                                    <span className="font-black text-foreground">{item.value}%</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -359,17 +359,17 @@ const YouTube = () => {
                                 </div>
                                 <div className="overflow-x-auto">
                                     <table className="w-full">
-                                        <thead className="bg-gray-50 dark:bg-slate-800/50 text-xs font-black uppercase tracking-widest text-gray-400 text-left">
+                                        <thead className="bg-primary/5 text-xs font-black uppercase tracking-widest text-foreground/50 text-left border-b border-border-color">
                                             <tr>
-                                                <th className="py-4 px-6">Video</th>
-                                                <th className="py-4 px-6">Date</th>
-                                                <th className="py-4 px-6">Views</th>
-                                                <th className="py-4 px-6">Comments</th>
+                                                <th className="py-5 px-6">Video Content</th>
+                                                <th className="py-5 px-6 text-center">Date</th>
+                                                <th className="py-5 px-6 text-center">Views</th>
+                                                <th className="py-5 px-6 text-center">Interactions</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody className="divide-y divide-border-color/30">
                                             {videosToDisplay.map((video: any) => (
-                                                <tr key={video.id} className="border-b border-gray-50 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+                                                <tr key={video.id} className="group hover:bg-primary/[0.03] transition-all cursor-pointer">
                                                     <td className="py-4 px-6">
                                                         <div className="flex items-center gap-4">
                                                             <div
@@ -379,17 +379,20 @@ const YouTube = () => {
                                                                 {!video.thumbnail?.startsWith('http') && <div className={`w-full h-full rounded-lg ${video.thumbnail}`}></div>}
                                                             </div>
                                                             <div>
-                                                                <p className="font-bold text-slate-900 dark:text-white text-sm line-clamp-1">{video.title}</p>
-                                                                <p className="text-[10px] text-gray-400 font-medium">Published</p>
+                                                                <p className="font-black text-foreground text-sm line-clamp-1 group-hover:text-primary transition-colors">{video.title}</p>
+                                                                <p className="text-[10px] text-foreground/40 font-black uppercase tracking-widest mt-1">Status: Published</p>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td className="py-4 px-6 text-sm font-medium text-gray-500">{video.publishedAt || video.date}</td>
-                                                    <td className="py-4 px-6 text-sm font-black text-slate-900 dark:text-white">
+                                                    <td className="py-4 px-6 text-xs font-black text-foreground/60 text-center">{video.publishedAt || video.date}</td>
+                                                    <td className="py-4 px-6 text-sm font-black text-foreground text-center">
                                                         {parseInt(video.viewCount || video.views || 0).toLocaleString()}
                                                     </td>
-                                                    <td className="py-4 px-6 text-sm font-medium text-gray-500">
-                                                        {parseInt(video.commentCount || 0).toLocaleString()}
+                                                    <td className="py-4 px-6 text-sm font-black text-foreground/60 text-center">
+                                                        <div className="flex flex-col items-center">
+                                                            <span>{parseInt(video.commentCount || 0).toLocaleString()}</span>
+                                                            <span className="text-[8px] uppercase tracking-tighter opacity-50">Comments</span>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -413,28 +416,28 @@ const YouTube = () => {
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
                                 {/* Planner Form */}
                                 <div className="col-span-2 bg-card-bg p-8 rounded-2xl border border-border-color shadow-sm">
-                                    <h3 className="font-bold text-xl mb-6 flex items-center gap-2">
-                                        <FileText className="text-red-500" /> New Video Plan
+                                    <h3 className="text-2xl font-black mb-8 flex items-center gap-3 italic uppercase tracking-tighter text-foreground">
+                                        <FileText className="text-primary" size={24} /> New Video Plan
                                     </h3>
 
-                                    <div className="space-y-6">
+                                    <div className="space-y-8">
                                         <div>
-                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">Video Title</label>
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 block">Video Title</label>
                                             <input
                                                 value={planForm.title}
                                                 onChange={e => setPlanForm({ ...planForm, title: e.target.value })}
-                                                className="w-full text-xl font-bold p-4 bg-gray-50 dark:bg-slate-800 rounded-xl border-none outline-none focus:ring-2 focus:ring-red-500/20"
+                                                className="w-full text-2xl font-black p-5 bg-background border-2 border-border-color rounded-2xl outline-none focus:border-primary/50 transition-all placeholder:text-foreground/20 italic tracking-tighter"
                                                 placeholder="e.g. 10 Tips for cleaner code..."
                                             />
                                         </div>
 
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-2 gap-6">
                                             <div>
-                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">Category</label>
+                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 block">Category</label>
                                                 <select
                                                     value={planForm.category}
                                                     onChange={e => setPlanForm({ ...planForm, category: e.target.value })}
-                                                    className="w-full p-3 bg-gray-50 dark:bg-slate-800 rounded-xl text-sm font-bold outline-none"
+                                                    className="w-full p-4 bg-background border-2 border-border-color rounded-2xl text-sm font-black outline-none appearance-none cursor-pointer focus:border-primary/50 transition-all uppercase tracking-widest"
                                                 >
                                                     <option>Education</option>
                                                     <option>Entertainment</option>
@@ -443,11 +446,11 @@ const YouTube = () => {
                                                 </select>
                                             </div>
                                             <div>
-                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">Target Audience</label>
+                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 block">Target Audience</label>
                                                 <select
                                                     value={planForm.targetAudience}
                                                     onChange={e => setPlanForm({ ...planForm, targetAudience: e.target.value })}
-                                                    className="w-full p-3 bg-gray-50 dark:bg-slate-800 rounded-xl text-sm font-bold outline-none"
+                                                    className="w-full p-4 bg-background border-2 border-border-color rounded-2xl text-sm font-black outline-none appearance-none cursor-pointer focus:border-primary/50 transition-all uppercase tracking-widest"
                                                 >
                                                     <option>Beginners</option>
                                                     <option>Intermediate</option>
@@ -457,33 +460,35 @@ const YouTube = () => {
                                         </div>
 
                                         <div>
-                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">Production Checklist</label>
-                                            <div className="space-y-2">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4 block">Production Checklist</label>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                 {planForm.checklist.map((item, idx) => (
-                                                    <div key={item.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-800 rounded-xl group cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                                                    <div
+                                                        key={item.id}
+                                                        onClick={() => {
+                                                            const newChecklist = [...planForm.checklist];
+                                                            newChecklist[idx] = { ...newChecklist[idx], completed: !newChecklist[idx].completed };
+                                                            setPlanForm({ ...planForm, checklist: newChecklist });
+                                                        }}
+                                                        className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all cursor-pointer group hover-lift ${item.completed ? 'bg-primary/5 border-primary/20' : 'bg-background border-border-color/50 hover:border-primary/30'}`}
+                                                    >
                                                         <div
-                                                            onClick={() => {
-                                                                const newChecklist = [...planForm.checklist];
-                                                                newChecklist[idx] = { ...newChecklist[idx], completed: !newChecklist[idx].completed };
-                                                                setPlanForm({ ...planForm, checklist: newChecklist });
-                                                            }}
-                                                            className={`size-5 rounded border-2 flex items-center justify-center transition-all ${item.completed ? 'bg-red-500 border-red-500 text-white' : 'border-gray-300'}`}
+                                                            className={`size-6 rounded-lg border-2 flex items-center justify-center transition-all ${item.completed ? 'bg-primary border-primary text-white shadow-lg shadow-primary/20' : 'border-gray-200 group-hover:border-primary/50'}`}
                                                         >
-                                                            {item.completed && <CheckSquare size={12} />}
+                                                            {item.completed && <CheckSquare size={14} />}
                                                         </div>
-                                                        <span className={`text-sm font-medium ${item.completed ? 'text-gray-400 line-through' : ''}`}>{item.text}</span>
-                                                        <MoreVertical className="ml-auto text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity" size={16} />
+                                                        <span className={`text-xs font-black uppercase tracking-tight ${item.completed ? 'text-foreground/40 line-through' : 'text-foreground'}`}>{item.text}</span>
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
 
                                         <div>
-                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">Notes & Brainstorming</label>
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 block">Notes & Brainstorming</label>
                                             <textarea
                                                 value={planForm.notes}
                                                 onChange={e => setPlanForm({ ...planForm, notes: e.target.value })}
-                                                className="w-full h-32 p-4 bg-gray-50 dark:bg-slate-800 rounded-xl text-sm font-medium outline-none resize-none"
+                                                className="w-full h-40 p-5 bg-background border-2 border-border-color rounded-2xl text-sm font-bold outline-none resize-none focus:border-primary/50 transition-all placeholder:text-foreground/20 leading-relaxed"
                                                 placeholder="Key points, hooks, and ideas..."
                                             />
                                         </div>
@@ -491,11 +496,11 @@ const YouTube = () => {
                                         <div className="flex gap-4 pt-4">
                                             <button
                                                 onClick={handleSavePlan}
-                                                className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform"
+                                                className="flex-1 bg-card-bg text-foreground border-2 border-border-color py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] flex items-center justify-center gap-3 hover:bg-primary/5 transition-all hover:border-primary/30"
                                             >
-                                                <Save size={18} /> Save Draft
+                                                <Save size={18} className="text-primary" /> Save Draft
                                             </button>
-                                            <button className="flex-1 bg-red-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-500/20 hover:scale-[1.02] transition-transform">
+                                            <button className="flex-1 bg-primary text-white py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] flex items-center justify-center gap-3 shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all border-none">
                                                 <Calendar size={18} /> Schedule
                                             </button>
                                         </div>
@@ -560,20 +565,20 @@ const YouTube = () => {
 
                         {/* --- SETTINGS VIEW --- */}
                         {activeTab === 'settings' && (
-                            <div className="max-w-2xl bg-card-bg rounded-2xl border border-border-color shadow-sm p-8">
-                                <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                                    <SettingsIcon className="text-gray-400" /> Channel Settings
+                            <div className="max-w-2xl bg-card-bg rounded-[2.5rem] border-none shadow-sm p-10">
+                                <h3 className="text-2xl font-black mb-10 flex items-center gap-3 italic uppercase tracking-tighter text-foreground">
+                                    <SettingsIcon className="text-primary" size={24} /> Channel Settings
                                 </h3>
 
-                                <div className="space-y-6">
-                                    <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800">
-                                        <div className="flex items-center gap-3 mb-2">
-                                            <div className="p-2 bg-blue-100 dark:bg-blue-800 rounded-lg text-blue-600 dark:text-blue-300">
-                                                <Youtube size={20} />
+                                <div className="space-y-8">
+                                    <div className="p-6 bg-primary/5 rounded-[2rem] border-2 border-primary/10">
+                                        <div className="flex items-center gap-4">
+                                            <div className="p-3 bg-primary/10 rounded-2xl text-primary shadow-sm">
+                                                <Youtube size={24} />
                                             </div>
                                             <div>
-                                                <h4 className="font-bold text-sm text-blue-900 dark:text-blue-100">Connected Channel</h4>
-                                                <p className="text-xs text-blue-700 dark:text-blue-300">
+                                                <h4 className="font-black text-sm uppercase tracking-widest text-foreground">Connected Channel</h4>
+                                                <p className="text-[11px] font-black text-primary uppercase tracking-widest mt-1 opacity-60">
                                                     {settings.youtubeChannelId || 'No Channel ID Set'}
                                                 </p>
                                             </div>
@@ -581,27 +586,27 @@ const YouTube = () => {
                                     </div>
 
                                     <div>
-                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">YouTube API Key</label>
+                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 block">YouTube API Key</label>
                                         <div className="flex gap-2">
                                             <input
                                                 type="password"
                                                 value={settings.youtubeApiKey || ''}
                                                 disabled
-                                                className="flex-1 p-3 bg-gray-50 dark:bg-slate-800 rounded-xl text-sm font-mono text-gray-500 border border-gray-200 dark:border-slate-700"
-                                                placeholder="Configured in global settings"
+                                                className="flex-1 p-5 bg-background border-2 border-border-color rounded-2xl text-sm font-black text-foreground/40 outline-none italic tracking-widest"
+                                                placeholder="••••••••••••••••••••••••••••••••"
                                             />
                                         </div>
-                                        <p className="text-[10px] text-gray-400 mt-2">
-                                            To change your API Key or Channel ID, please visit the main <a href="/settings" className="text-blue-500 hover:underline">Application Settings</a>.
+                                        <p className="text-[10px] font-black text-gray-400 mt-4 uppercase tracking-widest">
+                                            To change your API Key or Channel ID, please visit the main <a href="/settings" className="text-primary hover:underline group-hover:text-primary transition-colors">Application Settings</a>.
                                         </p>
                                     </div>
 
-                                    <div className="pt-6 border-t border-border-color">
+                                    <div className="pt-8 border-t border-border-color/50">
                                         <button
                                             onClick={() => fetchYouTubeStats()}
-                                            className="w-full py-3 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-xl transition-colors flex items-center justify-center gap-2"
+                                            className="w-full py-5 bg-card-bg text-foreground border-2 border-border-color rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] flex items-center justify-center gap-3 shadow-sm hover:bg-primary/5 transition-all hover:border-primary/30 active:scale-[0.98]"
                                         >
-                                            <TrendingUp size={16} /> Force Refresh Data
+                                            <TrendingUp size={18} className="text-primary" /> Force Refresh Data
                                         </button>
                                     </div>
                                 </div>

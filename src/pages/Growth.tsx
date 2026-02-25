@@ -43,17 +43,17 @@ const GrowthHub = () => {
     };
 
     return (
-        <div className="flex-1 flex flex-col overflow-hidden fade-in">
-            <header className="h-16 border-b border-gray-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-8 z-10 shrink-0 sticky top-0">
+        <div className="flex-1 flex flex-col overflow-hidden fade-in bg-background text-foreground transition-all">
+            <header className="h-20 border-b border-border-color bg-card-bg/80 backdrop-blur-md flex items-center justify-between px-12 z-10 shrink-0 sticky top-0">
                 <div className="welcome-text">
                     <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em] block mb-1">PERSONAL EVOLUTION</span>
-                    <h1 className="text-xl font-bold">Growth & Reflection</h1>
+                    <h1 className="text-2xl font-black text-foreground uppercase tracking-tight italic">Growth & Reflection</h1>
                 </div>
-                <div className="header-actions flex gap-3">
-                    <button className="bg-primary/10 text-primary h-10 px-4 rounded-lg flex items-center gap-2 text-sm font-bold border-none">
-                        <Award size={18} /> Points: {reflections.length * 100 + 1240}
+                <div className="header-actions flex items-center gap-4">
+                    <button className="bg-primary/5 text-primary h-12 px-6 rounded-2xl flex items-center gap-2 text-sm font-black border border-primary/10 transition-all hover:bg-primary/10">
+                        <Award size={18} /> {reflections.length * 100 + 1240} PTS
                     </button>
-                    <button className="bg-primary text-white h-10 px-6 rounded-lg text-sm font-bold shadow-lg shadow-primary/20 flex items-center gap-2 border-none">
+                    <button className="bg-primary text-white h-12 px-8 rounded-2xl text-xs font-black shadow-xl shadow-primary/20 flex items-center gap-3 border-none hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-widest">
                         <Zap size={18} /> Daily Roadmap
                     </button>
                 </div>
@@ -67,28 +67,28 @@ const GrowthHub = () => {
                             <Rocket size={12} className="text-primary" /> MISSION PROGRESS
                         </div>
 
-                        <Card className="p-10 bg-gradient-to-br from-slate-900 to-slate-800 text-white border-none shadow-2xl relative overflow-hidden">
+                        <Card className="p-10 bg-gradient-to-br from-primary to-sage text-white border-none shadow-2xl relative overflow-hidden group hover-lift rounded-[2.5rem]">
                             <div className="relative z-10">
-                                <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-4 block">Current Status</span>
-                                <h3 className="text-2xl font-black mb-1">Awaiting Mastery</h3>
-                                <p className="text-xs text-gray-400 mb-8 italic">"{roadmap.mainGoal}"</p>
+                                <span className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] mb-4 block">Current Status</span>
+                                <h3 className="text-3xl font-black mb-1 italic tracking-tighter">Awaiting Mastery</h3>
+                                <p className="text-xs text-white/80 mb-8 italic">"{roadmap.mainGoal}"</p>
 
                                 <div className="flex justify-center mb-6">
-                                    <div className="size-32 rounded-full border-8 border-white/5 flex items-center justify-center relative">
+                                    <div className="size-36 rounded-full border-8 border-white/10 flex items-center justify-center relative shadow-inner">
                                         <div className="text-center">
-                                            <span className="text-3xl font-black">{progressPercent}%</span>
-                                            <p className="text-[8px] font-black uppercase text-gray-500">Journey</p>
+                                            <span className="text-4xl font-black">{progressPercent}%</span>
+                                            <p className="text-[10px] font-black uppercase text-white/50 tracking-widest mt-1">Journey</p>
                                         </div>
-                                        <svg className="absolute -inset-2 size-36 rotate-[-90deg]">
-                                            <circle cx="72" cy="72" r="68" fill="none" stroke="var(--color-primary)" strokeWidth="8" strokeDasharray={`${progressPercent * 4.27} 427`} strokeLinecap="round" />
+                                        <svg className="absolute -inset-2 size-40 rotate-[-90deg]">
+                                            <circle cx="80" cy="80" r="76" fill="none" stroke="white" strokeWidth="8" strokeDasharray={`${progressPercent * 4.77} 477`} strokeLinecap="round" className="opacity-40" />
                                         </svg>
                                     </div>
                                 </div>
-                                <div className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
-                                    <Award size={14} /> {completedMilestones.length} Milestones Achieved
+                                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white flex items-center gap-2 mt-4">
+                                    <Award size={16} /> {completedMilestones.length} Milestones Achieved
                                 </div>
                             </div>
-                            <Star className="absolute -right-20 -bottom-20 text-white/5" size={300} />
+                            <Star className="absolute -right-20 -bottom-20 text-white/10 group-hover:scale-110 transition-transform duration-1000" size={300} />
                         </Card>
 
                         <Card className="p-8">
@@ -98,14 +98,12 @@ const GrowthHub = () => {
                             </div>
                             <div className="space-y-4">
                                 {upcomingMilestones.map((m) => (
-                                    <div key={m.id} className="p-4 bg-gray-50 dark:bg-slate-800/50 rounded-2xl border border-transparent hover:border-primary/20 transition-all group">
-                                        <div className="flex justify-between items-center">
-                                            <div>
-                                                <p className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight">{m.title}</p>
-                                                <p className="text-[9px] font-bold text-gray-400 uppercase mt-1">Due: {new Date(m.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
-                                            </div>
-                                            <ChevronRight size={14} className="text-gray-300 group-hover:text-primary transition-colors" />
+                                    <div key={m.id} className="p-5 bg-primary/5 dark:bg-primary/5 rounded-2xl border border-transparent hover:border-primary/20 transition-all group flex justify-between items-center hover-lift">
+                                        <div>
+                                            <p className="text-sm font-black text-foreground uppercase tracking-tight">{m.title}</p>
+                                            <p className="text-[9px] font-bold text-gray-400 uppercase mt-1">Due: {new Date(m.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
                                         </div>
+                                        <ChevronRight size={16} className="text-gray-300 group-hover:text-primary transition-colors" />
                                     </div>
                                 ))}
                             </div>
@@ -121,21 +119,21 @@ const GrowthHub = () => {
                         {completedMilestones.length > 0 ? (
                             <div className="space-y-6">
                                 {completedMilestones.slice(0, 3).map((m, i) => (
-                                    <Card key={m.id} className={`p-8 border-l-4 ${i === 0 ? 'border-tangerine' : i === 1 ? 'border-primary' : 'border-sage'} relative overflow-hidden`}>
+                                    <Card key={m.id} className={`p-8 border-none bg-card-bg shadow-sm relative overflow-hidden group hover-lift border-l-4 ${i === 0 ? 'border-tangerine' : i === 1 ? 'border-primary' : 'border-sage'}`}>
                                         <div className="flex items-start gap-4 z-10 relative">
-                                            <div className="size-10 rounded-xl bg-gray-50 dark:bg-slate-800 flex items-center justify-center shrink-0">
-                                                <Award className={i === 0 ? 'text-tangerine' : 'text-primary'} size={20} />
+                                            <div className="size-12 rounded-2xl bg-primary/5 flex items-center justify-center shrink-0 group-hover:scale-110 transition-all">
+                                                <Award className={i === 0 ? 'text-tangerine' : 'text-primary'} size={24} />
                                             </div>
                                             <div>
                                                 <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{new Date(m.dueDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
-                                                <h4 className="font-black text-lg leading-tight mt-1">{m.title}</h4>
+                                                <h4 className="font-black text-xl leading-tight mt-1 text-foreground italic tracking-tighter">{m.title}</h4>
                                                 <div className="mt-4 flex items-center gap-2">
-                                                    <div className="size-1.5 rounded-full bg-sage"></div>
+                                                    <div className="size-2 rounded-full bg-sage shadow-[0_0_8px_rgba(155,189,143,0.5)]"></div>
                                                     <span className="text-[10px] font-black text-sage uppercase tracking-widest">Victory Logged</span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <Trophy className="absolute -right-6 -bottom-6 text-gray-50 dark:text-white/5 rotate-12" size={120} />
+                                        <Trophy className="absolute -right-8 -bottom-8 text-primary/5 rotate-12 group-hover:scale-110 transition-all" size={120} />
                                     </Card>
                                 ))}
                                 {completedMilestones.length > 3 && (
