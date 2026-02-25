@@ -139,8 +139,19 @@ const Settings = () => {
                                                 <input value={youtubeChannelId} onChange={e => setYoutubeChannelId(e.target.value)} placeholder="UC_x5..." className="w-full bg-background p-4 md:p-5 rounded-2xl text-xs font-black outline-none border-2 border-border-color focus:border-red-500/40 transition-all tracking-widest italic" />
                                             </div>
                                             <div className="space-y-3">
-                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">API Key</label>
-                                                <input value={youtubeApiKey} onChange={e => setYoutubeApiKey(e.target.value)} type="password" placeholder="AIzaSy..." className="w-full bg-background p-4 md:p-5 rounded-2xl text-xs font-black outline-none border-2 border-border-color focus:border-red-500/40 transition-all tracking-[0.5em] italic" />
+                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] flex items-center justify-between">
+                                                    Access Token
+                                                    {import.meta.env.VITE_YOUTUBE_API_KEY && !import.meta.env.VITE_YOUTUBE_API_KEY.startsWith('YOUR_') && (
+                                                        <span className="text-[8px] text-sage font-black italic shadow-inner bg-sage/10 px-2 py-0.5 rounded-full">System Active</span>
+                                                    )}
+                                                </label>
+                                                <input
+                                                    value={youtubeApiKey}
+                                                    onChange={e => setYoutubeApiKey(e.target.value)}
+                                                    type="password"
+                                                    placeholder={import.meta.env.VITE_YOUTUBE_API_KEY ? "••••••••••••••••" : "AIzaSy..."}
+                                                    className="w-full bg-background/50 p-4 md:p-5 rounded-2xl text-xs font-black outline-none border-2 border-border-color focus:border-red-500/40 transition-all tracking-[0.5em] italic"
+                                                />
                                             </div>
                                         </div>
                                     </div>
