@@ -102,6 +102,7 @@ type StoreType = {
     toggleHabit: (id: string, dateStr?: string) => void;
     moveHabit: (id: string, direction: 'up' | 'down') => void;
     addTask: (t: Omit<Task, 'id' | 'completed' | 'createdAt'>) => void;
+    updateTask: (id: string, updates: Partial<Task>) => void;
     toggleTask: (id: string) => void;
     deleteTask: (id: string) => void;
     addTransaction: (t: Omit<Transaction, 'id'>) => void;
@@ -328,6 +329,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const toggleTask = (id: string) => setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+    const updateTask = (id: string, updates: Partial<Task>) => setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
     const deleteTask = (id: string) => setTasks(prev => prev.filter(t => t.id !== id));
 
     const addTransaction = (t: Omit<Transaction, 'id'>) => setTransactions(p => [{ ...t, id: generateId() }, ...p]);
@@ -598,7 +600,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     const store: StoreType = {
         habits, tasks, transactions, healthLogs, reflections,
         youtube, savings, roadmap, periods, settings, studyHours,
-        addHabit, updateHabit, deleteHabit, toggleHabit, moveHabit, addTask, toggleTask, deleteTask,
+        addHabit, updateHabit, deleteHabit, toggleHabit, moveHabit, addTask, updateTask, toggleTask, deleteTask,
         addTransaction, deleteTransaction, updateHealth,
         addReflection, updateYoutube, updateSavings, updateSettings, logStudyHours,
         addPeriod, deletePeriod, updateRoadmap,
