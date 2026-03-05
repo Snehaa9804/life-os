@@ -166,10 +166,20 @@ const Tasks = () => {
                                                     </div>
                                                 </td>
                                                 <td className="px-10 py-6">
-                                                    <div className="flex items-center gap-2 text-gray-500">
-                                                        <Calendar size={14} className="opacity-50" />
-                                                        <span className="text-[11px] font-bold">{new Date(task.time).toLocaleDateString('en-GB')}</span>
-                                                    </div>
+                                                    <label className="flex items-center gap-2 text-gray-500 cursor-pointer group/date hover:text-primary transition-colors" title="Click to change date">
+                                                        <Calendar size={14} className="opacity-50 shrink-0 group-hover/date:opacity-100 group-hover/date:text-primary transition-all" />
+                                                        <div className="relative">
+                                                            <span className="text-[11px] font-bold group-hover/date:opacity-0 transition-opacity absolute inset-0 flex items-center pointer-events-none">
+                                                                {new Date(task.time).toLocaleDateString('en-GB')}
+                                                            </span>
+                                                            <input
+                                                                type="date"
+                                                                defaultValue={task.time}
+                                                                onChange={e => e.target.value && updateTask(task.id, { time: e.target.value })}
+                                                                className="opacity-0 group-hover/date:opacity-100 transition-opacity bg-transparent text-[11px] font-bold outline-none cursor-pointer w-[90px]"
+                                                            />
+                                                        </div>
+                                                    </label>
                                                 </td>
                                                 <td className="px-10 py-6">
                                                     <span className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${priorityColors[task.priority] || priorityColors.medium}`}>{task.priority}</span>
