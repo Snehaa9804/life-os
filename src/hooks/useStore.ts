@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext, useCallback, useRef } from 'react';
-import { fetchUserData, upsertUserData, isSupabaseEnabled } from '../services/supabase';
+import { fetchUserData, upsertUserData, isSupabaseEnabled, subscribeToUserData } from '../services/supabase';
 import type {
     Habit, Task, Transaction, HealthLog, Reflection,
     YouTubeGrowth, Savings, GoalRoadmap, PeriodData, UserSettings, VideoPlan, User
@@ -455,26 +455,44 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     }, [habits, tasks, transactions, healthLogs, reflections,
         youtube, savings, roadmap, periods, settings, studyHours, videoPlans]);
 
-    // Reload from cloud when user switches back to this tab/app
+    // Page-visibility fallback: reload when user switches back to this tab
     useEffect(() => {
         if (!isAuthenticated || !user?.email) return;
         const email = user.email;
         const handleVisibility = () => {
-            if (document.visibilityState === 'visible') {
-                loadFromCloud(email);
-            }
+            if (document.visibilityState === 'visible') loadFromCloud(email);
         };
         document.addEventListener('visibilitychange', handleVisibility);
         return () => document.removeEventListener('visibilitychange', handleVisibility);
     }, [isAuthenticated, user?.email, loadFromCloud]);
 
-    // Poll every 60 seconds as fallback while app is open
+    // Supabase Realtime: instant push whenever another device saves
     useEffect(() => {
-        if (!isAuthenticated || !user?.email) return;
+        if (!isAuthenticated || !user?.email || !isSupabaseEnabled) return;
         const email = user.email;
-        const interval = setInterval(() => loadFromCloud(email), 60_000);
-        return () => clearInterval(interval);
-    }, [isAuthenticated, user?.email, loadFromCloud]);
+
+        const channel = subscribeToUserData(email, (data) => {
+            const p = <T>(v: unknown, fallback: T): T =>
+                v !== null && v !== undefined ? v as T : fallback;
+            setHabits(p(data.habits, []));
+            setTasks(p(data.tasks, []));
+            setTransactions(p(data.transactions, []));
+            setHealthLogs(p(data.health_logs, []));
+            setReflections(p(data.reflections, []));
+            setYoutube(p(data.youtube, { subscribers: 0, views: 0, videosCount: 0, lastUpdated: new Date().toISOString() }));
+            setSavings(p(data.savings, { currentAmount: 0, goalAmount: 0 }));
+            setPeriods(p(data.periods, []));
+            setStudyHours(p(data.study_hours, {}));
+            setVideoPlans(p(data.video_plans, []));
+            if (data.roadmap) setRoadmap(p(data.roadmap, roadmap));
+            if (data.settings) setSettings(backfillSettings(p(data.settings, getDefaultSettings())));
+            setSyncStatus('synced');
+        });
+
+        return () => {
+            channel?.unsubscribe();
+        };
+    }, [isAuthenticated, user?.email]);
 
     // ── Auth ─────────────────────────────────────────────────────────────────
     const login = (userData: User) => {

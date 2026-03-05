@@ -48,7 +48,7 @@ export const fetchUserData = async (email: string): Promise<CloudUserData | null
     }
 };
 
-// ─── Save/update data for a user ──────────────────────────────────────────────
+// ─── Upsert user data ─────────────────────────────────────────────────────────
 export const upsertUserData = async (
     email: string,
     updates: Partial<Omit<CloudUserData, 'email' | 'updated_at'>>
@@ -64,3 +64,31 @@ export const upsertUserData = async (
         console.error('[Supabase] upsert exception:', e);
     }
 };
+
+// ─── Realtime subscription ─────────────────────────────────────────────────────
+export const subscribeToUserData = (
+    email: string,
+    onUpdate: (data: CloudUserData) => void
+) => {
+    if (!supabase) return null;
+    const channel = supabase
+        .channel(`user-data-${email.toLowerCase()}`)
+        .on(
+            'postgres_changes' as any,
+            {
+                event: 'UPDATE',
+                schema: 'public',
+                table: 'user_data',
+                filter: `email=eq.${email.toLowerCase()}`,
+            },
+            (payload: any) => {
+                console.log('[Supabase Realtime] update received');
+                onUpdate(payload.new as CloudUserData);
+            }
+        )
+        .subscribe((status: string) => {
+            console.log('[Supabase Realtime] status:', status);
+        });
+    return channel;
+};
+
