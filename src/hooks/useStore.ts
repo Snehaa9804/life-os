@@ -388,6 +388,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
 
     // ── Supabase cloud sync ──────────────────────────────────────────────────
     const cloudSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const isApplyingRemoteUpdate = useRef(false); // prevents save-loop when receiving realtime data
 
     const saveToCloud = useCallback((email: string, snapshot: {
         habits: Habit[]; tasks: Task[]; transactions: Transaction[];
@@ -445,9 +446,9 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, []);
 
-    // Trigger cloud save whenever key data changes
+    // Trigger cloud save whenever key data changes (skip if caused by incoming realtime update)
     useEffect(() => {
-        if (!user?.email || !isAuthenticated) return;
+        if (!user?.email || !isAuthenticated || isApplyingRemoteUpdate.current) return;
         saveToCloud(user.email, {
             habits, tasks, transactions, healthLogs, reflections,
             youtube, savings, roadmap, periods, settings, studyHours, videoPlans
@@ -474,6 +475,9 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         const channel = subscribeToUserData(email, (data) => {
             const p = <T>(v: unknown, fallback: T): T =>
                 v !== null && v !== undefined ? v as T : fallback;
+
+            // Block the saveToCloud effect while we apply remote data
+            isApplyingRemoteUpdate.current = true;
             setHabits(p(data.habits, []));
             setTasks(p(data.tasks, []));
             setTransactions(p(data.transactions, []));
@@ -487,11 +491,11 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
             if (data.roadmap) setRoadmap(p(data.roadmap, roadmap));
             if (data.settings) setSettings(backfillSettings(p(data.settings, getDefaultSettings())));
             setSyncStatus('synced');
+            // Release the block after React has flushed the state updates
+            setTimeout(() => { isApplyingRemoteUpdate.current = false; }, 100);
         });
 
-        return () => {
-            channel?.unsubscribe();
-        };
+        return () => { channel?.unsubscribe(); };
     }, [isAuthenticated, user?.email]);
 
     // ── Auth ─────────────────────────────────────────────────────────────────
