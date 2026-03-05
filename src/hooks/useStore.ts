@@ -420,6 +420,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
 
     const loadFromCloud = useCallback(async (email: string) => {
         if (!isSupabaseEnabled) return;
+        // If a local change is pending (debounce timer active), local wins — skip cloud reload
+        if (cloudSaveTimerRef.current) return;
         setSyncStatus('loading');
         try {
             const data = await fetchUserData(email);
@@ -473,6 +475,9 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         const email = user.email;
 
         const channel = subscribeToUserData(email, (data) => {
+            // If a local change is pending, ignore incoming — local wins
+            if (cloudSaveTimerRef.current) return;
+
             const p = <T>(v: unknown, fallback: T): T =>
                 v !== null && v !== undefined ? v as T : fallback;
 
