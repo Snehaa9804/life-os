@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { X, Menu, Rocket, ChevronRight, LogOut } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
+import { isSupabaseEnabled } from '../services/supabase';
 
 const MobileNav = () => {
-    const { settings, logout, user } = useStore();
+    const { settings, logout, user, syncStatus } = useStore();
     const [isOpen, setIsOpen] = useState(false);
 
     const mainItems = [
@@ -116,6 +117,24 @@ const MobileNav = () => {
                                 <p className="text-[8px] text-gray-400 font-bold uppercase tracking-widest">Operator</p>
                             </div>
                         </NavLink>
+
+                        {/* Cloud sync indicator */}
+                        {isSupabaseEnabled && (
+                            <div className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest ${syncStatus === 'synced' ? 'text-green-500 bg-green-500/10' :
+                                    syncStatus === 'loading' ? 'text-blue-400 bg-blue-400/10 animate-pulse' :
+                                        syncStatus === 'error' ? 'text-red-400 bg-red-400/10' :
+                                            'text-gray-400 bg-gray-400/10'
+                                }`}>
+                                <span className="material-symbols-outlined text-sm">
+                                    {syncStatus === 'synced' ? 'cloud_done' :
+                                        syncStatus === 'loading' ? 'cloud_sync' :
+                                            syncStatus === 'error' ? 'cloud_off' : 'cloud'}
+                                </span>
+                                {syncStatus === 'synced' ? 'Cloud Synced' :
+                                    syncStatus === 'loading' ? 'Syncing…' :
+                                        syncStatus === 'error' ? 'Sync Error' : 'Cloud'}
+                            </div>
+                        )}
 
                         <button
                             onClick={() => { if (confirm('Terminate secure session?')) { setIsOpen(false); logout(); } }}
