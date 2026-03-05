@@ -1,4 +1,5 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import React, { useState, useEffect, createContext, useContext, useCallback, useRef } from 'react';
+import { fetchUserData, upsertUserData, isSupabaseEnabled } from '../services/supabase';
 import type {
     Habit, Task, Transaction, HealthLog, Reflection,
     YouTubeGrowth, Savings, GoalRoadmap, PeriodData, UserSettings, VideoPlan, User
@@ -75,6 +76,8 @@ const backfillSettings = (parsed: UserSettings) => {
 };
 
 // Create context type
+type SyncStatus = 'idle' | 'loading' | 'synced' | 'error';
+
 type StoreType = {
     habits: Habit[];
     tasks: Task[];
@@ -90,6 +93,7 @@ type StoreType = {
     videoPlans: VideoPlan[];
     user: User | null;
     isAuthenticated: boolean;
+    syncStatus: SyncStatus;
     login: (userData: User) => boolean;
     logout: () => void;
     addHabit: (h: Omit<Habit, 'id' | 'completedAt' | 'streak' | 'createdAt'>) => void;
@@ -129,6 +133,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     })();
 
     const [user, setUser] = useState<User | null>(initialUser);
+    const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle');
 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
         return localStorage.getItem('life-os-auth') === 'true';
@@ -381,17 +386,89 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         setVideoPlans(prev => prev.filter(p => p.id !== id));
     };
 
+    // ── Supabase cloud sync ──────────────────────────────────────────────────
+    const cloudSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const saveToCloud = useCallback((email: string, snapshot: {
+        habits: Habit[]; tasks: Task[]; transactions: Transaction[];
+        healthLogs: HealthLog[]; reflections: Reflection[]; youtube: YouTubeGrowth;
+        savings: Savings; roadmap: GoalRoadmap; periods: PeriodData[];
+        settings: UserSettings; studyHours: Record<string, number>; videoPlans: VideoPlan[];
+    }) => {
+        if (!isSupabaseEnabled || !email) return;
+        if (cloudSaveTimerRef.current) clearTimeout(cloudSaveTimerRef.current);
+        cloudSaveTimerRef.current = setTimeout(async () => {
+            setSyncStatus('loading');
+            await upsertUserData(email, {
+                habits: snapshot.habits,
+                tasks: snapshot.tasks,
+                transactions: snapshot.transactions,
+                health_logs: snapshot.healthLogs,
+                reflections: snapshot.reflections,
+                youtube: snapshot.youtube,
+                savings: snapshot.savings,
+                roadmap: snapshot.roadmap,
+                periods: snapshot.periods,
+                settings: snapshot.settings,
+                study_hours: snapshot.studyHours,
+                video_plans: snapshot.videoPlans,
+            });
+            setSyncStatus('synced');
+        }, 2000);
+    }, []);
+
+    const loadFromCloud = useCallback(async (email: string) => {
+        if (!isSupabaseEnabled) return;
+        setSyncStatus('loading');
+        try {
+            const data = await fetchUserData(email);
+            if (!data) { setSyncStatus('idle'); return; }
+
+            const p = <T>(v: unknown, fallback: T): T =>
+                v !== null && v !== undefined ? v as T : fallback;
+
+            setHabits(p(data.habits, []));
+            setTasks(p(data.tasks, []));
+            setTransactions(p(data.transactions, []));
+            setHealthLogs(p(data.health_logs, []));
+            setReflections(p(data.reflections, []));
+            setYoutube(p(data.youtube, { subscribers: 0, views: 0, videosCount: 0, lastUpdated: new Date().toISOString() }));
+            setSavings(p(data.savings, { currentAmount: 0, goalAmount: 0 }));
+            setPeriods(p(data.periods, []));
+            setStudyHours(p(data.study_hours, {}));
+            setVideoPlans(p(data.video_plans, []));
+            if (data.roadmap) setRoadmap(p(data.roadmap, roadmap));
+            if (data.settings) setSettings(backfillSettings(p(data.settings, getDefaultSettings())));
+            setSyncStatus('synced');
+        } catch {
+            setSyncStatus('error');
+        }
+    }, []);
+
+    // Trigger cloud save whenever key data changes
+    useEffect(() => {
+        if (!user?.email || !isAuthenticated) return;
+        saveToCloud(user.email, {
+            habits, tasks, transactions, healthLogs, reflections,
+            youtube, savings, roadmap, periods, settings, studyHours, videoPlans
+        });
+    }, [habits, tasks, transactions, healthLogs, reflections,
+        youtube, savings, roadmap, periods, settings, studyHours, videoPlans]);
+
+    // ── Auth ─────────────────────────────────────────────────────────────────
     const login = (userData: User) => {
         setUser(userData);
         setIsAuthenticated(true);
-        // Sync name to settings if it's the first login
         setSettings(s => ({ ...s, name: userData.name || s.name }));
+        // Load cloud data after login
+        if (userData.email) loadFromCloud(userData.email);
         return true;
     };
 
     const logout = () => {
         setIsAuthenticated(false);
         setUser(null);
+        setSyncStatus('idle');
     };
 
     const fetchYouTubeStats = async () => {
@@ -479,7 +556,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         addPeriod, deletePeriod, updateRoadmap,
         setHabits, setTasks, fetchYouTubeStats,
         videoPlans, addVideoPlan, updateVideoPlan, deleteVideoPlan,
-        isAuthenticated, user, login, logout
+        isAuthenticated, user, login, logout,
+        syncStatus,
     };
 
     return React.createElement(

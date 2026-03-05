@@ -1,8 +1,10 @@
 import { NavLink } from 'react-router-dom';
 import { useStore } from '../hooks/useStore';
+import { isSupabaseEnabled } from '../services/supabase';
 
 const Sidebar = () => {
-    const { settings, logout, user } = useStore();
+    const { settings, logout, user, syncStatus } = useStore();
+
     const menuItems = [
         { icon: 'grid_view', label: 'Dashboard', path: '/', delay: 'delay-100' },
         { icon: 'task_alt', label: 'Task List', path: '/tasks', delay: 'delay-200' },
@@ -66,6 +68,24 @@ const Sidebar = () => {
                     </div>
                     <span className="material-symbols-outlined text-gray-300 group-hover:text-primary transition-colors text-lg">settings</span>
                 </NavLink>
+
+                {/* Cloud sync indicator */}
+                {isSupabaseEnabled && (
+                    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${syncStatus === 'synced' ? 'text-green-500 bg-green-500/10' :
+                            syncStatus === 'loading' ? 'text-blue-400 bg-blue-400/10 animate-pulse' :
+                                syncStatus === 'error' ? 'text-red-400 bg-red-400/10' :
+                                    'text-gray-400 bg-gray-400/10'
+                        }`}>
+                        <span className="material-symbols-outlined text-sm">
+                            {syncStatus === 'synced' ? 'cloud_done' :
+                                syncStatus === 'loading' ? 'cloud_sync' :
+                                    syncStatus === 'error' ? 'cloud_off' : 'cloud'}
+                        </span>
+                        {syncStatus === 'synced' ? 'Synced' :
+                            syncStatus === 'loading' ? 'Syncing…' :
+                                syncStatus === 'error' ? 'Sync Error' : 'Cloud'}
+                    </div>
+                )}
 
                 <button
                     onClick={() => { if (confirm('Terminate secure session?')) logout(); }}
