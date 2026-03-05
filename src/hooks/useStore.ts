@@ -455,6 +455,27 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     }, [habits, tasks, transactions, healthLogs, reflections,
         youtube, savings, roadmap, periods, settings, studyHours, videoPlans]);
 
+    // Reload from cloud when user switches back to this tab/app
+    useEffect(() => {
+        if (!isAuthenticated || !user?.email) return;
+        const email = user.email;
+        const handleVisibility = () => {
+            if (document.visibilityState === 'visible') {
+                loadFromCloud(email);
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibility);
+        return () => document.removeEventListener('visibilitychange', handleVisibility);
+    }, [isAuthenticated, user?.email, loadFromCloud]);
+
+    // Poll every 60 seconds as fallback while app is open
+    useEffect(() => {
+        if (!isAuthenticated || !user?.email) return;
+        const email = user.email;
+        const interval = setInterval(() => loadFromCloud(email), 60_000);
+        return () => clearInterval(interval);
+    }, [isAuthenticated, user?.email, loadFromCloud]);
+
     // ── Auth ─────────────────────────────────────────────────────────────────
     const login = (userData: User) => {
         setUser(userData);
